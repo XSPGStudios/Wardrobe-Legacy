@@ -1,18 +1,28 @@
 package com.ucstudios.wardrobe;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceControl;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SmsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SmsFragment extends Fragment {
+public class SmsFragment extends Fragment implements View.OnClickListener {
+
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,11 +57,25 @@ public class SmsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sms, container, false);
+        View view = inflater.inflate(R.layout.fragment_sms, container, false);
+        Button topButton = view.findViewById(R.id.topButton);
+        topButton.setOnClickListener(this);
+        return view;
+
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        FragmentTransaction replace = getFragmentManager().beginTransaction().replace(R.id.container, ListFragment.newInstance("", ""));
+        replace.addToBackStack(null);
+        replace.commit();
     }
 }
