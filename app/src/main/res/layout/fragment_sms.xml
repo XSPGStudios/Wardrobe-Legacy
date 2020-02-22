@@ -4,68 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment"
-    >
+    tools:context=".HomeFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:id="@+id/Table"
+                android:layout_width="372dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="50dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TableLayout
-            android:layout_width="381dp"
-            android:layout_height="372dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="100dp"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            app:backgroundTint="#00897B"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="102dp">
-
-                <Button
-                    android:id="@+id/topButton"
-                    android:layout_width="188dp"
-                    android:layout_height="188dp"
-                    android:background="@drawable/ic_polo" />
-
-                <Button
-                    android:id="@+id/sweaterButton"
-                    android:layout_width="188dp"
-                    android:layout_height="188dp"
-                    android:background="@drawable/ic_sweater" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/jeansButton"
-                    android:layout_width="188dp"
-                    android:layout_height="188dp"
-                    android:background="@drawable/ic_jeans" />
-
-                <Button
-                    android:id="@+id/shoesButton"
-                    android:layout_width="188dp"
-                    android:layout_height="188dp"
-                    android:background="@drawable/ic_shoes" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="101dp" />
-        </TableLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.881"
+            app:rippleColor="#FFFFFF"
+            app:srcCompat="@drawable/ic_sms" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </FrameLayout>
