@@ -1,0 +1,10 @@
+DatabaseHelper mDatabaseHelper; //Dichiarato nella classe principale del frammento
+mDatabaseHelper1 = new DatabaseHelper(); //Dichiarato nell'oncreateview del frammento
+
+Dichiarare poi una funzione getdata nel DatabaseHelper.java (Copiandola da una delle altre)
+Dichiarare una funzione getdata nel frammento (Copiandola da una delle altre)
+Per rappresentazioni grafiche modificare l'adapter
+
+Sfruttare l'array listdata a proprio piacimento.
+
+
