@@ -3,19 +3,23 @@ package com.ucstudios.wardrobe;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +48,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     MainActivity mMainActivity;
 
     private ListView mListView;
+
     public ListFragment() {
 
     }
@@ -56,6 +62,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +71,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
 
 
     @Override
@@ -79,43 +85,121 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         populateItems();
 
 
-
         return view;
     }
-    public void AddData1(String newEntry){
-        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name,newEntry);
+
+    public void AddData1(String newEntry) {
+        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, newEntry);
         toastMessage("New Item created");
 
     }
 
-    private void toastMessage (String message){
-        Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
+    private void toastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
     }
 
 
-
-    private void populateItems(){
+    private void populateItems() {
 
         Cursor data = mDatabaseHelper1.getData1(mMainActivity.Name);
         final ArrayList<String> listData = new ArrayList<>();
-        while (data.moveToNext()){
-            listData.add(data.getString(0));
+        while (data.moveToNext()) {
+            listData.add(data.getString(1));
         }
 
-        ListAdapter adapter = new ArrayAdapter<>(mListView.getContext(), android.R.layout.simple_list_item_1, listData);
+        final ListAdapter adapter = new ArrayAdapter<>(mListView.getContext(), android.R.layout.simple_list_item_1, listData);
         mListView.setAdapter(adapter);
 
-        }
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+    {
+        @Override
+        public void onItemClick (AdapterView < ? > parent, View view,int position, final long id){
+
+        final int sex = (int) id;
+        final String na = listData.get(sex);
+        final String[] m_Text = {""};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Title");
+        final EditText input = new EditText(getActivity());
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text[0] = input.getText().toString();
+                Replace(mMainActivity.Name, Arrays.toString(m_Text).replace("[", "").replace("]", ""), sex);
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+
+        Log.v("message", "List Item " + id + " Click");
+    }
+    });
+}
+
+
+
+    public void Replace(String sex, String porn, int id){
+        mDatabaseHelper1.ReplaceItem(sex,porn,id+1);
+        populateItems();
+    }
+
+
+   /*
+        final String[] m_Text = {""};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Title");
+        final EditText input = new EditText(getActivity());
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text[0] = input.getText().toString();
+                a.set(sex, m_Text);
+                synchronized (porn){
+                    porn.notify();
+                }
+
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+*/
 
 
 
 
 
 
-    @Override
+
+
+            @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch(v.getId()) {
             case R.id.floating_action_button2:
 
                 final String[] m_Text1 = {""};
@@ -143,8 +227,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 builder.show();
-                break;
+                break;}
+            }
 
-        }
-    }
+
 }

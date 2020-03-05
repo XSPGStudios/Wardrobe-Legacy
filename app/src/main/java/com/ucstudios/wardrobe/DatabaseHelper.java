@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Set;
 
 import static android.content.ContentValues.TAG;
 
@@ -25,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+
+
 
 
     @Override
@@ -49,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL1, item);
         long result = db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
-        db.execSQL(" CREATE TABLE "+ PINZA +"(names TEXT)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT,names TEXT)");
         Log.d(TAG, "Table "+ PINZA +" created");
 
 
@@ -76,10 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
-
-
-
-
     public Cursor getData(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
@@ -92,6 +91,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query1 = "SELECT * FROM " + sat;
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
+    }
+
+    public boolean ReplaceItem(String tabletitle, String item, int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("names", item);
+        db.update(tabletitle, cv,"ID="+i,null);
+        return true;
     }
 
 }
