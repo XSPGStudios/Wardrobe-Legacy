@@ -52,7 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL1, item);
         long result = db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
-        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT,names TEXT)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT)");
         Log.d(TAG, "Table "+ PINZA +" created");
 
 

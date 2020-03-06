@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayouts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
@@ -12,12 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="547dp"
         android:clickable="true"
-        android:longClickable="true" />
+        android:longClickable="true">
+
+    </ListView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false">
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#D81B60"
+            android:text="DELETE"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button2"
@@ -35,6 +53,7 @@
             app:layout_constraintVertical_bias="0.874"
             app:rippleColor="#FFFFFF"
             app:srcCompat="@drawable/ic_shoes" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
