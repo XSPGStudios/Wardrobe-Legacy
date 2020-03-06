@@ -7,20 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NotificationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificationFragment extends Fragment {
+public class NotificationFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     // TODO: Rename and change types of parameters
     DatabaseHelper mDatabaseHelper;
+
     private String mParam1;
     private String mParam2;
+    private Object LaundryFragment;
+
     public NotificationFragment() {
         // Required empty public constructor
     }
@@ -53,7 +60,20 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         DatabaseHelper mDatabaseHelper2 = new DatabaseHelper(getActivity());
-        return inflater.inflate(R.layout.fragment_notification, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+        FloatingActionButton floatingActionButton6 = view.findViewById(R.id.floatingActionButton5);
+        floatingActionButton6.setOnClickListener(this);
+
+        return view;
+    }
+    @Override
+    public void onClick(View view) {
+        LaundryFragment laundryFragment = new LaundryFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.mainLayout,laundryFragment);
+        transaction.commit();
     }
 }
