@@ -18,6 +18,7 @@ public class NotificationFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     // TODO: Rename and change types of parameters
+    DatabaseHelper mDatabaseHelper;
     private String mParam1;
     private String mParam2;
     public NotificationFragment() {
@@ -52,6 +53,7 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        DatabaseHelper mDatabaseHelper2 = new DatabaseHelper(getActivity());
         return inflater.inflate(R.layout.fragment_notification, container, false);
     }
 }

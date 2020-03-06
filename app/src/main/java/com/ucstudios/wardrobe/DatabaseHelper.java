@@ -92,6 +92,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
     }
+    public Cursor getData2(String sat){
+        SQLiteDatabase db =this.getWritableDatabase();
+        String query1 = "SELECT * FROM " + sat;
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
+    }
 
     public boolean ReplaceItem(String tabletitle, String item, int i){
         SQLiteDatabase db = this.getWritableDatabase();
