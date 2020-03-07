@@ -1,23 +1,27 @@
 package com.ucstudios.wardrobe;
 
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     int i =1;
     public String Name;
-
     BottomNavigationView bottomNavigation;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,10 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(SmsFragment.newInstance("", ""));
 
-        NotificationFragment notificationFragment = new NotificationFragment();
-        FragmentManager manager = getSupportFragmentManager();
 
-        manager.beginTransaction().add(R.id.mainLayout,notificationFragment).commit();
+
     }
 
 

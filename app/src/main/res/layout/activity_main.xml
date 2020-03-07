@@ -8,7 +8,10 @@
     android:id="@+id/mainLayout"
     >
 
+
     <FrameLayout
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,6 +27,11 @@
             app:itemIconTint="#E7DBF8"
             app:itemRippleColor="#75FFFFFF"
             app:itemTextColor="#F5EEEE"
-            app:menu="@menu/bottom_navigation_menu" />
+            app:menu="@menu/bottom_navigation_menu" >
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

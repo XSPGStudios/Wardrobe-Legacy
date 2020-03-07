@@ -1,41 +1,60 @@
 package com.ucstudios.wardrobe;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class LaundryFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link NotificationFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class OutfitFragment extends Fragment {
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    // TODO: Rename and change types of parameters
+
 
     private String mParam1;
     private String mParam2;
-    public LaundryFragment() {
-        // Required empty public constructor
+
+
+    public OutfitFragment() {
+
     }
 
 
-
-
-    public static LaundryFragment newInstance(String param1, String param2) {
-        LaundryFragment fragment = new LaundryFragment();
+    public static OutfitFragment newInstance(String param1, String param2) {
+        OutfitFragment fragment = new OutfitFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +63,18 @@ public class LaundryFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lavatrice, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
 
 
         return view;
-    }}
+    }
 
+
+
+}

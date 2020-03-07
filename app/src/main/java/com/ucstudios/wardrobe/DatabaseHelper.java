@@ -1,5 +1,6 @@
 package com.ucstudios.wardrobe;
 
+import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,12 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
 import java.util.Arrays;
 import java.util.Set;
 
 import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
+
 
     private static final String TABLE_NAME = "categories_table";
     private static final String COL0 = "ID";
