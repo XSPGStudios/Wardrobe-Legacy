@@ -6,10 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextColor="@android:color/white">
+
+        <Spinner
+            android:id="@+id/spinner_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="155dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
     <ListView
         android:id="@+id/spezzaossa"
         android:layout_width="match_parent"
         android:layout_height="547dp"
+        android:layout_marginTop="55dp"
         android:clickable="true"
         android:longClickable="true" />
 
@@ -34,6 +54,7 @@
             app:layout_constraintVertical_bias="0.874"
             app:rippleColor="#FFFFFF"
             app:srcCompat="@drawable/ic_sms" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

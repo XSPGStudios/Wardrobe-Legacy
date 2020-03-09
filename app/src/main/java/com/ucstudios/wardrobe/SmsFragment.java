@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class SmsFragment extends Fragment implements View.OnClickListener{
+public class SmsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -62,10 +63,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
         fragment.setArguments(args);
 
 
-
         return fragment;
-
-
 
 
     }
@@ -76,9 +74,6 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
 
-
-
-
     }
 
 
@@ -87,14 +82,33 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
 
 
-
-
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
         FloatingActionButton ActionButton = view.findViewById(R.id.floating_action_button);
         mRecyclerView = view.findViewById(R.id.spezzaossa);
         ActionButton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();
+        Spinner spinner = view.findViewById(R.id.spinner_nav);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               if(position==1){ FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, new OutfitFragment());
+                transaction.commit();}
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.options, android.R.layout.simple_spinner_item);
+
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter1);
+
 
         populateButtons();
 
@@ -102,27 +116,26 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
         return view;
 
 
-
     }
 
-    public void AddData(String newEntry){
+    public void AddData(String newEntry) {
         boolean insertData = mDatabaseHelper.addData(newEntry);
         toastMessage("New Category Created!");
     }
 
 
-    private void toastMessage (String message){
-        Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
+    private void toastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
     }
 
-    private void populateButtons(){
+    private void populateButtons() {
         Cursor data = mDatabaseHelper.getData();
         final ArrayList<String> listData = new ArrayList<>();
-        while (data.moveToNext()){
+        while (data.moveToNext()) {
             listData.add(data.getString(1));
         }
-
+        mMainActivity.Categories=listData;
         ListAdapter adapter = new ArrayAdapter<>(mRecyclerView.getContext(), android.R.layout.simple_list_item_1, listData);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,8 +143,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int pirla = (int) id;
                 String lecca = listData.get(pirla);
-                mMainActivity.Name=lecca;
-                Log.v("message", "List Item "+ id + " Click");
+                mMainActivity.Name = lecca;
+                Log.v("message", "List Item " + id + " Click");
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new ListFragment());
@@ -139,15 +152,14 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+
     }
 
     @Override
     public void onClick(View v) {
 
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.floating_action_button:
-
 
 
                 final String[] m_Text = {""};
@@ -164,10 +176,9 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text[0] = input.getText().toString();
                         String duke = Arrays.toString(m_Text).replace("[", "").replace("]", "");
-                        mDatabaseHelper.PINZA=duke;
+                        mDatabaseHelper.PINZA = duke;
                         AddData(mDatabaseHelper.PINZA);
                         populateButtons();
-
 
 
                     }
@@ -181,7 +192,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener{
                 builder.show();
                 break;
 
-        }}
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
 }
 
 

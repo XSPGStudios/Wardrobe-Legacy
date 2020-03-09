@@ -4,6 +4,7 @@ package com.ucstudios.wardrobe;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -79,6 +81,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
         mListView = view.findViewById(R.id.spezzaossa2);
         mMainActivity = (MainActivity) getActivity();
+        TextView mTextView = view.findViewById(R.id.textView);
+        mTextView.setText(mMainActivity.Name);
+        mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
+
         populateItems();
 
 

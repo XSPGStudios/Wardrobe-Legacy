@@ -1,10 +1,19 @@
 package com.ucstudios.wardrobe;
 
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toolbar;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,18 +22,22 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     int i =1;
     public String Name;
     BottomNavigationView bottomNavigation;
-
+    DatabaseHelper mDatabaseHelper;
+    ArrayList<String> Categories ;
+    ArrayList<String> Items;
 
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
 
         super.onCreate(savedInstanceState);
@@ -43,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
+
     }
 
 
@@ -57,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             return true;
                         case R.id.navigation_sms:
                             openFragment(SmsFragment.newInstance("", ""));
+
                             return true;
                         case R.id.navigation_notifications:
                             openFragment(NotificationFragment.newInstance("", ""));
@@ -70,4 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
     }
+
+
+
+
+
 }
