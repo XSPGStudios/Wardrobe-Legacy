@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     int i =1;
     public String Name;
+    public String TechShit;
     BottomNavigationView bottomNavigation;
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;

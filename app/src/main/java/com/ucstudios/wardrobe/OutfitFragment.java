@@ -85,9 +85,11 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==1){ FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                if (position == 1) {
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.container, new SmsFragment());
-                    transaction.commit();}
+                    transaction.commit();
+                }
             }
 
             @Override
@@ -103,75 +105,21 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         spinner.setAdapter(adapter1);
 
 
-
         return view;
     }
 
 
-
-
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
 
             case R.id.floating_action_button:
 
-                CustomDialogClass cdd=new CustomDialogClass(getActivity());
+                CustomDialogClass cdd = new CustomDialogClass(getActivity());
                 cdd.show();
 
-                /*final ArrayList selectedItems = new ArrayList();  // Where we track the selected items
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                // Set the dialog title
 
-
-
-
-                builder.setTitle(R.string.outfit)
-
-                        // Specify the list array, the items to be selected by default (null for none),
-                        // and the listener through which to receive callbacks when items are selected
-                        .setMultiChoiceItems(R.array.totale, null,
-                                new DialogInterface.OnMultiChoiceClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which,
-                                                        boolean isChecked) {
-                                        if (isChecked) {
-
-                                            selectedItems.add(which);
-                                        } else if (selectedItems.contains(which)) {
-
-                                            selectedItems.remove(Integer.valueOf(which));
-                                        }
-                                    }
-                                })
-                        // Set the action buttons
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User clicked OK, so save the selectedItems results somewhere
-                                // or return them to the component that opened the dialog
-
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-
-                            }
-                        });
-
-                final EditText input = new EditText(getActivity());
-                input.setHint("Name of your Outfit");
-                input.setGravity(Gravity.CENTER);
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-                builder.show();
-
-                 */
                 break;
-
-
 
 
         }

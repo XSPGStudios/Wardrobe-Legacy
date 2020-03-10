@@ -4,12 +4,12 @@
 
     <string-array name="options">
         <item>  Wardrobe</item>
-        <item>  Outfits</item>
+        <item>  Outfit</item>
 
     </string-array>
 
     <string-array name="options2">
-        <item>  Outfits</item>
+        <item>  Outfit</item>
         <item>  Wardrobe</item>
 
     </string-array>

@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,8 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     public Button button;
     public Button buttoncancel;
     DatabaseHelper mDatabaseHelper;
+    MainActivity mainActivity;
+    EditText editText;
     private ListView mRecyclerView;
 
 
@@ -30,7 +35,6 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
 
     public CustomDialogClass(Activity a) {
         super(a);
-
 
     }
 
@@ -45,6 +49,8 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         buttoncancel = findViewById(R.id.button2);
         buttoncancel.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getContext());
+        editText = findViewById(R.id.editText);
+
 
         mRecyclerView = findViewById(R.id.spezzaossa);
         populateButtons();
@@ -65,7 +71,8 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.button:
-                Log.i("msg","msg");
+
+                Log.i("msg",editText.getText().toString());
                 dismiss();
                 break;
             case R.id.button2:

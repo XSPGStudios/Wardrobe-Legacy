@@ -1,5 +1,6 @@
 package com.ucstudios.wardrobe;
 
+import android.app.ActionBar;
 import android.app.Person;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -24,23 +26,23 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 public class CustomListView extends ArrayAdapter<String>  {
 
     private static final String TAG = "CustomListView";
+
     private Context mContext;
     int mResource;
     DatabaseHelper mDatabaseHelper;
 
 
-
-
+    MainActivity mainActivity;
     public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData) {
         super(context, adapter_view_layout, listData);
         mResource = adapter_view_layout;
         this.mContext= context;
     }
 
-
     public View getView(int position, View convertView, ViewGroup parent){
         mDatabaseHelper = new DatabaseHelper(getContext());
         String category = getItem(position);
+
 
         Cursor Drugs =  mDatabaseHelper.getData1(category);
         final ArrayList<String> drugs = new ArrayList<>();
@@ -54,6 +56,10 @@ public class CustomListView extends ArrayAdapter<String>  {
         TextView checkbox = (TextView) convertView.findViewById(R.id.textView2);
         final Switch aSwitch = (Switch) convertView.findViewById(R.id.switch1);
         final Spinner spinner = convertView.findViewById(R.id.spinner);
+
+
+
+
 
         aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
