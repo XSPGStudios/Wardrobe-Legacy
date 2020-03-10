@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Wardrobe</string>
 
-
+    <string name="outfit">Outfit</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>
