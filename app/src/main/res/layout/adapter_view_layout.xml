@@ -26,8 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="false"
-            android:gravity="center|center_horizontal"
-            android:hapticFeedbackEnabled="true" />
+            android:gravity="center|center_horizontal" />
     </LinearLayout>
 
     <LinearLayout

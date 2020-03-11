@@ -7,11 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-
-import java.util.Arrays;
-import java.util.Set;
-
 import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -22,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL0 = "ID";
     private static final String COL1 = "name";
     public String PINZA;
+    public String BECCA;
     private static final String COL01= "names";
 
 
@@ -46,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PINZA);
+        db.execSQL("DROP TABLE IF EXISTS " + BECCA);
         onCreate(db);
     }
     public boolean addData(String item){
@@ -80,6 +77,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("Message ", item1 +" saved in "+ sex);
         if(result1!=1)return true;
         else return true;
+    }
+
+    public boolean addData2(String sex){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(" CREATE TABLE " + sex + "(ID INTEGER PRIMARY KEY AUTOINCREMENT)");
+        return true;
     }
 
     public Cursor getData(){

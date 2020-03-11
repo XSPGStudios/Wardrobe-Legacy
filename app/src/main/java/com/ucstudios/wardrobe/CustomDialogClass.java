@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;//miobrotiraanchewhatsapp
+import android.widget.Toast;
+
 import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
@@ -66,12 +68,19 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         mRecyclerView.setAdapter(adapter);
     }
 
+    private void toastMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+    }
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.button:
 
                 Log.i("msg",editText.getText().toString());
+                mDatabaseHelper.addData2(editText.getText().toString());
+                toastMessage("New Outfit Created!");
                 dismiss();
                 break;
             case R.id.button2:

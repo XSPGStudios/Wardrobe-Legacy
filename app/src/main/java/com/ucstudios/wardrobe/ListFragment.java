@@ -95,7 +95,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     public void AddData1(String newEntry) {
         boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, newEntry);
-        toastMessage("New Item created");
+        toastMessage("New Item Created!");
 
     }
 
