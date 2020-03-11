@@ -12,20 +12,21 @@
         android:layout_height="547dp"
         android:clickable="true"
         android:longClickable="true">
-
     </ListView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton5"
+            android:id="@+id/floatingActionButton8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="?android:attr/listChoiceIndicatorSingle"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_recent_history"
             android:tint="#FFFFFF"
             app:backgroundTint="#00897B"
             app:layout_constraintBottom_toBottomOf="parent"

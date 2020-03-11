@@ -49,7 +49,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
         DatabaseHelper mDatabaseHelper2 = new DatabaseHelper(getActivity());
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton5);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
         floatingActionButton.setOnClickListener(this);
         return view;
     }
@@ -59,7 +59,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
         switch (v.getId()){
 
-            case R.id.floatingActionButton5:
+            case R.id.floatingActionButton8:
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new LaundryFragment());
