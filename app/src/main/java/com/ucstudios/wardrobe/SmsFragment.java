@@ -1,13 +1,10 @@
 package com.ucstudios.wardrobe;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,25 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 public class SmsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -84,7 +75,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
 
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
         FloatingActionButton ActionButton = view.findViewById(R.id.floating_action_button);
-        mRecyclerView = view.findViewById(R.id.spezzaossa);
+        mRecyclerView = view.findViewById(R.id.spezzaossa4);
         ActionButton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();

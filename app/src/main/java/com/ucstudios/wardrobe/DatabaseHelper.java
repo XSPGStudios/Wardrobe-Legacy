@@ -14,10 +14,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String TABLE_NAME = "categories_table";
+    private static final String TABLE_NAME1 = "outfit_table";
     private static final String COL0 = "ID";
     private static final String COL1 = "name";
     public String PINZA;
-    public String BECCA;
+
     private static final String COL01= "names";
 
 
@@ -32,9 +33,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," + COL1 +" TEXT"+")";
+        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
 
 
 
+        db.execSQL(createTableOutfit);
         db.execSQL(createTable);
     }
 
@@ -42,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PINZA);
-        db.execSQL("DROP TABLE IF EXISTS " + BECCA);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME1);
         onCreate(db);
     }
     public boolean addData(String item){
@@ -54,6 +57,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT)");
         Log.d(TAG, "Table "+ PINZA +" created");
+        db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
+        Log.d(TAG, PINZA+" column created in "+ TABLE_NAME1);
 
 
         if (result!=1){
@@ -79,11 +84,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
-    public boolean addData2(String sex){
+    public boolean addData2(String item1){
+
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(" CREATE TABLE " + sex + "(ID INTEGER PRIMARY KEY AUTOINCREMENT)");
-        return true;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL1, item1);
+        long result1 = db.insert(TABLE_NAME1, null, contentValues);
+        Log.d(TAG,"addData : Adding " + item1 + " to " + TABLE_NAME1);
+        Log.d("Message ", item1 +" saved in "+ TABLE_NAME1);
+        if(result1!=1)return true;
+        else return true;
     }
+
 
     public Cursor getData(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -98,9 +110,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
     }
-    public Cursor getData2(String sat){
+
+    public Cursor getData2(){
         SQLiteDatabase db =this.getWritableDatabase();
-        String query1 = "SELECT * FROM " + sat;
+        String query1 = "SELECT * FROM " + TABLE_NAME1;
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
     }
