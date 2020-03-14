@@ -42,22 +42,16 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public static OutfitFragment newInstance(String param1, String param2) {
+    public static OutfitFragment newInstance() {
         OutfitFragment fragment = new OutfitFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
 
@@ -95,6 +89,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
         populateOutfits();
 
+
         return view;
     }
 
@@ -102,7 +97,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         Cursor data = mDatabaseHelper.getData2();
         final ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
-            listData.add(data.getString(1));
+            listData.add(data.getString(0));
         }
         ListAdapter adapter = new ArrayAdapter<>(mListview.getContext(), android.R.layout.simple_list_item_1, listData);
         mListview.setAdapter(adapter);
@@ -117,7 +112,6 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                 CustomDialogClass cdd = new CustomDialogClass(getActivity());
                 cdd.show();
-                populateOutfits();
                 break;
 
         }

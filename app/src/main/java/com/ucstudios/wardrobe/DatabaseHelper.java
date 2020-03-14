@@ -87,11 +87,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addData2(String item1){
 
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL1, item1);
+        db.update("outfit_table", cv,"ID=(SELECT MAX(ID) FROM outfit_table)",null);
+        Log.d(TAG, "ReplaceData : Adding "+item1+" to "+COL1);
+        return true;
+    }
+
+    public boolean addData3(String item1, String negrone){
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL1, item1);
+        contentValues.put(negrone, item1);
         long result1 = db.insert(TABLE_NAME1, null, contentValues);
-        Log.d(TAG,"addData : Adding " + item1 + " to " + TABLE_NAME1);
-        Log.d("Message ", item1 +" saved in "+ TABLE_NAME1);
+        Log.d(TAG,"addData : Adding " + item1 + " to " + negrone);
         if(result1!=1)return true;
         else return true;
     }
@@ -113,7 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getData2(){
         SQLiteDatabase db =this.getWritableDatabase();
-        String query1 = "SELECT * FROM " + TABLE_NAME1;
+        String query1 = "SELECT name FROM " + TABLE_NAME1;
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
     }
@@ -125,5 +133,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(tabletitle, cv,"ID="+i,null);
         return true;
     }
+
+    public boolean ReplaceItemOutfit(String item,String negro){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(negro, item);
+        db.update("outfit_table", cv,"ID=(SELECT MAX(ID) FROM outfit_table)",null);
+        Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
+        return true;
+    }
+
+
+    public boolean delete1(String sex, String edit){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(TAG, "addData : Deleting "+ edit +" from column "+ sex +" in table "+TABLE_NAME1);
+        return db.delete(TABLE_NAME1,sex+"=?",new String[]{edit}) > 0;
+
+
+    }
+
+
+
+
 
 }

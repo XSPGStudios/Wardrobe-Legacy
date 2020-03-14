@@ -157,7 +157,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Title");
                 final EditText input = new EditText(getActivity());
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
