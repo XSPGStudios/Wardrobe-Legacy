@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     ListView mListview;
     private String mParam1;
     private String mParam2;
+    public int a=0;
 
 
     public OutfitFragment() {
@@ -44,7 +46,6 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
     public static OutfitFragment newInstance() {
         OutfitFragment fragment = new OutfitFragment();
-
         return fragment;
     }
 
@@ -93,7 +94,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void populateOutfits() {
+    public void populateOutfits() {
         Cursor data = mDatabaseHelper.getData2();
         final ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
@@ -101,6 +102,22 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         }
         ListAdapter adapter = new ArrayAdapter<>(mListview.getContext(), android.R.layout.simple_list_item_1, listData);
         mListview.setAdapter(adapter);
+    }
+
+    public void Transaction(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new SmsFragment());
+        transaction.commit();
+
+
+    }
+
+    public void Transaction1(){
+        FragmentTransaction transaction1 = getFragmentManager().beginTransaction();
+        transaction1.replace(R.id.container, new OutfitFragment());
+        transaction1.commit();
+
+
     }
 
 
@@ -115,8 +132,12 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 break;
 
         }
+        Transaction();
 
-    }
 
 
-}
+
+
+    }}
+
+

@@ -2,7 +2,6 @@ package com.ucstudios.wardrobe;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +16,17 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomDialogClass extends Dialog implements View.OnClickListener {
 
@@ -30,11 +36,9 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     public Button buttoncancel;
     DatabaseHelper mDatabaseHelper;
     MainActivity mainActivity;
-
     OutfitFragment mOutfit;
-
-
     EditText editText;
+
 
 
     private ListView mRecyclerView;
@@ -62,7 +66,6 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         mDatabaseHelper = new DatabaseHelper(getContext());
         editText = findViewById(R.id.editText);
         mRecyclerView = findViewById(R.id.spezzaossa4);
-
         populateButtons();
 
     }
@@ -78,12 +81,6 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         mRecyclerView.setAdapter(adapter);
     }
 
-
-
-
-
-
-
     private void toastMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 
@@ -93,7 +90,6 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         boolean insertData = mDatabaseHelper.addData2(newEntry);
         toastMessage("New Category Created!");
     }
-
 
     @Override
     public void onClick(View v) {
@@ -111,5 +107,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
 
 
         }
+
+
     }
 }
