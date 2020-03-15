@@ -132,7 +132,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 break;
 
         }
-        Transaction();
+        Transaction();//asd
 
 
 
