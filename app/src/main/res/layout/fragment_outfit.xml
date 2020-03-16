@@ -74,7 +74,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.874"
             app:rippleColor="#FFFFFF"
-            app:srcCompat="@drawable/ic_sweater" />
+            app:srcCompat="@drawable/ic_outfit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

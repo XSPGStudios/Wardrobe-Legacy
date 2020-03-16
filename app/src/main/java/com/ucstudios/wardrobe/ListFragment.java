@@ -17,11 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -43,8 +45,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private String mParam2;
     DatabaseHelper mDatabaseHelper1;
     MainActivity mMainActivity;
+    RelativeLayout mRelativeLayout;
     Button deleteButton;
     private ListView mListView;
+
 
     public ListFragment() {
 
@@ -75,8 +79,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         FloatingActionButton floatingActionButton1 = view.findViewById(R.id.floating_action_button2);
-        deleteButton = view.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(this);
         floatingActionButton1.setOnClickListener(this);
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
         mListView = view.findViewById(R.id.spezzaossa2);
@@ -84,6 +86,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         TextView mTextView = view.findViewById(R.id.textView);
         mTextView.setText(mMainActivity.Name);
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
+
 
         populateItems();
 
@@ -113,10 +116,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
             listData.add(data.getString(1));
         }
 
-        final ListAdapter adapter = new ArrayAdapter<>(mListView.getContext(), android.R.layout.simple_list_item_1, listData);
+        final AdapterListView adapter = new AdapterListView(mListView.getContext(), R.layout.adapter_list, listData);
         mListView.setAdapter(adapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+       /* mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 
     {
         @Override
@@ -153,22 +156,23 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
         Log.v("message", "List Item " + id + " Click");
     }
-    });
+    });*/
 
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+}
+
+public void ButtonsAppeared(){
+
+
+        mRelativeLayout.setClickable(true);
+        mRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                mListView.setOnItemClickListener(null);
-                deleteButton.setVisibility(View.VISIBLE);
-
-
-                return false;
-
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, new ListFragment());
+                transaction.commit();
             }
-
         });
-
-
 }
 
 
@@ -177,6 +181,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper1.ReplaceItem(sex,porn,id+1);
         populateItems();
     }
+
+
 
 
 
@@ -212,10 +218,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                 });
                 builder.show();
                 break;
-
-            case R.id.deleteButton:
-                toastMessage("Item deleted!");
-                deleteButton.setVisibility(View.GONE);
 
         }
 

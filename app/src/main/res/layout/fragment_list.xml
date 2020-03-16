@@ -20,6 +20,7 @@
     </androidx.appcompat.widget.Toolbar>
 
 
+
     <ListView
         android:id="@+id/spezzaossa2"
         android:layout_width="match_parent"
@@ -35,21 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false">
-
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="78dp"
-            android:layout_height="44dp"
-            android:background="#D81B60"
-            android:clickable="true"
-            android:text="DELETE"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.094" />
 
         <TextView
             android:id="@+id/textView"
@@ -83,7 +69,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.874"
             app:rippleColor="#FFFFFF"
-            app:srcCompat="@drawable/ic_shoes" />
+            app:srcCompat="@drawable/ic_sms" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
