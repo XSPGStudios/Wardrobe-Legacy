@@ -136,6 +136,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                 String lecca = listData.get(pirla);
                 mMainActivity.Name = lecca;
                 Log.v("message", "List Item " + id + " Click");
+                Log.v("asd", mMainActivity.Name+" selected");
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new ListFragment());

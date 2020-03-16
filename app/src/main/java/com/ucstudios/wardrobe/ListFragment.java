@@ -47,7 +47,9 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     MainActivity mMainActivity;
     RelativeLayout mRelativeLayout;
     Button deleteButton;
+    public int sex=0;
     private ListView mListView;
+
 
 
     public ListFragment() {
@@ -88,6 +90,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
 
 
+
         populateItems();
 
 
@@ -119,69 +122,25 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         final AdapterListView adapter = new AdapterListView(mListView.getContext(), R.layout.adapter_list, listData);
         mListView.setAdapter(adapter);
 
-       /* mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 
     {
         @Override
         public void onItemClick (AdapterView < ? > parent, View view,int position, final long id){
 
-            final int sex = (int) id;
-        final String na = listData.get(sex);
-        final String[] m_Text = {""};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Title");
-        final EditText input = new EditText(getActivity());
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                m_Text[0] = input.getText().toString();
-                Replace(mMainActivity.Name, Arrays.toString(m_Text).replace("[", "").replace("]", ""), sex);
-
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
-
-
-        Log.v("message", "List Item " + id + " Click");
     }
-    });*/
+    });
 
 
 }
 
-public void ButtonsAppeared(){
-
-
-        mRelativeLayout.setClickable(true);
-        mRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new ListFragment());
-                transaction.commit();
-            }
-        });
-}
 
 
 
-    public void Replace(String sex, String porn, int id){
+
+    public void ReplaceItem(String sex, String porn, int id){
         mDatabaseHelper1.ReplaceItem(sex,porn,id+1);
-        populateItems();
-    }
-
+        Log.i("Replace _:", "Item "+porn+" replaced old item in "+ sex);}
 
 
 

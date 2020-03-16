@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,6 +19,8 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
     public Button buttonCancel;
     public EditText editText;
     OnMyDialogResult mDialogResult;
+    public DatabaseHelper mDatabasehelper1;
+    MainActivity mainActivity;
 
     public CustomEditDialog(Context context){
         super(context);
@@ -36,9 +39,16 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
         buttonCancel = findViewById(R.id.button2);
         editText = findViewById(R.id.editText);
         button.setOnClickListener(this);
+        mDatabasehelper1 = new DatabaseHelper(getContext());
+
 
 
     }
+
+
+
+
+
 
 
 
@@ -47,7 +57,6 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
         switch(v.getId()){
             case R.id.button:
                 if(mDialogResult!=null){
-
                     mDialogResult.finish(String.valueOf(editText.getText()));
                 }
 
