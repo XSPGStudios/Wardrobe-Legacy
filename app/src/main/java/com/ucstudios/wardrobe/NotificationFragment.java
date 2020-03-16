@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 
 public class NotificationFragment extends Fragment implements View.OnClickListener {
@@ -21,6 +26,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     DatabaseHelper mDatabaseHelper2;
     private String mParam1;
     private String mParam2;
+    private ListView listView;
     public NotificationFragment() {
         // Required empty public constructor
     }
@@ -51,9 +57,16 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         DatabaseHelper mDatabaseHelper2 = new DatabaseHelper(getActivity());
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
         floatingActionButton.setOnClickListener(this);
+       listView = view.findViewById(R.id.spezzaossa2);
+        populateButtons();
         return view;
     }
-
+    private void populateButtons() {
+        final ArrayList<String> listData = new ArrayList<String>();
+            listData.add("porcodiscord");
+                ListAdapter adapter = new ArrayAdapter<>(listView.getContext(), android.R.layout.simple_list_item_1, listData);
+                    listView.setAdapter(adapter);
+    }
     @Override
     public void onClick(View v) {
 

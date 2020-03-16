@@ -11,6 +11,7 @@
         android:id="@+id/spezzaossa2"
         android:layout_width="match_parent"
         android:layout_height="547dp"
+        android:layout_marginTop="55dp"
         android:clickable="true"
         android:longClickable="true" />
     <androidx.appcompat.widget.Toolbar
