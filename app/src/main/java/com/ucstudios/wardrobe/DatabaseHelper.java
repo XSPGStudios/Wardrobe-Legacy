@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL0 = "ID";
     private static final String COL1 = "name";
     public String PINZA;
-    public String help;
+    public String help;//sendHelp
 
 
     private static final String COL01= "names";
