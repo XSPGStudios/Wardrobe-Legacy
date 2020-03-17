@@ -35,6 +35,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     public Button button;
     public Button buttoncancel;
     DatabaseHelper mDatabaseHelper;
+    OnMyAdapterResult mAdapterResult;
     MainActivity mainActivity;
     OutfitFragment mOutfit;
     EditText editText;
@@ -97,8 +98,10 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
             case R.id.button:
 
                 Log.i("msg",editText.getText().toString());
-                AddData(editText.getText().toString());
-                toastMessage("New Outfit Created!");
+                if(mAdapterResult!=null){
+                    mAdapterResult.finish(String.valueOf(editText.getText()));
+                }
+
                 dismiss();
                 break;
             case R.id.button2:
@@ -109,5 +112,17 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         }
 
 
+    }
+
+
+    public void setAdapterResult(OnMyAdapterResult adapterResult){
+
+        mAdapterResult = adapterResult;
+    }
+
+
+
+    public interface OnMyAdapterResult{
+        void finish(String result);
     }
 }

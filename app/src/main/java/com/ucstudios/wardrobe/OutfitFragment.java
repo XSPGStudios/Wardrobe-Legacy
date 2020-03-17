@@ -104,21 +104,10 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         mListview.setAdapter(adapter);
     }
 
-    public void Transaction(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new SmsFragment());
-        transaction.commit();
+   public void AddOutfit(String cocco){
+        mDatabaseHelper.addData2(cocco);
 
-
-    }
-
-    public void Transaction1(){
-        FragmentTransaction transaction1 = getFragmentManager().beginTransaction();
-        transaction1.replace(R.id.container, new OutfitFragment());
-        transaction1.commit();
-
-
-    }
+   }
 
 
     @Override
@@ -129,10 +118,17 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                 CustomDialogClass cdd = new CustomDialogClass(getActivity());
                 cdd.show();
+                cdd.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
+                    @Override
+                    public void finish(String result) {
+                        AddOutfit(result);
+                        populateOutfits();
+                    }
+                });
                 break;
 
         }
-        Transaction();//asd
+
 
     }}
 

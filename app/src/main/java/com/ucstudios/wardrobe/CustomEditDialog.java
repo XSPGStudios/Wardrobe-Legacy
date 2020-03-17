@@ -11,12 +11,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 public class CustomEditDialog extends Dialog implements View.OnClickListener{
 
 
     public Button button;
-    public Button buttonCancel;
+    public TextView buttonCancel;
     public EditText editText;
     OnMyDialogResult mDialogResult;
     public DatabaseHelper mDatabasehelper1;
@@ -36,9 +37,10 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.custom_edit_dialog);
         button = findViewById(R.id.button);
-        buttonCancel = findViewById(R.id.button2);
+        buttonCancel = findViewById(R.id.textView3);
         editText = findViewById(R.id.editText);
         button.setOnClickListener(this);
+        buttonCancel.setOnClickListener(this);
         mDatabasehelper1 = new DatabaseHelper(getContext());
 
 
@@ -56,16 +58,12 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.button:
-                if(mDialogResult!=null){
-                    mDialogResult.finish(String.valueOf(editText.getText()));
-                }
-
-                CustomEditDialog.this.dismiss();
+                mDialogResult.finish(String.valueOf(editText.getText()));
+                editText.setText("");
                 break;
-            case R.id.button2:
-                dismiss();
+            case R.id.textView3:
+                mDialogResult.finish("CANE");
                 break;
-
 
         }
     }

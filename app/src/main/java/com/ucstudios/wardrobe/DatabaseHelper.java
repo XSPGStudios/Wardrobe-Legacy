@@ -18,6 +18,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL0 = "ID";
     private static final String COL1 = "name";
     public String PINZA;
+    public String help;
+
 
     private static final String COL01= "names";
 
@@ -148,6 +150,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+ edit +" from column "+ sex +" in table "+TABLE_NAME1);
         return db.delete(TABLE_NAME1,sex+"=?",new String[]{edit}) > 0;
+
+
+    }
+
+    public boolean delete2(String table, String item){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(TAG, "addData : Deleting "+item+" from column names in table "+ table);
+        return db.delete(table,"names=?", new String[]{item}) > 0;
 
 
     }

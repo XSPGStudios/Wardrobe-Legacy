@@ -35,7 +35,7 @@ import java.util.Arrays;
  * Use the {@link NotificationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListFragment extends Fragment implements View.OnClickListener {
+public class ListFragment extends Fragment implements View.OnClickListener{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -45,10 +45,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private String mParam2;
     DatabaseHelper mDatabaseHelper1;
     MainActivity mMainActivity;
-    RelativeLayout mRelativeLayout;
-    Button deleteButton;
-    public int sex=0;
     private ListView mListView;
+
 
 
 
@@ -57,11 +55,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public static ListFragment newInstance(String param1, String param2) {
+    public static ListFragment newInstance(String param1) {
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,7 +68,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -88,10 +85,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         TextView mTextView = view.findViewById(R.id.textView);
         mTextView.setText(mMainActivity.Name);
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
-
-
-
         populateItems();
+
 
 
         return view;
@@ -110,6 +105,16 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    public  void Replace(String Table, String item, int i){
+        mDatabaseHelper1.ReplaceItem(Table, item, i);
+
+
+    }
+
+    public void Delete(String MainActName, String item){
+        mDatabaseHelper1.delete2(MainActName, item);
+    }
+
 
     private void populateItems() {
 
@@ -121,26 +126,34 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
         final AdapterListView adapter = new AdapterListView(mListView.getContext(), R.layout.adapter_list, listData);
         mListView.setAdapter(adapter);
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                adapter.setAdapterResult(new AdapterListView.onMyAdapterResult() {
+                    @Override
+                    public void finish(String result) {
+                        String cocco = String.valueOf(result);
+                        if (cocco.equals("CANE")) {
+                            Toast.makeText(mMainActivity, listData.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
+                            Delete(mMainActivity.Name, listData.get(position));
+                            populateItems();
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                        } else {
+                            Replace(mMainActivity.Name, result, position + 1);
+                        }
+                    }
 
-    {
-        @Override
-        public void onItemClick (AdapterView < ? > parent, View view,int position, final long id){
+                });
+                return true;
+            }
+        });
 
-    }
-    });
+
+
 
 
 }
 
-
-
-
-
-    public void ReplaceItem(String sex, String porn, int id){
-        mDatabaseHelper1.ReplaceItem(sex,porn,id+1);
-        Log.i("Replace _:", "Item "+porn+" replaced old item in "+ sex);}
 
 
 
@@ -184,4 +197,5 @@ public class ListFragment extends Fragment implements View.OnClickListener {
             }
 
 
-}
+    }
+
