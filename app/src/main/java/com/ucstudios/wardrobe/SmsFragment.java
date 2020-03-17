@@ -120,6 +120,16 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
 
     }
 
+    public void Replace(String table,String item, int i){
+        mDatabaseHelper.ReplaceItem4(table, item, i);
+    }
+
+    public void Delete(String MainActName, String item){
+        mDatabaseHelper.delete3(MainActName, item);
+    }
+
+
+
     private void populateButtons() {
         Cursor data = mDatabaseHelper.getData();
         final ArrayList<String> listData = new ArrayList<>();
@@ -127,8 +137,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
             listData.add(data.getString(1));
         }
         mMainActivity.Categories=listData;
-        ListAdapter adapter = new ArrayAdapter<>(mRecyclerView.getContext(), android.R.layout.simple_list_item_1, listData);
-        mRecyclerView.setAdapter(adapter);
+        final AdapterCategories adapterCategories = new AdapterCategories(mRecyclerView.getContext(), R.layout.adapter_categories, listData);
+        mRecyclerView.setAdapter(adapterCategories);
         mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -141,6 +151,30 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new ListFragment());
                 transaction.commit();
+            }
+
+        });
+        mRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                adapterCategories.setAdapterResult(new AdapterCategories.onMyAdapterResult1(){
+                    @Override
+                    public void finish(String result) {
+                        String cocco = String.valueOf(result);
+                        if (cocco.equals("CANE")) {
+                            Toast.makeText(mMainActivity, listData.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
+                            Delete("categories_table", listData.get(position));
+                            populateButtons();
+
+                        } else {
+                            Replace("categories_table", result, position + 1);
+                        }
+                    }
+
+                });
+
+
+                return true;
             }
         });
 

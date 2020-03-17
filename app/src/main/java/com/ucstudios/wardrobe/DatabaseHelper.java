@@ -136,6 +136,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean ReplaceItem4(String tabletitle, String item, int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("name", item);
+        db.update(tabletitle, cv,"ID="+i,null);
+        return true;
+    }
+
     public boolean ReplaceItemOutfit(String item,String negro){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -158,6 +166,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+item+" from column names in table "+ table);
         return db.delete(table,"names=?", new String[]{item}) > 0;
+
+
+    }
+
+    public boolean delete3(String table, String item){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
+        return db.delete(table,"name=?", new String[]{item}) > 0;
 
 
     }
