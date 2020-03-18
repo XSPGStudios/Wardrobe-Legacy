@@ -196,6 +196,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean OutfitChangeColumnName(String column, String pietro13){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("BEGIN TRANSACTION");
+        db.execSQL("ALTER TABLE outfit_table RENAME TO outfit_temp");
+        db.execSQL("CREATE TABLE outfit_table("+column+")");
+        db.execSQL("INSERT INTO outfit_table SELECT "+pietro13+" FROM outfit_temp");
+        db.execSQL("DROP TABLE outfit_temp");
+        db.execSQL("COMMIT");
+
+        return true;
+    }
+
+
+    public boolean TableRenamer(String tablename, String coto){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("BEGIN TRANSACTION");
+        db.execSQL("ALTER TABLE "+tablename+" RENAME TO "+coto);
+        db.execSQL("COMMIT");
+       return true;
+
+    }
 
 
 

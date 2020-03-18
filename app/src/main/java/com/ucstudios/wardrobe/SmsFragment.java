@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -137,6 +139,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
     public void OutfitColumnRemover(String columnsremaining,String pietrone){
         mDatabaseHelper.OutfitColumnDrop(columnsremaining,pietrone);
     }
+    public void OutfitColumnNameChaneger(String matto, String totale){
+        mDatabaseHelper.OutfitChangeColumnName(matto, totale);
+    }
+
+    public void TableRenamer(String tablename,String coto){
+        mDatabaseHelper.TableRenamer(tablename, coto);
+    }
 
 
 
@@ -171,7 +180,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                     @Override
                     public void finish(String result) {
                         String cocco = String.valueOf(result);
-                        String chetamina ="name  TEXT";
+                        String ketamina ="name  TEXT";
                         String sugone = "name";
                         if (cocco.equals("CANE")) {
                             pennsylvania = listData.get(position);
@@ -180,13 +189,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                                 String minipera = listData.get(i);
                                 if (!minipera.equals(pennsylvania)) {
 
-                                    chetamina = chetamina + "," + listData.get(i) + " TEXT";
+                                    ketamina = ketamina + "," + listData.get(i) + " TEXT";
                                     sugone = sugone + "," + listData.get(i) + "";
 
                                 }
                             }
 
-                                OutfitColumnRemover(chetamina, sugone);
+                                OutfitColumnRemover(ketamina, sugone);
 
 
                             Toast.makeText(mMainActivity, listData.get(position)+" Deleted!", Toast.LENGTH_SHORT).show();
@@ -196,7 +205,32 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                             populateButtons();
 
                         } else {
+
+                            String ketamina2="name  TEXT";
+                            String sugone2="name";
+                            int peso = position;
+
+
+                            for(int i=0;i<listData.size();i++) {
+
+                                sugone2 = sugone2 + "," + listData.get(i) + "";
+                                if (i!=peso) {
+
+                                    ketamina2 = ketamina2 + "," + listData.get(i) + " TEXT";
+
+
+                                }else{
+                                    ketamina2=ketamina2+", "+result+" TEXT";
+
+                                }
+                            }
+
+
+                            OutfitColumnNameChaneger(ketamina2,sugone2);
                             Replace("categories_table", result, position + 1);
+                            TableRenamer(listData.get(position),result);
+                            Log.i("msg", "Modified "+listData.get(position)+" to "+ result);
+
                         }
                     }
 
@@ -232,6 +266,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                         m_Text[0] = input.getText().toString();
                         String duke = Arrays.toString(m_Text).replace("[", "").replace("]", "");
                         mDatabaseHelper.PINZA = duke;
+
                         AddData(mDatabaseHelper.PINZA);
                         populateButtons();
 
