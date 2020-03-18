@@ -1,7 +1,9 @@
 package com.ucstudios.wardrobe;
 
 
+import android.content.ClipData;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +66,37 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     private void populateButtons() {
         final ArrayList<String> listData = new ArrayList<String>();
             listData.add("porcodiscord");
-                ListAdapter adapter = new ArrayAdapter<>(listView.getContext(), android.R.layout.simple_list_item_1, listData);
-                    listView.setAdapter(adapter);
+                listData.add("porcoskype");
+                    ListAdapter adapter = new ArrayAdapter<>(listView.getContext(), android.R.layout.simple_list_item_1, listData);
+                        listView.setAdapter(adapter);
     }
+
+    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            ClipData merda = ClipData.newPlainText("","");
+            View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+            v.startDrag(merda,myShadowBuilder,v,0);
+            return true;
+        }
+    };
+
+    View.OnDragListener dragListener = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int dragEvent = event.getAction();
+            switch(dragEvent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    break;
+                case DragEvent.ACTION_DROP:
+                    break;
+            }
+            return true;
+        }
+    };
+
     @Override
     public void onClick(View v) {
 
