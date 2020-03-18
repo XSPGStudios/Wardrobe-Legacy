@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 import static android.content.ContentValues.TAG;
 
@@ -35,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," + COL1 +" TEXT"+")";
-        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
+        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)";
 
 
 
@@ -55,24 +56,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, item);
-        long result = db.insert(TABLE_NAME, null, contentValues);
+        db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
+        db.execSQL("BEGIN TRANSACTION");
         db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
+        db.execSQL("COMMIT");
         Log.d(TAG, PINZA+" column created in "+ TABLE_NAME1);
-
-
-        if (result!=1){
-            return true;
-
-
-        }
-        else return false;
-
-
-
-
+        db.close();
+        return true;
         }
 
     public boolean addData1(String sex,String item1){
@@ -82,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result1 = db.insert(sex, null, contentValues1);
         Log.d("Message ", item1 +" saved in "+ sex);
+        db.close();
         if(result1!=1)return true;
         else return true;
     }
@@ -177,6 +171,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+
+    public boolean TABLEDROP(String table){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + table);
+        return true;
+    }
+
+
+    public boolean OutfitColumnDrop(String column,String pietro13){
+
+        Log.i("ecco","sda"+column);
+        Log.i("ecco","sda"+pietro13);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("BEGIN TRANSACTION");
+        db.execSQL("CREATE TABLE outfit_table_temp("+column+")");
+        db.execSQL("INSERT INTO outfit_table_temp SELECT "+pietro13+" FROM outfit_table");
+        db.execSQL("DROP TABLE outfit_table");
+        db.execSQL("CREATE TABLE outfit_table("+column+")");
+        db.execSQL("INSERT INTO outfit_table SELECT "+column+" FROM outfit_table_temp");
+        db.execSQL("DROP TABLE outfit_table_temp");
+        db.execSQL("COMMIT");
+
+        return true;
+    }
+
+
 
 
 

@@ -32,6 +32,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ListView mRecyclerView;
+    public String pennsylvania=null;
 
     DatabaseHelper mDatabaseHelper;
     MainActivity mMainActivity;
@@ -50,6 +51,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+
 
         fragment.setArguments(args);
 
@@ -128,6 +130,14 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         mDatabaseHelper.delete3(MainActName, item);
     }
 
+    public void TableRemover(String table){
+        mDatabaseHelper.TABLEDROP(table);
+    }
+
+    public void OutfitColumnRemover(String columnsremaining,String pietrone){
+        mDatabaseHelper.OutfitColumnDrop(columnsremaining,pietrone);
+    }
+
 
 
     private void populateButtons() {
@@ -161,9 +171,28 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                     @Override
                     public void finish(String result) {
                         String cocco = String.valueOf(result);
+                        String chetamina ="name  TEXT";
+                        String sugone = "name";
                         if (cocco.equals("CANE")) {
-                            Toast.makeText(mMainActivity, listData.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
+                            pennsylvania = listData.get(position);
+
+                            for(int i=0;i<listData.size();i++) { //MAGIC FIRST FOR LOOP
+                                String minipera = listData.get(i);
+                                if (!minipera.equals(pennsylvania)) {
+
+                                    chetamina = chetamina + "," + listData.get(i) + " TEXT";
+                                    sugone = sugone + "," + listData.get(i) + "";
+
+                                }
+                            }
+
+                                OutfitColumnRemover(chetamina, sugone);
+
+
+                            Toast.makeText(mMainActivity, listData.get(position)+" Deleted!", Toast.LENGTH_SHORT).show();
                             Delete("categories_table", listData.get(position));
+                            TableRemover(listData.get(position));
+                            Log.i("msg", "Table "+ listData.get(position)+" removed");
                             populateButtons();
 
                         } else {
