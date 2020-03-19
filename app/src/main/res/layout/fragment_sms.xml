@@ -31,6 +31,7 @@
                     android:layout_marginTop="16dp"
                     android:clickable="true"
                     android:gravity="center|center_horizontal"
+                    android:scrollbarStyle="insideOverlay"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"

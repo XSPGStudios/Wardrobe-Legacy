@@ -189,7 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO outfit_table_temp SELECT "+pietro13+" FROM outfit_table");
         db.execSQL("DROP TABLE outfit_table");
         db.execSQL("CREATE TABLE outfit_table("+column+")");
-        db.execSQL("INSERT INTO outfit_table SELECT "+column+" FROM outfit_table_temp");
+        db.execSQL("INSERT INTO outfit_table SELECT "+pietro13+" FROM outfit_table_temp");
         db.execSQL("DROP TABLE outfit_table_temp");
         db.execSQL("COMMIT");
 

@@ -19,6 +19,17 @@
         <item>  Shoes</item>
     </string-array>
 
+    <string-array name="icons">
+        <item>  Sweaters</item>
+        <item>  Pants</item>
+        <item>  Hoodie</item>
+    </string-array>
+
+
+
+
+
+
 
 
 </resources>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,14 @@ public class AdapterCategories extends ArrayAdapter<String> {
     int mResource;
     private onMyAdapterResult1 mAdapterResult12;
     EditCategoriesDialog dialog = new EditCategoriesDialog(getContext());
+    CustomIconPickerDialog mdialogicon = new CustomIconPickerDialog(getContext());
+    private Integer[] Icons = {
+            R.drawable.ic_sweater,
+            R.drawable.ic_jeans,
+            R.drawable.ic_hoodie,
+
+
+    };
 
 
     public AdapterCategories( Context context, int adapter_categories, List<String> listData) {
@@ -47,6 +56,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
         convertView = inflater.inflate(mResource, parent, false);
         final TextView textView = convertView.findViewById(R.id.textView4);
         final Button editButton = convertView.findViewById(R.id.buttonEdit);
+        final ImageView imageView = convertView.findViewById(R.id.imageView);
         LinearLayout linearLayout = convertView.findViewById(R.id.LinearLayout123);
         final ConstraintLayout constraintLayout = convertView.findViewById(R.id.cocconegro);
 
@@ -65,12 +75,23 @@ public class AdapterCategories extends ArrayAdapter<String> {
                         Log.i("Coca", "ecco "+cocaina);
                         if(!cocaina.equals(""))
                         {
-                            if(!cocaina.equals("CANE")){
+                            if(!cocaina.equals("CANE")&!cocaina.equals("culocane")){
                                 textView.setText(result1);}
                                 mAdapterResult12.finish(result1);
                                 dialog.dismiss();
                             }
-                            else {
+
+                        else if(cocaina=="culocane"){
+                            mAdapterResult12.finish(result1);
+                            dialog.dismiss();
+
+                        }
+                        else if(cocaina=="CANE"){
+                            dialog.dismiss();
+                        }
+
+
+                        else {
                                 Toast.makeText(mContext,"IT MUST CONTAIN SOMETHING!", Toast.LENGTH_SHORT).show();
                             }
                         }

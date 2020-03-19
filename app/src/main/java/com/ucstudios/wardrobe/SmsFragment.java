@@ -180,8 +180,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                     @Override
                     public void finish(String result) {
                         String cocco = String.valueOf(result);
-                        String ketamina ="name  TEXT";
-                        String sugone = "name";
+                        String ketamina ="ID INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT";
+                        String sugone = "ID, name";
                         if (cocco.equals("CANE")) {
                             pennsylvania = listData.get(position);
 
@@ -204,10 +204,16 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                             Log.i("msg", "Table "+ listData.get(position)+" removed");
                             populateButtons();
 
-                        } else {
+                        }
+                        else if(cocco=="culocane"){
+                            Log.i("msg","pic changed!");
+                        }
 
-                            String ketamina2="name  TEXT";
-                            String sugone2="name";
+
+                        else if (!cocco.equals("")&!cocco.equals("CANE")&!cocco.equals("culocane")){
+
+                            String ketamina2="ID INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT";
+                            String sugone2="ID ,name";
                             int peso = position;
 
 
