@@ -39,7 +39,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-    List<String> items;
+
 
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
@@ -68,20 +68,23 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         floatingActionButton.setOnClickListener(this);
        // listView = view.findViewById(R.id.spezzaossa2);
        // populateButtons();
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView = recyclerView.findViewById(R.id.gThunbergView2); //sempre lo stesso
-                recyclerAdapter = new RecyclerAdapter(items);
-                    items = new ArrayList<>();
-                    recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(recyclerAdapter);
-
+        List<String> items = new ArrayList<>();
         items.add("porcodiscord");
         items.add("porcoskype");
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView = view.findViewById(R.id.gThunbergView2);
+                recyclerAdapter = new RecyclerAdapter(items);
+                recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(recyclerAdapter);
+                        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             recyclerView.addItemDecoration(dividerItemDecoration);
-                return view;
+
+        return view;
     }
+
+
+
     /*private void populateButtons() {
         final ArrayList<String> listData = new ArrayList<String>();
             listData.add("porcodiscord");
@@ -93,9 +96,10 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            ClipData merda = ClipData.newPlainText("","");
-            View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
-            v.startDrag(merda,myShadowBuilder,v,0);
+                ClipData merda = ClipData.newPlainText("", "");
+                View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+                v.startDrag(merda, myShadowBuilder, v, 0);
+
             return true;
         }
     };

@@ -19,10 +19,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private static final String TAG = "RecyclerAdapter";
     int count = 0;
-    List<String> items;
+    String[] items;
 
     public RecyclerAdapter(List <String> items) {
-        this.items = items;
+        this.items = items.toArray(new String[0]);
     }
 
     @NonNull
@@ -39,12 +39,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.textView.setText(items[position]);
 
     }
 //lol
     @Override
     public int getItemCount() {
-        return items.size();
+
+        return items.length;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,6 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
 
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById(R.id.textView4);
