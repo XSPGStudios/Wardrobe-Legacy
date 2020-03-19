@@ -27,7 +27,7 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
             R.drawable.ic_sweater,
             R.drawable.ic_jeans,
             R.drawable.ic_hoodie,
-
+//okay proviamo
 
     };
     CustomIconPickerDialog dialog = new CustomIconPickerDialog(getContext());

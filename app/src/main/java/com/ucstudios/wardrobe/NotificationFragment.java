@@ -13,10 +13,14 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class NotificationFragment extends Fragment implements View.OnClickListener {
@@ -33,8 +37,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         // Required empty public constructor
     }
 
-
-
+    RecyclerView recyclerView;
+    RecyclerAdapter recyclerAdapter;
+    List<String> items;
 
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
@@ -51,6 +56,8 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+//capo forswe ho capito
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,17 +66,29 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         DatabaseHelper mDatabaseHelper2 = new DatabaseHelper(getActivity());
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
         floatingActionButton.setOnClickListener(this);
-       listView = view.findViewById(R.id.spezzaossa2);
-        populateButtons();
-        return view;
+       // listView = view.findViewById(R.id.spezzaossa2);
+       // populateButtons();
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView = recyclerView.findViewById(R.id.gThunbergView2); //sempre lo stesso
+                recyclerAdapter = new RecyclerAdapter(items);
+                    items = new ArrayList<>();
+                    recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(recyclerAdapter);
+
+        items.add("porcodiscord");
+        items.add("porcoskype");
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+            recyclerView.addItemDecoration(dividerItemDecoration);
+                return view;
     }
-    private void populateButtons() {
+    /*private void populateButtons() {
         final ArrayList<String> listData = new ArrayList<String>();
             listData.add("porcodiscord");
                 listData.add("porcoskype");
                     ListAdapter adapter = new ArrayAdapter<>(listView.getContext(), android.R.layout.simple_list_item_1, listData);
                         listView.setAdapter(adapter);
-    }
+    }*/
 
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
