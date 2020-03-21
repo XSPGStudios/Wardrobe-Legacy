@@ -87,7 +87,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
-
+//commit fail
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
