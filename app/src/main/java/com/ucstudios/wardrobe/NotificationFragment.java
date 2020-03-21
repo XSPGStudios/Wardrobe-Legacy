@@ -2,6 +2,10 @@ package com.ucstudios.wardrobe;
 
 
 import android.content.ClipData;
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -83,15 +87,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
-
-
-    /*private void populateButtons() {
-        final ArrayList<String> listData = new ArrayList<String>();
-            listData.add("porcodiscord");
-                listData.add("porcoskype");
-                    ListAdapter adapter = new ArrayAdapter<>(listView.getContext(), android.R.layout.simple_list_item_1, listData);
-                        listView.setAdapter(adapter);
-    }*/
 
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override

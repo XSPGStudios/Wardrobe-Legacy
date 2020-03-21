@@ -48,8 +48,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gThunbergView2"
-            android:layout_width="409dp"
-            android:layout_height="576dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="58dp"

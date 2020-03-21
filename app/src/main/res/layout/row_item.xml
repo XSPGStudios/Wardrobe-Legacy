@@ -77,4 +77,5 @@
             android:background="@drawable/ic_sweater"
             android:visibility="gone" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
