@@ -125,7 +125,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
                     }
                 });
 
-
+//
 
                 return false;
 

@@ -44,7 +44,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
 
-
+//allora, stavo pensando, oltre ad aggiu8ngere il drag and drop, per mettere in ordine il cesto, di rendere gli items trascinabili, così, tipo tasto delete, nope, ma una sbattendo ci riesco, comunque il tasto in questione sarà il tasto lavatrice
+    //ibhe per il passaggio degli item dal cesto alla lvatrice come pensavi di farlo tu all'inizio? che non ricordo
+    //dov'è la funzione qui? del long click che hai implementato
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
         Bundle args = new Bundle();
@@ -83,8 +85,11 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                         recyclerView.setAdapter(recyclerAdapter);
                         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             recyclerView.addItemDecoration(dividerItemDecoration);
+            recyclerView.//chiediamo a google
+            boolean risultato = longClickListener.onLongClick(recyclerView);
 
-        return view;
+                //dragListener.onDrag(recyclerView, risultato);
+                return view;
     }
 
 //commit fail
@@ -94,7 +99,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                 ClipData merda = ClipData.newPlainText("", "");
                 View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
                 v.startDrag(merda, myShadowBuilder, v, 0);
-
             return true;
         }
     };
@@ -102,7 +106,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     View.OnDragListener dragListener = new View.OnDragListener() {
         @Override
         public boolean onDrag(View v, DragEvent event) {
-            int dragEvent = event.getAction();
+            int dragEvent = event.getAction(); //aspetta
             switch(dragEvent) {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     break;
