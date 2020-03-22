@@ -18,6 +18,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +64,8 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-//capo forswe ho capito
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,9 +87,11 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                         recyclerView.setAdapter(recyclerAdapter);
                         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             recyclerView.addItemDecoration(dividerItemDecoration);
-            recyclerView.//chiediamo a google
             boolean risultato = longClickListener.onLongClick(recyclerView);
-
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(recyclerAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
                 //dragListener.onDrag(recyclerView, risultato);
                 return view;
     }
