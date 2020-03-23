@@ -9,8 +9,13 @@
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="212dp"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:columnWidth="400dp"
         android:gravity="center_horizontal"
+        android:minHeight="100dp"
         android:numColumns="3" />
 </FrameLayout>

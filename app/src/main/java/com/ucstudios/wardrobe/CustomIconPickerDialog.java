@@ -14,6 +14,7 @@ public class CustomIconPickerDialog extends Dialog {
 
     public GridView duca;
     int labels;
+    OnIconSelected mIconSelected;
 
     int pitu;
 
@@ -33,7 +34,7 @@ public class CustomIconPickerDialog extends Dialog {
         duca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                mIconSelected.finish(position);
             dismiss();
 
             }
@@ -47,6 +48,17 @@ public class CustomIconPickerDialog extends Dialog {
     private void populateImages(){
         CustomIconAdapter adapter = new CustomIconAdapter(duca.getContext(), labels);
         duca.setAdapter(adapter);
+    }
+
+    public void setIconResult(OnIconSelected onIconSelected){
+        mIconSelected = onIconSelected;
+    }
+
+
+
+    public interface OnIconSelected{
+
+        void finish(int icon);
     }
 
 

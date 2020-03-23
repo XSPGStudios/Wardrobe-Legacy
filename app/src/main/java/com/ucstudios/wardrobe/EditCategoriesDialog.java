@@ -22,14 +22,8 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
     public EditText editText;
     OnMyDialogResult4 mDialogResult;
     public DatabaseHelper mDatabasehelper1;
-    MainActivity mainActivity;
-    private Integer[] Icons = {
-            R.drawable.ic_sweater,
-            R.drawable.ic_jeans,
-            R.drawable.ic_hoodie,
-//okay proviamo
 
-    };
+
     CustomIconPickerDialog dialog = new CustomIconPickerDialog(getContext());
 
     public EditCategoriesDialog(Context context){
@@ -70,14 +64,19 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.button:
-                mDialogResult.finish(String.valueOf(editText.getText()));
+                mDialogResult.finish(String.valueOf(editText.getText()),0);
                 editText.setText("");
                 break;
             case R.id.textView3:
-                mDialogResult.finish("CANE");
+                mDialogResult.finish("CANE",0);
                 break;
             case R.id.imageButton:
-                mDialogResult.finish("culocane");
+                dialog.setIconResult(new CustomIconPickerDialog.OnIconSelected() {
+                    @Override
+                    public void finish(int icon) {
+                        mDialogResult.finish("culocane",icon);
+                    }
+                });
                 dialog.show();
 
 
@@ -96,6 +95,6 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
 
     public interface OnMyDialogResult4{
 
-        void finish(String result1);
+        void finish(String result1,int icon);
     }
 }

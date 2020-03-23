@@ -29,6 +29,11 @@ public class CustomIconAdapter extends BaseAdapter {
             R.drawable.ic_sweater,
             R.drawable.ic_jeans,
             R.drawable.ic_hoodie,
+            R.drawable.ic_shoes,
+            R.drawable.ic_backpack,
+            R.drawable.ic_denim,
+            R.drawable.ic_shirt,
+            R.drawable.ic_watch,
 
 
     };

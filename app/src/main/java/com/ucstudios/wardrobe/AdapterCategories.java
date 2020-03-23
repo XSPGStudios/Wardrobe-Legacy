@@ -1,6 +1,8 @@
 package com.ucstudios.wardrobe;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterCategories extends ArrayAdapter<String> {
@@ -24,11 +27,17 @@ public class AdapterCategories extends ArrayAdapter<String> {
     int mResource;
     private onMyAdapterResult1 mAdapterResult12;
     EditCategoriesDialog dialog = new EditCategoriesDialog(getContext());
-    CustomIconPickerDialog mdialogicon = new CustomIconPickerDialog(getContext());
+    DatabaseHelper mDatabaseHelper = new DatabaseHelper(getContext());
+
     private Integer[] Icons = {
             R.drawable.ic_sweater,
             R.drawable.ic_jeans,
             R.drawable.ic_hoodie,
+            R.drawable.ic_shoes,
+            R.drawable.ic_backpack,
+            R.drawable.ic_denim,
+            R.drawable.ic_shirt,
+            R.drawable.ic_watch,
 
 
     };
@@ -49,7 +58,14 @@ public class AdapterCategories extends ArrayAdapter<String> {
         void finish(String result);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent){
+
+        Cursor data = mDatabaseHelper.getData();
+        final ArrayList<String> IconData = new ArrayList<>();
+        while (data.moveToNext()) {
+            IconData.add(data.getString(2));
+        }
+
 
         String category = getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -69,7 +85,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
                 dialog.show();
                 dialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
                     @Override
-                    public void finish(String result1) {
+                    public void finish(String result1,int icon) {
 
                         String cocaina = String.valueOf(result1);
                         Log.i("Coca", "ecco "+cocaina);
@@ -79,13 +95,16 @@ public class AdapterCategories extends ArrayAdapter<String> {
                                 textView.setText(result1);}
                                 mAdapterResult12.finish(result1);
                                 dialog.dismiss();
+                            if(cocaina=="culocane"){
+                                mAdapterResult12.finish(result1);
+                                mDatabaseHelper.ReplaceIcon(icon,position+1);
+                                imageView.setImageResource(Icons[icon]);
+                                dialog.dismiss();
+
+                            }
                             }
 
-                        else if(cocaina=="culocane"){
-                            mAdapterResult12.finish(result1);
-                            dialog.dismiss();
 
-                        }
                         else if(cocaina=="CANE"){
                             dialog.dismiss();
                         }
@@ -136,7 +155,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
 
 
 
-
+        imageView.setImageResource(Icons[Integer.parseInt(IconData.get(position))]);
         textView.setText(category);
 
         return  convertView;

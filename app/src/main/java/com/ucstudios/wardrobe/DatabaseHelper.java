@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," + COL1 +" TEXT"+")";
+        String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," + COL1 +" TEXT,IC INTEGER "+")";
         String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)";
 
 
@@ -55,6 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        ContentValues cv = new ContentValues();
         contentValues.put(COL1, item);
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
@@ -62,8 +63,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
+        cv.put("IC", 0);
+        db.update("categories_table", cv,"ID=(SELECT MAX(ID) FROM categories_table)",null);
         db.execSQL("COMMIT");
         Log.d(TAG, PINZA+" column created in "+ TABLE_NAME1);
+
         db.close();
         return true;
         }
@@ -217,6 +221,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("COMMIT");
        return true;
 
+    }
+
+
+
+
+    public boolean ReplaceIcon(int icon, int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("IC", icon);
+        db.update("categories_table", cv,"ID="+i,null);
+        return true;
     }
 
 

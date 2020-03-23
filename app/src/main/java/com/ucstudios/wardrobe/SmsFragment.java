@@ -272,7 +272,6 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                         m_Text[0] = input.getText().toString();
                         String duke = Arrays.toString(m_Text).replace("[", "").replace("]", "");
                         mDatabaseHelper.PINZA = duke;
-
                         AddData(mDatabaseHelper.PINZA);
                         populateButtons();
 

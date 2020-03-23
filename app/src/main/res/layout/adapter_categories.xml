@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00E2E2E2"
+            android:tint="#E1D3D3"
             app:srcCompat="@drawable/ic_hoodie" />
     </LinearLayout>
 
