@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -22,10 +23,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
 public class AdapterListView extends ArrayAdapter<String> {
+
 
     private static final String TAG = "AdapterList";
     private Context mContext;
@@ -33,6 +36,14 @@ public class AdapterListView extends ArrayAdapter<String> {
     onMyAdapterResult mAdapterResult;
     CustomEditDialog dialog = new CustomEditDialog(getContext());
     MainActivity mainActivity;
+
+    private Integer[] Icons = {
+            R.drawable.ic_nike,
+            R.drawable.ic_adidas,
+            R.drawable.ic_alexmc,
+
+
+    };
 
 
 
@@ -76,6 +87,8 @@ public class AdapterListView extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent){
 
         mDatabaseHelper = new DatabaseHelper(getContext());
+
+
 
         String category = getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);

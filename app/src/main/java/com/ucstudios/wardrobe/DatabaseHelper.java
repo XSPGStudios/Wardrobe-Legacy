@@ -60,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");
-        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
         cv.put("IC", 0);
@@ -75,10 +75,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addData1(String sex,String item1){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues1 = new ContentValues();
+        ContentValues cv = new ContentValues();
         contentValues1.put(COL01, item1);
-
+        cv.put("IC2",0);
         long result1 = db.insert(sex, null, contentValues1);
         Log.d("Message ", item1 +" saved in "+ sex);
+        db.update(sex, cv,"ID=(SELECT MAX(ID) FROM "+sex+")",null);
         db.close();
         if(result1!=1)return true;
         else return true;

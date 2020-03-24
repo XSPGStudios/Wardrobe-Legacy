@@ -10,18 +10,21 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 public class CustomEditDialog extends Dialog implements View.OnClickListener{
 
-
+    public ImageButton imageButton;
     public Button button;
     public TextView buttonCancel;
     public EditText editText;
     OnMyDialogResult mDialogResult;
     public DatabaseHelper mDatabasehelper1;
     MainActivity mainActivity;
+    CustomIconPickerDialogItems dialogItems = new CustomIconPickerDialogItems(getContext());
+
 
     public CustomEditDialog(Context context){
         super(context);
@@ -42,6 +45,8 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
         button.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
         mDatabasehelper1 = new DatabaseHelper(getContext());
+        imageButton = findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(this);
 
 
 
@@ -64,6 +69,10 @@ public class CustomEditDialog extends Dialog implements View.OnClickListener{
             case R.id.textView3:
                 mDialogResult.finish("CANE");
                 break;
+            case R.id.imageButton:
+                dialogItems.show();
+                break;
+
 
         }
     }
