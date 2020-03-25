@@ -1,0 +1,82 @@
+Dopo aver creato la recyclerView nell'xml (è sufficiente copiarla dal fragment notification): 
+
+-Dichiara la view e l'adapter nel fragment interessato:
+
+ RecyclerView recyclerView;
+    RecyclerAdapter recyclerAdapter;
+
+Nel onCreateView: 
+
+-Successivamente creare un attributo costante di tipo layoutManager:
+final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+-Inizializzare la lista, l'adapter e "settarli":
+            recyclerView = view.findViewById(R.id.gThunbergView2);
+                recyclerAdapter = new RecyclerAdapter(items);
+                recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setAdapter(recyclerAdapter);
+
+- Il prossimo passo è "abbelire" la lista, creando i divisori:
+      DividerItemDecoration dividerItemDecoration = new 	DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+            recyclerView.addItemDecoration(dividerItemDecoration);
+- Attivare il longClick nella lista:
+       longClickListener.onLongClick(recyclerView);
+        View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+                ClipData merda = ClipData.newPlainText("", "");
+                View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+                v.startDrag(merda, myShadowBuilder, v, 0);
+            return true;
+        }
+    };
+ Di seguito ciò che serve nell'adapter: 
+
+-Per accedere ai metodi che servono, estendiamo ed implementiamo ciò che ci serve all'interno della classe: 
+
+[...] extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter [...]
+
+- Creiamo un attributo costante di tipo string per "taggare" all'interno della classe la nostra recyclerView:
+private static final String TAG = "RecyclerAdapter";
+
+- Di seguito il corpo dei metodi che vengono creati con l'ultima implementazione della classe: 
+@NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        Log.i(TAG,"onCreateViewHolder: " + count++ );
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.row_item, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.textView.setText(items[position]);
+    }
+
+    @Override
+    public int getItemCount() {
+
+        return items.length;
+    }
+    
+- Concludiamo con il ViewHolder (un metodo che ci permette di aggiungere particolari, quali buttons, imageView etc..., alla nostra lista)
+class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
+        TextView textView;
+        Button button;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+
+            imageView = itemView.findViewById(R.id.imageView);
+            textView = itemView.findViewById(R.id.textView4);
+            button = itemView.findViewById(R.id.buttonWardrobe);
+
+
+        }
+    }
