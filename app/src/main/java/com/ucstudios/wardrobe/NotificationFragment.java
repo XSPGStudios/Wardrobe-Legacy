@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+//CESTO;
 
 public class NotificationFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
@@ -45,9 +46,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
 
-//allora, stavo pensando, oltre ad aggiu8ngere il drag and drop, per mettere in ordine il cesto, di rendere gli items trascinabili, così, tipo tasto delete, nope, ma una sbattendo ci riesco, comunque il tasto in questione sarà il tasto lavatrice
-    //ibhe per il passaggio degli item dal cesto alla lvatrice come pensavi di farlo tu all'inizio? che non ricordo
-    //dov'è la funzione qui? del long click che hai implementato
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
         Bundle args = new Bundle();
@@ -77,8 +75,8 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
        // listView = view.findViewById(R.id.spezzaossa2);
        // populateButtons();
         List<String> items = new ArrayList<>();
-        items.add("porcodiscord");
-        items.add("porcoskype");
+        items.add("erbaNelCuloVengoDaAmsterdam");
+        items.add("loamodavvero");
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView = view.findViewById(R.id.gThunbergView2);
@@ -96,7 +94,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                 return view;
     }
 
-//commit fail
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
