@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -23,9 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 //CESTO;
 
@@ -45,6 +51,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
+    List<String> items;
 
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
@@ -69,37 +76,40 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
-        DatabaseHelper mDatabaseHelper2 = new DatabaseHelper(getActivity());
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
-        floatingActionButton.setOnClickListener(this);
-       // listView = view.findViewById(R.id.spezzaossa2);
-       // populateButtons();
-        List<String> items = new ArrayList<>();
+            FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
+                floatingActionButton.setOnClickListener(this);
+
+        items = new ArrayList<>();
+
         items.add("erbaNelCuloVengoDaAmsterdam");
-        items.add("loamodavvero");
+        items.add("voglio");
+        items.add("morire");
+        items.add("odio");
+        items.add("uffa");
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView = view.findViewById(R.id.gThunbergView2);
                 recyclerAdapter = new RecyclerAdapter(items);
-                recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(recyclerAdapter);
-                        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-            recyclerView.addItemDecoration(dividerItemDecoration);
-            boolean risultato = longClickListener.onLongClick(recyclerView);
+                            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+                                recyclerView.addItemDecoration(dividerItemDecoration);
+         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                itemTouchHelper.attachToRecyclerView(recyclerView);
+        boolean risultato = longClickListener.onLongClick(recyclerView);
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(recyclerAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
-                //dragListener.onDrag(recyclerView, risultato);
-                return view;
-    }
 
+                    return view;
+    }
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-                ClipData merda = ClipData.newPlainText("", "");
-                View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
-                v.startDrag(merda, myShadowBuilder, v, 0);
+            ClipData merda = ClipData.newPlainText("", "");
+            View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+            v.startDrag(merda, myShadowBuilder, v, 0);
             return true;
         }
     };
@@ -107,7 +117,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     View.OnDragListener dragListener = new View.OnDragListener() {
         @Override
         public boolean onDrag(View v, DragEvent event) {
-            int dragEvent = event.getAction(); //aspetta
+            int dragEvent = event.getAction();
             switch(dragEvent) {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     break;
@@ -135,4 +145,49 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         }
 
     }
+
+    String itemInLaundry = null;
+
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+
+            switch (direction) {
+                case ItemTouchHelper.RIGHT:
+                    items.remove(position);
+                    recyclerAdapter.notifyItemRemoved(position);
+                    recyclerAdapter.notifyItemRangeChanged(position, items.size());
+
+                    itemInLaundry = items.get(position);
+                    Snackbar.make(recyclerView, itemInLaundry, Snackbar.LENGTH_LONG).setAction("Rimetti item nel cesto", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            items.add(position, itemInLaundry);
+                            recyclerAdapter.notifyItemInserted(position);
+                            recyclerAdapter.notifyItemRangeChanged(position, items.size());
+                        }
+                    }).show();
+                    break;
+            }
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                    .addSwipeRightActionIcon(R.drawable.ic_chevron_right_black_24dp)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+
 }

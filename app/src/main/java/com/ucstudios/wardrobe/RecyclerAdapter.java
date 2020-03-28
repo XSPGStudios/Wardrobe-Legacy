@@ -78,8 +78,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
             imageView = itemView.findViewById(R.id.imageView);
-            textView = itemView.findViewById(R.id.textView4);
-            button = itemView.findViewById(R.id.buttonWardrobe);
+                textView = itemView.findViewById(R.id.textView4);
+                    button = itemView.findViewById(R.id.buttonWardrobe);
 
 
         }

@@ -41,7 +41,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-
+    List<String> itemsLaundry = new ArrayList<>();
 
     public static LaundryFragment newInstance(String param1, String param2) {
         LaundryFragment fragment = new LaundryFragment();
@@ -66,13 +66,13 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
         floatingActionButton.setOnClickListener(this);
 
-        List<String> items = new ArrayList<>();
-        items.add("loamodavvero");
-        items.add("erbaNelCuloVengoDaAmsterdam");
+
+        itemsLaundry.add("loamodavvero");
+        itemsLaundry.add("erbaNelCuloVengoDaAmsterdam");
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView = view.findViewById(R.id.gThunbergView3);
-        recyclerAdapter = new RecyclerAdapter(items);
+        recyclerAdapter = new RecyclerAdapter(itemsLaundry);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
