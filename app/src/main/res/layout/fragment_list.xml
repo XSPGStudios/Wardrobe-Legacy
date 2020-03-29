@@ -20,16 +20,11 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/spezzaossa2"
         android:layout_width="match_parent"
         android:layout_height="547dp"
-        android:layout_marginTop="55dp"
-        android:clickable="true"
-        android:longClickable="true">
-
-    </ListView>
+        android:layout_marginTop="55dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

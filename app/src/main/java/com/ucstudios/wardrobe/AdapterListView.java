@@ -33,7 +33,7 @@ public class AdapterListView extends ArrayAdapter<String> {
     private static final String TAG = "AdapterList";
     private Context mContext;
     int mResource;
-    onMyAdapterResult mAdapterResult;
+
     CustomEditDialog dialog = new CustomEditDialog(getContext());
     MainActivity mainActivity;
 
@@ -60,20 +60,7 @@ public class AdapterListView extends ArrayAdapter<String> {
     }
 
 
-    public void setAdapterResult(onMyAdapterResult adapterResult){
 
-        mAdapterResult = adapterResult;
-
-    }
-
-
-
-
-
-    public interface onMyAdapterResult{
-
-        void finish(String result);
-    }
 
 
 
@@ -119,7 +106,7 @@ public class AdapterListView extends ArrayAdapter<String> {
                                     {
                                         if(!cocaina.equals("CANE")){
                                         textView.setText(result);}
-                                        mAdapterResult.finish(result);
+                                        //mAdapterResult.finish(result);
                                         dialog.dismiss();}
 
                                     else{

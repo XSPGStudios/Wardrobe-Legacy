@@ -2,12 +2,14 @@ package com.ucstudios.wardrobe;
 
 
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,10 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -45,7 +51,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     private String mParam2;
     DatabaseHelper mDatabaseHelper1;
     MainActivity mMainActivity;
-    private ListView mListView;
+    private RecyclerView mRecyclerView;
+
+    RecyclerAdapterItems recyclerAdapter;
 
 
 
@@ -80,7 +88,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         FloatingActionButton floatingActionButton1 = view.findViewById(R.id.floating_action_button2);
         floatingActionButton1.setOnClickListener(this);
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
-        mListView = view.findViewById(R.id.spezzaossa2);
+        mRecyclerView = view.findViewById(R.id.spezzaossa2);
+
         mMainActivity = (MainActivity) getActivity();
         TextView mTextView = view.findViewById(R.id.textView);
         mTextView.setText(mMainActivity.Name);
@@ -124,9 +133,52 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             listData.add(data.getString(1));
         }
 
-        final AdapterListView adapter = new AdapterListView(mListView.getContext(), R.layout.adapter_list, listData);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),listData);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(recyclerAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        boolean risultato = longClickListener.onLongClick(mRecyclerView);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(recyclerAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
+        //dragListener.onDrag(recyclerView, risultato);
+
+
+    }
+
+
+    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+
+
+            ClipData merda = ClipData.newPlainText("", "");
+            View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+            v.startDrag(merda, myShadowBuilder, v, 0);
+            return true;
+        }
+    };
+
+    View.OnDragListener dragListener = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int dragEvent = event.getAction(); //aspetta
+            switch(dragEvent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    break;
+                case DragEvent.ACTION_DROP:
+                    break;
+            }
+            return true;
+        }
+    };
+      /*  mRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 adapter.setAdapterResult(new AdapterListView.onMyAdapterResult() {
@@ -146,13 +198,13 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 });
                 return true;
             }
-        });
+        });*/
 
 
 
 
 
-}
+
 
 
 
