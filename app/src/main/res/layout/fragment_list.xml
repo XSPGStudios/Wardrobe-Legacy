@@ -23,8 +23,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/spezzaossa2"
         android:layout_width="match_parent"
-        android:layout_height="547dp"
-        android:layout_marginTop="55dp" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="97dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

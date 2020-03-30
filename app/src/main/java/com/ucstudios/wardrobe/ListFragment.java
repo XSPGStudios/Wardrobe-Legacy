@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,7 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -32,9 +35,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +58,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     DatabaseHelper mDatabaseHelper1;
     MainActivity mMainActivity;
     private RecyclerView mRecyclerView;
+    public ArrayList<String> canecazzo = new ArrayList<>();
 
     RecyclerAdapterItems recyclerAdapter;
 
@@ -89,6 +96,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         floatingActionButton1.setOnClickListener(this);
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
         mRecyclerView = view.findViewById(R.id.spezzaossa2);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         mMainActivity = (MainActivity) getActivity();
         TextView mTextView = view.findViewById(R.id.textView);
@@ -131,7 +140,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         final ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(1));
+            canecazzo.add(data.getString(1));
         }
+
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerAdapter = new RecyclerAdapterItems(getContext(),listData);
@@ -178,27 +189,60 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             return true;
         }
     };
-      /*  mRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                adapter.setAdapterResult(new AdapterListView.onMyAdapterResult() {
-                    @Override
-                    public void finish(String result) {
-                        String cocco = String.valueOf(result);
-                        if (cocco.equals("CANE")) {
-                            Toast.makeText(mMainActivity, listData.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
-                            Delete(mMainActivity.Name, listData.get(position));
-                            populateItems();
 
-                        } else {
-                            Replace(mMainActivity.Name, result, position + 1);
-                        }
-                    }
 
-                });
-                return true;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+
+            switch (direction) {
+                case ItemTouchHelper.RIGHT:
+                    final CustomEditDialog dialog = new CustomEditDialog(getContext());
+                    dialog.show();
+                   dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
+                       @Override
+                       public void finish(String result) {
+                           String cocco = String.valueOf(result);
+                           if (cocco.equals("CANE")) {
+                              Toast.makeText(mMainActivity, canecazzo.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
+                              Delete(mMainActivity.Name, canecazzo.get(position));
+                               Log.i("msg", "ESPERIMENTOPORNO : "+ result);
+                               dialog.dismiss();
+                               populateItems();
+
+                           } else {
+                               Replace(mMainActivity.Name, result, position+1);
+                               Log.i("asdasd","asdasdasdasd");
+                               populateItems();
+                               dialog.dismiss();
+
+                           }
+                       }
+                   });
+                    Log.i("msg","test eseguito correttamente");
+                    break;
             }
-        });*/
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                    .addSwipeRightActionIcon(R.drawable.ic_edit24)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+
+
 
 
 

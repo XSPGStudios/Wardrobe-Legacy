@@ -25,7 +25,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     Context mContext;
     int count = 0;
     String[] items;
-    onMyAdapterinoResult onmyAdapterinoResult;
+
 
 
 
@@ -79,20 +79,6 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
-    public void setAdapterResult(onMyAdapterinoResult adapterResult){
-
-        onmyAdapterinoResult = adapterResult;
-
-    }
-
-
-
-
-
-    public interface onMyAdapterinoResult{
-
-        void finish(String result);
-    }
 
 
 
@@ -110,76 +96,8 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById(R.id.textView4);
-            final Button buttonEdit = itemView.findViewById(R.id.buttonEdit);
-            final Button buttonWash = itemView.findViewById(R.id.button6);
-            final ConstraintLayout cocco = itemView.findViewById(R.id.cocconegro);
-            final LinearLayout linearLayout = itemView.findViewById(R.id.LinearLayout123);
 
 
-            buttonEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    switch (v.getId()){
-                        case R.id.buttonEdit:
-                            final CustomEditDialog dialog = new CustomEditDialog(mContext);
-                            dialog.show();
-                            dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
-                                @Override
-                                public void finish(String result) {
-
-                                    String cocaina = String.valueOf(result);
-                                    Log.i("Coca ", "ecco "+cocaina);
-                                    if(!cocaina.equals(""))
-                                    {
-                                        if(!cocaina.equals("CANE")){
-                                            textView.setText(result);}
-                                        onmyAdapterinoResult.finish(result);
-                                        dialog.dismiss();}
-
-                                    else{
-                                        Toast.makeText(mContext, "IT MUST CONTAIN SOMETHING!", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-
-                                }
-
-                            });
-                            buttonEdit.setVisibility(View.GONE);
-                            buttonWash.setVisibility(View.GONE);
-
-
-                    }
-                }
-            });
-
-
-
-            linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    buttonWash.setVisibility(View.VISIBLE);
-                    buttonEdit.setVisibility(View.VISIBLE);
-
-
-
-
-
-                    cocco.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            buttonWash.setVisibility(View.GONE);
-                            buttonEdit.setVisibility(View.GONE);
-                            cocco.setClickable(false);
-
-                        }
-                    });
-
-
-
-                    return false;
-                }
-            });
 
 
         }

@@ -158,7 +158,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-            final int position = viewHolder.getAdapterPosition();
+            final int position = viewHolder.getAdapterPosition()-1;
 
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
