@@ -60,6 +60,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     private RecyclerView mRecyclerView;
     public ArrayList<String> canecazzo = new ArrayList<>();
 
+
     RecyclerAdapterItems recyclerAdapter;
 
 
@@ -103,6 +104,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         TextView mTextView = view.findViewById(R.id.textView);
         mTextView.setText(mMainActivity.Name);
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
+
         populateItems();
 
 
@@ -136,14 +138,14 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     private void populateItems() {
 
-        Cursor data = mDatabaseHelper1.getData1(mMainActivity.Name);
+        final Cursor data = mDatabaseHelper1.getData1(mMainActivity.Name);
         final ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(1));
             canecazzo.add(data.getString(1));
         }
 
-
+        final ItemVisualDialog dialog = new ItemVisualDialog(getActivity());
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerAdapter = new RecyclerAdapterItems(getContext(),listData);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -155,10 +157,21 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 new SimpleItemTouchHelperCallback(recyclerAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mRecyclerView);
+        recyclerAdapter.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = mRecyclerView.indexOfChild(v);
+                Log.i("msg","Traffica"+pos);
+                dialog.show();
+            }
+        });
         //dragListener.onDrag(recyclerView, risultato);
 
 
     }
+
+
+
 
 
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
@@ -230,6 +243,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     break;
             }
         }
+
+
 
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {

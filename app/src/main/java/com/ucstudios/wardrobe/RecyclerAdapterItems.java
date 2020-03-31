@@ -25,6 +25,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     Context mContext;
     int count = 0;
     String[] items;
+    View.OnClickListener mClickListener;
 
 
 
@@ -41,8 +42,19 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
         Log.i(TAG,"onCreateViewHolder: " + count++ );
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
+        final View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
         RecyclerAdapterItems.ViewHolder viewHolder = new RecyclerAdapterItems.ViewHolder(view);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            mClickListener.onClick(view);
+            }
+        });
+
+
+
+
+
         return viewHolder;
     }
 
@@ -82,7 +94,9 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
 
 
-
+    public void setClickListener(View.OnClickListener callback){
+        mClickListener = callback;
+    }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
