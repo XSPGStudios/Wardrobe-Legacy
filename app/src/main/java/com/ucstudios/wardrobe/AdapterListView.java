@@ -83,79 +83,7 @@ public class AdapterListView extends ArrayAdapter<String> {
         final LinearLayout linearLayout = convertView.findViewById(R.id.LinearLayout123);
         final TextView textView = convertView.findViewById(R.id.textView4);
         final ImageView imageView = convertView.findViewById(R.id.imageView);
-        final Button buttonEdit = convertView.findViewById(R.id.buttonEdit);
-
-
-        final Button buttonWash = convertView.findViewById(R.id.button6);
         final ConstraintLayout cocco = convertView.findViewById(R.id.cocconegro);
-
-        buttonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.buttonEdit:
-
-                    dialog.show();
-                    dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
-                            @Override
-                            public void finish(String result) {
-
-                                    String cocaina = String.valueOf(result);
-                                    Log.i("Coca ", "ecco "+cocaina);
-                                    if(!cocaina.equals(""))
-                                    {
-                                        if(!cocaina.equals("CANE")){
-                                        textView.setText(result);}
-                                        //mAdapterResult.finish(result);
-                                        dialog.dismiss();}
-
-                                    else{
-                                        Toast.makeText(mContext, "IT MUST CONTAIN SOMETHING!", Toast.LENGTH_SHORT).show();
-
-                                    }
-                            }
-
-                        });
-                    buttonEdit.setVisibility(View.GONE);
-                    buttonWash.setVisibility(View.GONE);
-
-
-                }
-            }
-        });
-
-
-
-        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                        buttonWash.setVisibility(View.VISIBLE);
-
-                        buttonEdit.setVisibility(View.VISIBLE);
-
-
-
-
-
-                        cocco.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                buttonWash.setVisibility(View.GONE);
-                                buttonEdit.setVisibility(View.GONE);
-                                cocco.setClickable(false);
-
-                            }
-                        });
-
-
-
-                return false;
-            }
-        });
-
-
-
-
 
 
         textView.setText(category);

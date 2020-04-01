@@ -63,8 +63,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="112dp"
-        android:layout_height="63dp"
+        android:layout_width="61dp"
+        android:layout_height="56dp"
         android:layout_marginTop="4dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,25 +72,15 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0" >
 
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="112dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_basket"
-            android:clickable="true"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/buttonEdit"
+        <ImageView
+            android:id="@+id/imageView5"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/ic_edit"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_basket" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

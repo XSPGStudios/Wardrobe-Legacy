@@ -1,6 +1,7 @@
 package com.ucstudios.wardrobe;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +106,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         TextView mTextView = view.findViewById(R.id.textView);
         mTextView.setText(mMainActivity.Name);
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
+        mDatabaseHelper1.getData();
 
         populateItems();
 
@@ -140,14 +143,16 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
         final Cursor data = mDatabaseHelper1.getData1(mMainActivity.Name);
         final ArrayList<String> listData = new ArrayList<>();
+        final ArrayList<Integer> position = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(1));
             canecazzo.add(data.getString(1));
+            position.add(data.getInt(3));
         }
 
         final ItemVisualDialog dialog = new ItemVisualDialog(getActivity());
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerAdapter = new RecyclerAdapterItems(getContext(),listData);
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -204,12 +209,14 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     };
 
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
+
+        @SuppressLint("SetTextI18n")
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
@@ -217,28 +224,58 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Are you sure?");
+                    final TextView sex = new TextView(getActivity());
+                    sex.setText("Adding item to laundry basket, are you sure?");
+                    sex.setGravity(Gravity.CENTER);
+
+                    builder.setView(sex);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
+                            dialog.dismiss();
+                            populateItems();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            populateItems();
+                        }
+                    });
+builder.show();
+
+break;
+
+
+
+
+                case ItemTouchHelper.LEFT:
                     final CustomEditDialog dialog = new CustomEditDialog(getContext());
                     dialog.show();
-                   dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
-                       @Override
-                       public void finish(String result) {
-                           String cocco = String.valueOf(result);
-                           if (cocco.equals("CANE")) {
-                              Toast.makeText(mMainActivity, canecazzo.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
-                              Delete(mMainActivity.Name, canecazzo.get(position));
-                               Log.i("msg", "ESPERIMENTOPORNO : "+ result);
-                               dialog.dismiss();
-                               populateItems();
+                    dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
+                        @Override
+                        public void finish(String result) {
+                            String cocco = String.valueOf(result);
+                            if (cocco.equals("CANE")) {
+                                Toast.makeText(mMainActivity, canecazzo.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
+                                Delete(mMainActivity.Name, canecazzo.get(position));
+                                Log.i("msg", "ESPERIMENTOPORNO : "+ result);
+                                dialog.dismiss();
+                                populateItems();
 
-                           } else {
-                               Replace(mMainActivity.Name, result, position+1);
-                               Log.i("asdasd","asdasdasdasd");
-                               populateItems();
-                               dialog.dismiss();
+                            } else {
+                                Replace(mMainActivity.Name, result, position+1);
+                                Log.i("asdasd","asdasdasdasd");
+                                populateItems();
+                                dialog.dismiss();
 
-                           }
-                       }
-                   });
+                            }
+                        }
+                    });
                     Log.i("msg","test eseguito correttamente");
                     break;
             }
@@ -249,8 +286,13 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                    .addSwipeRightActionIcon(R.drawable.ic_edit24)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                    .addSwipeLeftActionIcon(R.drawable.ic_edit24)
+                    .create()
+                    .decorate();
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
+                    .addSwipeRightActionIcon(R.drawable.ic_basket24)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

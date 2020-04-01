@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,13 +27,15 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     int count = 0;
     String[] items;
     View.OnClickListener mClickListener;
+    Integer[] ppos;
 
 
 
 
-    public RecyclerAdapterItems(Context context, List<String> items) {
+    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items) {
         this.mContext=context;
         this.items = items.toArray(new String[0]);
+        this.ppos = position2.toArray(new Integer[0]);
     }
 
     @NonNull
@@ -61,6 +64,9 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(items[position]);
+        if(ppos[position]==1){
+            holder.imageView2.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -102,12 +108,13 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
+        ImageView imageView2;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-
+            imageView2 = itemView.findViewById(R.id.imageView5);
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById(R.id.textView4);
 

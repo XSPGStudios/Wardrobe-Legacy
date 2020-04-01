@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 
 import android.content.ClipData;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -52,6 +53,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
     List<String> items;
+    MainActivity mMainActivity;
+
+
 
     public static NotificationFragment newInstance(String param1, String param2) {
         NotificationFragment fragment = new NotificationFragment();
@@ -78,29 +82,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
             FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
                 floatingActionButton.setOnClickListener(this);
-
-        items = new ArrayList<>();
-
-        items.add("erbaNelCuloVengoDaAmsterdam");
-        items.add("voglio");
-        items.add("morire");
-        items.add("odio");
-        items.add("uffa");
-
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView = view.findViewById(R.id.gThunbergView2);
-                recyclerAdapter = new RecyclerAdapter(items);
-                    recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(recyclerAdapter);
-                            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-                                recyclerView.addItemDecoration(dividerItemDecoration);
-         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                itemTouchHelper.attachToRecyclerView(recyclerView);
-        boolean risultato = longClickListener.onLongClick(recyclerView);
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(recyclerAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
+        recyclerView = view.findViewById(R.id.gThunbergView2);
+        mDatabaseHelper2 = new DatabaseHelper(getActivity());
+                populateBasket();
 
                     return view;
     }
@@ -113,6 +97,45 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             return true;
         }
     };
+
+    private void populateBasket(){
+
+        final Cursor data1 = mDatabaseHelper2.getData();
+        final ArrayList<String> categories = new ArrayList<>();
+        while(data1.moveToNext()){
+            categories.add(data1.getString(1));
+        }
+
+
+        final ArrayList<String> listData = new ArrayList<>();
+
+        for(int i=0; i<categories.size();i++) {
+            Cursor data = mDatabaseHelper2.GetBasket(categories.get(i));
+            while(data.moveToNext()){
+                listData.add(data.getString(1));
+        }
+
+        }
+
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        recyclerAdapter = new RecyclerAdapter(listData);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(recyclerAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        boolean risultato = longClickListener.onLongClick(recyclerView);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(recyclerAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
+
+
+
+    }
 
     View.OnDragListener dragListener = new View.OnDragListener() {
         @Override

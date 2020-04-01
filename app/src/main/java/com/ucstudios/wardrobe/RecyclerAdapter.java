@@ -1,16 +1,20 @@
 package com.ucstudios.wardrobe;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +24,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private static final String TAG = "RecyclerAdapter";
     int count = 0;
     String[] items;
+    DatabaseHelper db;
+    public ArrayList<Integer> position2;
+
 
     public RecyclerAdapter(List <String> items) {
         this.items = items.toArray(new String[0]);
+
     }
 
     @NonNull
@@ -33,13 +41,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.row_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+
+
+
         return viewHolder;
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.textView.setText(items[position]);
+
     }
 
     @Override
@@ -69,6 +82,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
         ImageView imageView;
         TextView textView;
         Button button;

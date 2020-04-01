@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," + COL1 +" TEXT,IC INTEGER "+")";
@@ -56,16 +57,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         ContentValues cv = new ContentValues();
+        ContentValues a = new ContentValues();
         contentValues.put(COL1, item);
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");
-        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER,POS INTEGER)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
         cv.put("IC", 0);
         db.update("categories_table", cv,"ID=(SELECT MAX(ID) FROM categories_table)",null);
+        a.put("POS",0);
+        db.update(PINZA,a,"ID=(SELECT MAX(ID) FROM "+ PINZA +")", null);
         db.execSQL("COMMIT");
+
         Log.d(TAG, PINZA+" column created in "+ TABLE_NAME1);
 
         db.close();
@@ -236,6 +241,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public Cursor GetBasket(String tablename){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 1";
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
+    }
+
+    public boolean toBasket(String tablename, int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("POS", 1);
+        db.update(tablename, cv,"ID="+i,null);
+        return true;
+    }
 
 
 
