@@ -25,6 +25,12 @@
         <item>  Hoodie</item>
     </string-array>
 
+    <string-array name="currencies">
+        <item>$</item>
+        <item>£</item>
+        <item>€</item>
+    </string-array>
+
 
 
 

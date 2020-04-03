@@ -4,4 +4,8 @@
     <string name="outfit">Outfit</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="fine">name</string>
+    <string name="brand">brand</string>
+    <string name="value">value</string>
+    <string name="M">M</string>
 </resources>
