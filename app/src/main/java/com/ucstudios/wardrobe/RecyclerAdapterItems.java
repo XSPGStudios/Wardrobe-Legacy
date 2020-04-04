@@ -5,15 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
@@ -28,14 +23,23 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     String[] items;
     View.OnClickListener mClickListener;
     Integer[] ppos;
+    Integer[] icons;
+    private Integer[] Icons = {
+            R.drawable.ic_nike,
+            R.drawable.ic_adidas,
+            R.drawable.ic_alexmc,
+
+
+    };
 
 
 
 
-    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items) {
+    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons) {
         this.mContext=context;
         this.items = items.toArray(new String[0]);
         this.ppos = position2.toArray(new Integer[0]);
+        this.icons = icons.toArray(new Integer[0]);
     }
 
     @NonNull
@@ -64,11 +68,11 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(items[position]);
+        holder.imageView.setImageResource(Icons[icons[position]]);
         if(ppos[position]==1){
             holder.imageView2.setVisibility(View.VISIBLE);
         }
     }
-
 
 
 
@@ -115,7 +119,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
             super(itemView);
 
             imageView2 = itemView.findViewById(R.id.imageView5);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.imageView231);
             textView = itemView.findViewById(R.id.textView4);
 
 

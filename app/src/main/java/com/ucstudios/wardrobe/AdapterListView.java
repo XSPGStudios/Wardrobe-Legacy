@@ -1,31 +1,17 @@
 package com.ucstudios.wardrobe;
 
-import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes;
 
 public class AdapterListView extends ArrayAdapter<String> {
 
@@ -82,7 +68,7 @@ public class AdapterListView extends ArrayAdapter<String> {
         convertView = inflater.inflate(mResource, parent, false);
         final LinearLayout linearLayout = convertView.findViewById(R.id.LinearLayout123);
         final TextView textView = convertView.findViewById(R.id.textView4);
-        final ImageView imageView = convertView.findViewById(R.id.imageView);
+        final ImageView imageView = convertView.findViewById(R.id.imageView231);
         final ConstraintLayout cocco = convertView.findViewById(R.id.cocconegro);
 
 

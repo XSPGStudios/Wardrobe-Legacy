@@ -63,6 +63,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     public ArrayList<String> canecazzo = new ArrayList<>();
 
 
+
     RecyclerAdapterItems recyclerAdapter;
 
 
@@ -100,8 +101,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
         mRecyclerView = view.findViewById(R.id.spezzaossa2);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
         mMainActivity = (MainActivity) getActivity();
         TextView mTextView = view.findViewById(R.id.textView);
         mTextView.setText(mMainActivity.Name);
@@ -117,8 +117,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
 
-    public void AddData1(String newEntry) {
-        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, newEntry);
+    public void AddData1(String name,String size,String brand, Integer value,Integer currency,Integer icon) {
+        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, name,size,icon,brand,value,currency);
         toastMessage("New Item Created!");
 
     }
@@ -144,15 +144,17 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         final Cursor data = mDatabaseHelper1.getData1(mMainActivity.Name);
         final ArrayList<String> listData = new ArrayList<>();
         final ArrayList<Integer> position = new ArrayList<>();
+        final ArrayList<Integer> icons = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(1));
             canecazzo.add(data.getString(1));
             position.add(data.getInt(3));
+            icons.add(data.getInt(2));
         }
 
-        final ItemVisualDialog dialog = new ItemVisualDialog(getActivity());
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData);
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -167,7 +169,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 int pos = mRecyclerView.indexOfChild(v);
                 Log.i("msg","Traffica"+pos);
-                dialog.show();
             }
         });
         //dragListener.onDrag(recyclerView, risultato);
@@ -316,7 +317,21 @@ break;
         switch(v.getId()) {
             case R.id.floating_action_button2:
 
-                final String[] m_Text1 = {""};
+
+                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity());
+                dialog.show();
+                dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
+
+
+                    @Override
+                    public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
+                        AddData1(name,size,brand,value,currency,icon);
+                        dialog.dismiss();
+                        populateItems();
+                    }
+                });
+
+                /*final String[] m_Text1 = {""};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Item");
                 final EditText input = new EditText(getActivity());
@@ -342,7 +357,7 @@ break;
                     }
                 });
                 builder.show();
-                break;
+                break;*/
 
         }
 

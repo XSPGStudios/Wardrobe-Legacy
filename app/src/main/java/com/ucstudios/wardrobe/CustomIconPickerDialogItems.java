@@ -16,8 +16,6 @@ public class CustomIconPickerDialogItems extends Dialog {
     int labels;
     OnIconSelected mIconSelected;
 
-    int pitu;
-
     public CustomIconPickerDialogItems(Context context){
         super (context);
 
@@ -34,7 +32,7 @@ public class CustomIconPickerDialogItems extends Dialog {
         duca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               // mIconSelected.finish(position);
+                mIconSelected.finish(position);
                 dismiss();
 
             }
@@ -58,7 +56,7 @@ public class CustomIconPickerDialogItems extends Dialog {
 
     public interface OnIconSelected{
 
-        //void finish(int icon);
+        void finish(int icon);
     }
 
 

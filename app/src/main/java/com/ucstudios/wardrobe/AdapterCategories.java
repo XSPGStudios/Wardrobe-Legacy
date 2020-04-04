@@ -2,7 +2,6 @@ package com.ucstudios.wardrobe;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
@@ -72,7 +70,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
         convertView = inflater.inflate(mResource, parent, false);
         final TextView textView = convertView.findViewById(R.id.textView4);
         final Button editButton = convertView.findViewById(R.id.buttonEdit);
-        final ImageView imageView = convertView.findViewById(R.id.imageView);
+        final ImageView imageView = convertView.findViewById(R.id.imageView231);
         LinearLayout linearLayout = convertView.findViewById(R.id.LinearLayout123);
         final ConstraintLayout constraintLayout = convertView.findViewById(R.id.cocconegro);
 
