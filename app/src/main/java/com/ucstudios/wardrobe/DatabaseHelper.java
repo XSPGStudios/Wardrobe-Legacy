@@ -135,10 +135,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data1;
     }
 
-    public boolean ReplaceItem(String tabletitle, String item, int i){
+    public boolean ReplaceItem(String tabletitle, String item,String size,String brand, Integer value,Integer currency,Integer icon, int i){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("names", item);
+        cv.put("IC2",icon);
+        cv.put("size",size);
+        cv.put("brand",brand);
+        cv.put("value",value);
+        cv.put("currency",currency);
         db.update(tabletitle, cv,"ID="+i,null);
         return true;
     }
@@ -256,6 +261,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("POS", 1);
         db.update(tablename, cv,"ID="+i,null);
         return true;
+    }
+
+    public Cursor GetItemData(int pos,String tablename){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM "+tablename+" WHERE ID="+pos+"";
+        Cursor data= db.rawQuery(query,null);
+        return data;
     }
 
 

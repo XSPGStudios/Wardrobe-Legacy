@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
     private Integer[] Icons = {
@@ -22,7 +27,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
 
     };
-
+    public Integer alieno;
     public EditText name;
     public EditText size;
     public EditText brand;
@@ -33,10 +38,14 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
     ItemCreatedInterface mItemCreation;
     CustomIconPickerDialogItems dialogItems;
     Integer iconvalue;
+    String[] itemdatas;
 
 
-    public ItemVisualDialog(Context context){
+    public ItemVisualDialog(Context context, Integer mistico, ArrayList<String> itemdata){
+
         super(context);
+        this.alieno=mistico;
+        this.itemdatas= itemdata.toArray(new String[0]);
 
     }
 
@@ -60,6 +69,13 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
         icons.setOnClickListener(this);
         iconvalue=0;
 
+        if(alieno==1){
+            name.setText(itemdatas[0]);
+            size.setText(itemdatas[1]);
+            brand.setText(itemdatas[2]);
+            value.setText(itemdatas[3]);
+        }
+
 
 
 
@@ -69,6 +85,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if(alieno==0){
         switch (v.getId()){
             case R.id.icon:
                 dialogItems.show();
@@ -90,6 +107,41 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                     Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
+
+        }}
+        if(alieno==1){
+            switch (v.getId()){
+
+               case R.id.icon:
+                    dialogItems.show();
+                    dialogItems.setIconResult(new CustomIconPickerDialogItems.OnIconSelected() {
+                        @Override
+                        public void finish(int icon) {
+                            iconvalue = icon;
+                            icons.setImageResource(Icons[icon]);
+                        }
+                    });
+                    break;
+
+
+
+                case R.id.button3:
+
+                    if(String.valueOf(name.getText()).equals("")||String.valueOf(size.getText()).equals("")||String.valueOf(brand.getText()).equals("")||String.valueOf(value.getText()).equals("")){
+                        Toast.makeText(getContext(),"Something is still empty  :( ", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
+                        mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue);
+                        Toast.makeText(getContext(), "Item modified!", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+
+
+
+
+            }
 
         }
 

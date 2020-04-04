@@ -123,13 +123,17 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    public void GetItemData(int position, String tablename){
+        mDatabaseHelper1.GetItemData(position,tablename);
+    }
+
     private void toastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
     }
 
-    public  void Replace(String Table, String item, int i){
-        mDatabaseHelper1.ReplaceItem(Table, item, i);
+    public  void Replace(String Table, String item,String size,String brand,Integer value,Integer currency,Integer icon, int i){
+        mDatabaseHelper1.ReplaceItem(Table, item, size, brand,value,currency,icon,i);
 
 
     }
@@ -255,7 +259,28 @@ break;
 
 
                 case ItemTouchHelper.LEFT:
-                    final CustomEditDialog dialog = new CustomEditDialog(getContext());
+                    final Cursor C = mDatabaseHelper1.GetItemData(position+1,mMainActivity.Name);
+                    final ArrayList<String> itemdata = new ArrayList<>();
+                    while (C.moveToNext()){
+                        itemdata.add(C.getString(1));
+                        itemdata.add(C.getString(4));
+                        itemdata.add(C.getString(5));
+                        itemdata.add(String.valueOf(C.getInt(6)));
+                    }
+                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata);
+                    dialog.show();
+                    dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
+                        @Override
+                        public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
+                            Replace(mMainActivity.Name,name,size,brand,value,currency,icon,position+1);
+                            dialog.dismiss();
+                            populateItems();
+                        }
+
+                    });
+
+                    break;
+                    /*final CustomEditDialog dialog = new CustomEditDialog(getContext());
                     dialog.show();
                     dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
                         @Override
@@ -278,7 +303,7 @@ break;
                         }
                     });
                     Log.i("msg","test eseguito correttamente");
-                    break;
+                    break;*/
             }
         }
 
@@ -317,8 +342,8 @@ break;
         switch(v.getId()) {
             case R.id.floating_action_button2:
 
-
-                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity());
+                final ArrayList<String> crack = new ArrayList<>();
+                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack);
                 dialog.show();
                 dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
 
@@ -331,33 +356,7 @@ break;
                     }
                 });
 
-                /*final String[] m_Text1 = {""};
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Item");
-                final EditText input = new EditText(getActivity());
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        m_Text1[0] = input.getText().toString();
-                        String duke = Arrays.toString(m_Text1).replace("[", "").replace("]", "");
-                        AddData1(duke);
-                        populateItems();
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-                break;*/
 
         }
 
