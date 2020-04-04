@@ -152,11 +152,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
     private void populateButtons() {
         Cursor data = mDatabaseHelper.getData();
         final ArrayList<String> listData = new ArrayList<>();
+        final ArrayList<Integer> iconsdata = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(1));
+            iconsdata.add(data.getInt(2));
         }
         mMainActivity.Categories=listData;
-        final AdapterCategories adapterCategories = new AdapterCategories(mRecyclerView.getContext(), R.layout.adapter_categories, listData);
+        final AdapterCategories adapterCategories = new AdapterCategories(mRecyclerView.getContext(), R.layout.adapter_categories, listData, iconsdata);
         mRecyclerView.setAdapter(adapterCategories);
         mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

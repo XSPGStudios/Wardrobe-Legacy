@@ -59,14 +59,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         ContentValues a = new ContentValues();
         contentValues.put(COL1, item);
+        contentValues.put("IC",0);
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");
         db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
-        cv.put("IC", 0);
-        db.update("categories_table", cv,"ID=(SELECT MAX(ID) FROM categories_table)",null);
         a.put("POS",0);
         db.update(PINZA,a,"ID=(SELECT MAX(ID) FROM "+ PINZA +")", null);
         db.execSQL("COMMIT");

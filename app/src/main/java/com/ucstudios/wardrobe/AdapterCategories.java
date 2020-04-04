@@ -26,6 +26,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
     private onMyAdapterResult1 mAdapterResult12;
     EditCategoriesDialog dialog = new EditCategoriesDialog(getContext());
     DatabaseHelper mDatabaseHelper = new DatabaseHelper(getContext());
+    Integer[] icons;
 
     private Integer[] Icons = {
             R.drawable.ic_sweater,
@@ -41,10 +42,11 @@ public class AdapterCategories extends ArrayAdapter<String> {
     };
 
 
-    public AdapterCategories( Context context, int adapter_categories, List<String> listData) {
+    public AdapterCategories( Context context, int adapter_categories, List<String> listData, List<Integer> icons) {
         super(context, adapter_categories, listData);
         mResource = adapter_categories;
         this.mContext=context;
+        this.icons= icons.toArray(new Integer[0]);
     }
 
     public void setAdapterResult(onMyAdapterResult1 adapterResult){
@@ -58,11 +60,6 @@ public class AdapterCategories extends ArrayAdapter<String> {
 
     public View getView(final int position, View convertView, ViewGroup parent){
 
-        Cursor data = mDatabaseHelper.getData();
-        final ArrayList<String> IconData = new ArrayList<>();
-        while (data.moveToNext()) {
-            IconData.add(data.getString(2));
-        }
 
 
         String category = getItem(position);
@@ -153,7 +150,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
 
 
 
-        imageView.setImageResource(Icons[Integer.parseInt(IconData.get(position))]);
+        imageView.setImageResource(Icons[icons[position]]);
         textView.setText(category);
 
         return  convertView;
