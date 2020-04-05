@@ -8,34 +8,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -43,11 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 //RISOLVERE PROBLEMA POSITION SWAPS
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -72,6 +58,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     int tac;
     byte[] alien2o;
     static final int REQUEST_IMAGE_CAPTURE=1;
+    int magianera;
+    final ArrayList<byte[]> tech = new ArrayList<>();
+    final ArrayList<byte[]> tecca = new ArrayList<>();
+    Button gridbutton;
+
 
 
 
@@ -107,7 +98,10 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         floatingActionButton1 = view.findViewById(R.id.floating_action_button2);
         floatingActionButton1.setOnClickListener(this);
+
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
+        gridbutton = view.findViewById(R.id.buttongrid);
+        gridbutton.setOnClickListener(this);
         mRecyclerView = view.findViewById(R.id.spezzaossa2);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -116,6 +110,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         mTextView.setText(mMainActivity.Name);
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
         mDatabaseHelper1.getData();
+
 
         populateItems();
 
@@ -158,16 +153,18 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         final ArrayList<String> listData = new ArrayList<>();
         final ArrayList<Integer> position = new ArrayList<>();
         final ArrayList<Integer> icons = new ArrayList<>();
+
         while (data.moveToNext()) {
             listData.add(data.getString(1));
             canecazzo.add(data.getString(1));
             position.add(data.getInt(3));
             icons.add(data.getInt(2));
+            tech.add(data.getBlob(8));
         }
 
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons);
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -279,13 +276,16 @@ break;
                     final Cursor C = mDatabaseHelper1.GetItemData(position+1,mMainActivity.Name);
                     final ArrayList<String> itemdata = new ArrayList<>();
 
+
                     while (C.moveToNext()){
                         itemdata.add(C.getString(1));
                         itemdata.add(C.getString(4));
                         itemdata.add(C.getString(5));
                         itemdata.add(String.valueOf(C.getInt(6)));
+                        tecca.add(C.getBlob(8));
+
                     }
-                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata);
+                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata,tecca);
                     dialog.show();
                     dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
                         @Override
@@ -317,30 +317,7 @@ break;
 
                     break;
 
-                    /*final CustomEditDialog dialog = new CustomEditDialog(getContext());
-                    dialog.show();
-                    dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
-                        @Override
-                        public void finish(String result) {
-                            String cocco = String.valueOf(result);
-                            if (cocco.equals("CANE")) {
-                                Toast.makeText(mMainActivity, canecazzo.get(position)+" Deleted", Toast.LENGTH_SHORT).show();
-                                Delete(mMainActivity.Name, canecazzo.get(position));
-                                Log.i("msg", "ESPERIMENTOPORNO : "+ result);
-                                dialog.dismiss();
-                                populateItems();
 
-                            } else {
-                                Replace(mMainActivity.Name, result, position+1);
-                                Log.i("asdasd","asdasdasdasd");
-                                populateItems();
-                                dialog.dismiss();
-
-                            }
-                        }
-                    });
-                    Log.i("msg","test eseguito correttamente");
-                    break;*/
             }
         }
 
@@ -380,7 +357,8 @@ break;
             case R.id.floating_action_button2:
 
                 final ArrayList<String> crack = new ArrayList<>();
-                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack);
+                final ArrayList<byte[]> technon = new ArrayList<>();
+                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon);
 
                 dialog.show();
                 dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
@@ -401,14 +379,25 @@ break;
 
                     @Override
                     public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
+                        if(magianera==1){
                         AddData1(name,size,brand,value,currency,icon,alien2o);
                         mDatabaseHelper1.AddPictureItem(mMainActivity.Name,alien2o,tac);
                         dialog.dismiss();
-                        populateItems();
+                        populateItems();}
+                        else{
+                            Toast.makeText(getContext(),"Pic missing!",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+                break;
 
+            case R.id.buttongrid:
+                Log.i("msg","cliccato");
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container,new GridViewListFragment());
+                transaction.commit();
 
+                break;
         }
 
 
@@ -422,6 +411,7 @@ break;
                 Bundle extras = data.getExtras();
                 Bitmap photo = (Bitmap) extras.get("data");
                 alien2o = Utils.getBytes(photo);
+                magianera = 1;
 
             }
 

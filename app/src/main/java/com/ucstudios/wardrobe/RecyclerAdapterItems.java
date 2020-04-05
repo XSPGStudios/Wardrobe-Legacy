@@ -24,6 +24,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     View.OnClickListener mClickListener;
     Integer[] ppos;
     Integer[] icons;
+    List<byte[]>tech;
     private Integer[] Icons = {
             R.drawable.ic_nike,
             R.drawable.ic_adidas,
@@ -35,11 +36,12 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
 
 
-    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons) {
+    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons,List<byte[]> tech) {
         this.mContext=context;
         this.items = items.toArray(new String[0]);
         this.ppos = position2.toArray(new Integer[0]);
         this.icons = icons.toArray(new Integer[0]);
+        this.tech= tech;
     }
 
     @NonNull
@@ -69,6 +71,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(items[position]);
         holder.imageView.setImageResource(Icons[icons[position]]);
+        //holder.imageView.setImageBitmap(Utils.getImage(tech.get(position))); Mostra immagine vera
         if(ppos[position]==1){
             holder.imageView2.setVisibility(View.VISIBLE);
         }

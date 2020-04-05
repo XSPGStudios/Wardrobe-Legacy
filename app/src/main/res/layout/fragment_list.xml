@@ -8,18 +8,6 @@
     tools:context=".HomeFragment">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:titleTextColor="@android:color/white">
-
-
-    </androidx.appcompat.widget.Toolbar>
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/spezzaossa2"
         android:layout_width="match_parent"
@@ -33,6 +21,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@android:color/white">
+
+
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:id="@+id/textView"
@@ -67,6 +69,20 @@
             app:layout_constraintVertical_bias="0.874"
             app:rippleColor="#FFFFFF"
             app:srcCompat="@drawable/ic_sms" />
+
+        <Button
+            android:id="@+id/buttongrid"
+            android:layout_width="22dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="109dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/ic_gridview"
+            android:clickable="true"
+            android:focusable="auto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import java.util.ArrayList;
-
-
+import java.util.List;
 
 
 public class ItemVisualDialog extends Dialog implements View.OnClickListener {
@@ -39,14 +38,17 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
     CameraActivation mCameraActivation;
     Integer iconvalue;
     String[] itemdatas;
+    ArrayList<byte[]> tech;
 
 
-    public ItemVisualDialog(Context context, Integer mistico, ArrayList<String> itemdata){
+
+    public ItemVisualDialog(Context context, Integer mistico, ArrayList<String> itemdata,ArrayList<byte[]> tech){
         super(context);
 
 
         this.alieno=mistico;
         this.itemdatas= itemdata.toArray(new String[0]);
+        this.tech = tech;
 
     }
 
@@ -79,6 +81,8 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
             size.setText(itemdatas[1]);
             brand.setText(itemdatas[2]);
             value.setText(itemdatas[3]);
+            image.setImageBitmap(Utils.getImage(tech.get(0)));
+
         }
 
 
@@ -108,8 +112,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                 }
 
                 else {
-                    mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue);
-                    Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
+                    mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue);Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
                 }
 
             break;
