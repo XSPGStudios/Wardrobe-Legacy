@@ -141,8 +141,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    public  void Replace(String Table, String item,String size,String brand,Integer value,Integer currency,Integer icon, int i){
-        mDatabaseHelper1.ReplaceItem(Table, item, size, brand,value,currency,icon,i);
+    public  void Replace(String Table, String item,String size,String brand,Integer value,Integer currency,Integer icon,byte[] alien2o, int i){
+        mDatabaseHelper1.ReplaceItem(Table, item, size, brand,value,currency,icon,alien2o,i);
 
 
     }
@@ -287,6 +287,18 @@ break;
                     }
                     final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata);
                     dialog.show();
+                    dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
+                        @Override
+                        public void activation(int a) {
+                            if (a==2){
+
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                if(intent.resolveActivity(getActivity().getPackageManager())!=null) {
+                                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                                }
+                            }
+                        }
+                    });
                     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
@@ -296,7 +308,7 @@ break;
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
                         @Override
                         public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
-                            Replace(mMainActivity.Name,name,size,brand,value,currency,icon,position+1);
+                            Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);
                             dialog.dismiss();
                             populateItems();
                         }

@@ -147,6 +147,10 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                     }
                     break;
 
+                    case R.id.image:
+                    mCameraActivation.activation(2);
+                    break;
+
 
 
 

@@ -137,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data1;
     }
 
-    public boolean ReplaceItem(String tabletitle, String item,String size,String brand, Integer value,Integer currency,Integer icon, int i){
+    public boolean ReplaceItem(String tabletitle, String item,String size,String brand, Integer value,Integer currency,Integer icon,byte[] image, int i){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("names", item);
@@ -146,6 +146,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("brand",brand);
         cv.put("value",value);
         cv.put("currency",currency);
+        cv.put("image",image);
         db.update(tabletitle, cv,"ID="+i,null);
         return true;
     }
