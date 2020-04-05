@@ -3,7 +3,6 @@ package com.ucstudios.wardrobe;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -11,12 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+
+
 
 public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
@@ -35,22 +33,27 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
     public Spinner spinner;
     public Button okbutton;
     public ImageView icons;
+    public ImageView image;
     ItemCreatedInterface mItemCreation;
     CustomIconPickerDialogItems dialogItems;
+    CameraActivation mCameraActivation;
     Integer iconvalue;
     String[] itemdatas;
 
 
     public ItemVisualDialog(Context context, Integer mistico, ArrayList<String> itemdata){
-
         super(context);
+
+
         this.alieno=mistico;
         this.itemdatas= itemdata.toArray(new String[0]);
 
     }
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.item_visual_dialog);
@@ -61,15 +64,17 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
         spinner = findViewById(R.id.currencyspinner);
         okbutton = findViewById(R.id.button3);
         icons = findViewById(R.id.icon);
+        image = findViewById(R.id.image);
         dialogItems = new CustomIconPickerDialogItems(getContext());
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.currencies,android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter1);
         okbutton.setOnClickListener(this);
         icons.setOnClickListener(this);
+        image.setOnClickListener(this);
         iconvalue=0;
 
-        if(alieno==1){
+      if(alieno==1){
             name.setText(itemdatas[0]);
             size.setText(itemdatas[1]);
             brand.setText(itemdatas[2]);
@@ -77,17 +82,17 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
         }
 
 
-
-
-
-
 }
+
+
+
 
     @Override
     public void onClick(View v) {
         if(alieno==0){
+
         switch (v.getId()){
-            case R.id.icon:
+                case R.id.icon:
                 dialogItems.show();
                 dialogItems.setIconResult(new CustomIconPickerDialogItems.OnIconSelected() {
                     @Override
@@ -106,6 +111,10 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                     mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue);
                     Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
                 }
+
+            break;
+            case R.id.image:
+                mCameraActivation.activation(1);
                 break;
 
 
@@ -151,6 +160,9 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
     }
 
+
+
+
     public void ItemCreation(ItemCreatedInterface itemcreated){
 
         mItemCreation = itemcreated;
@@ -160,6 +172,17 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
         void finish(String name,String size,String brand,Integer value,Integer currency,Integer icon);
     }
+
+    public void CameraActivation(CameraActivation activation){
+        mCameraActivation = activation;
+
+    }
+
+    public interface CameraActivation {
+
+        void activation (int a);
+    }
+
 
 
 

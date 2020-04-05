@@ -4,8 +4,10 @@ import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 import static android.content.ContentValues.TAG;
@@ -63,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");
-        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER,image BLOB)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
         a.put("POS",0);
@@ -76,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
         }
 
-    public boolean addData1(String table,String name,String size,Integer icon,String brand,int value,int currency){
+    public boolean addData1(String table,String name,String size,Integer icon,String brand,int value,int currency,byte[] image){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues1 = new ContentValues();
         contentValues1.put(COL01, name);
@@ -85,9 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues1.put("brand",brand);
         contentValues1.put("value",value);
         contentValues1.put("currency",currency);
+        contentValues1.put("image",image);
         long result1 = db.insert(table, null, contentValues1);
         Log.d("Message ", name +" saved in "+ table);
-
         db.close();
         if(result1!=1)return true;
         else return true;
@@ -269,6 +271,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data= db.rawQuery(query,null);
         return data;
     }
+
+    public void AddPictureItem(String tablename,byte[] image,int i) throws SQLException{
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("image",image);
+        db.update(tablename,cv,"ID="+i,null);
+    }
+
+    public Cursor GetImage(String tablename){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT image FROM "+tablename;
+        Cursor data = db.rawQuery(query,null);
+        return data;
+
+    }
+
+
 
 
 

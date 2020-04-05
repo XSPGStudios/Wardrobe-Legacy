@@ -5,10 +5,15 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.DragEvent;
@@ -30,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -41,6 +47,7 @@ import com.google.android.material.snackbar.Snackbar;
 //RISOLVERE PROBLEMA POSITION SWAPS
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -61,12 +68,14 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     MainActivity mMainActivity;
     private RecyclerView mRecyclerView;
     public ArrayList<String> canecazzo = new ArrayList<>();
+    FloatingActionButton floatingActionButton1;
+    int tac;
+    byte[] alien2o;
+    static final int REQUEST_IMAGE_CAPTURE=1;
 
 
 
     RecyclerAdapterItems recyclerAdapter;
-
-
 
 
     public ListFragment() {
@@ -96,7 +105,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        FloatingActionButton floatingActionButton1 = view.findViewById(R.id.floating_action_button2);
+        floatingActionButton1 = view.findViewById(R.id.floating_action_button2);
         floatingActionButton1.setOnClickListener(this);
         mDatabaseHelper1 = new DatabaseHelper(getActivity());
         mRecyclerView = view.findViewById(R.id.spezzaossa2);
@@ -117,8 +126,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
 
-    public void AddData1(String name,String size,String brand, Integer value,Integer currency,Integer icon) {
-        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, name,size,icon,brand,value,currency);
+    public void AddData1(String name, String size, String brand, Integer value, Integer currency, Integer icon, byte[] alien2o) {
+        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, name,size,icon,brand,value,currency,alien2o);
         toastMessage("New Item Created!");
 
     }
@@ -226,10 +235,17 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             final int position = viewHolder.getAdapterPosition();
+            tac = position;
 
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            populateItems();
+                        }
+                    });
                     builder.setTitle("Are you sure?");
                     final TextView sex = new TextView(getActivity());
                     sex.setText("Adding item to laundry basket, are you sure?");
@@ -253,6 +269,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     });
 builder.show();
 
+
 break;
 
 
@@ -261,6 +278,7 @@ break;
                 case ItemTouchHelper.LEFT:
                     final Cursor C = mDatabaseHelper1.GetItemData(position+1,mMainActivity.Name);
                     final ArrayList<String> itemdata = new ArrayList<>();
+
                     while (C.moveToNext()){
                         itemdata.add(C.getString(1));
                         itemdata.add(C.getString(4));
@@ -269,6 +287,12 @@ break;
                     }
                     final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata);
                     dialog.show();
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            populateItems();
+                        }
+                    });
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
                         @Override
                         public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
@@ -280,6 +304,7 @@ break;
                     });
 
                     break;
+
                     /*final CustomEditDialog dialog = new CustomEditDialog(getContext());
                     dialog.show();
                     dialog.setDialogResult(new CustomEditDialog.OnMyDialogResult() {
@@ -344,25 +369,64 @@ break;
 
                 final ArrayList<String> crack = new ArrayList<>();
                 final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack);
+
                 dialog.show();
+                dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
+                    @Override
+                    public void activation(int a) {
+                        if (a==1){
+
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if(intent.resolveActivity(getActivity().getPackageManager())!=null) {
+
+                                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                            }
+                        }
+                    }
+                });
                 dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
 
 
                     @Override
                     public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
-                        AddData1(name,size,brand,value,currency,icon);
+                        AddData1(name,size,brand,value,currency,icon,alien2o);
+                        mDatabaseHelper1.AddPictureItem(mMainActivity.Name,alien2o,tac);
                         dialog.dismiss();
                         populateItems();
                     }
                 });
 
 
-
         }
+
+
+                    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode,resultCode,data);
+            if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode==-1) {
+                Bundle extras = data.getExtras();
+                Bitmap photo = (Bitmap) extras.get("data");
+                alien2o = Utils.getBytes(photo);
+
+            }
+
+
+
+
 
 
             }
 
 
-    }
+
+
+}
+
+
+
+
+
 

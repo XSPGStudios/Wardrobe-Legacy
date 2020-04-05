@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;
     ArrayList<String> Items;
+    Bitmap imagepreview;
 
 
 
