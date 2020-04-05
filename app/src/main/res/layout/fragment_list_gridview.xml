@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <GridView
+        android:id="@+id/gridView134"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="65dp"
+        android:numColumns="auto_fit" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout1"
         android:layout_width="match_parent"
@@ -28,38 +37,38 @@
 
         <TextView
             android:id="@+id/textViewGrid"
-        android:layout_width="117dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="176dp"
-        android:layout_marginLeft="176dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="176dp"
-        android:layout_marginRight="176dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:typeface="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="117dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="176dp"
+            android:layout_marginLeft="176dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="176dp"
+            android:layout_marginRight="176dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_grid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:tint="#FFFFFF"
-        app:backgroundTint="#00897B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.874"
-        app:rippleColor="#FFFFFF"
-        app:srcCompat="@drawable/ic_sms" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:tint="#FFFFFF"
+            app:backgroundTint="#00897B"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.96"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.874"
+            app:rippleColor="#FFFFFF"
+            app:srcCompat="@drawable/ic_sms" />
 
         <Button
             android:id="@+id/buttonlist"
@@ -77,12 +86,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
 
 
 </FrameLayout>

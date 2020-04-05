@@ -393,6 +393,7 @@ break;
 
             case R.id.buttongrid:
                 Log.i("msg","cliccato");
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container,new GridViewListFragment());
                 transaction.commit();
