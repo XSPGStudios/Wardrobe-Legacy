@@ -266,6 +266,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean toLaundry(String tablename, int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("POS", 2);
+        db.update(tablename, cv,"ID="+i,null);
+        return true;
+    }
+
     public Cursor GetItemData(int pos,String tablename){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM "+tablename+" WHERE ID="+pos+"";

@@ -6,23 +6,39 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView2312"
-        android:layout_width="172dp"
-        android:layout_height="169dp"
+        android:id="@+id/imageView3"
+        android:layout_width="186dp"
+        android:layout_height="257dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_calendar_big" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/quadrato_200px" />
 
     <TextView
         android:id="@+id/textView666"
         android:layout_width="66dp"
         android:layout_height="23dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2312"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2312"
+        android:layout_width="140dp"
+        android:layout_height="156dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView666"
+        app:srcCompat="@drawable/ic_calendar_big" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

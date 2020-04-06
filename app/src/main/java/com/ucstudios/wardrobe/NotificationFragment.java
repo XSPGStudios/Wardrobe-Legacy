@@ -1,7 +1,9 @@
 package com.ucstudios.wardrobe;
 
 
+import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Canvas;
@@ -9,12 +11,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -169,8 +173,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
     }
 
-    String itemInLaundry = null;
-
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
@@ -180,24 +182,24 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            final int position = viewHolder.getAdapterPosition()-1;
+            final int position = viewHolder.getAdapterPosition();
 
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
-                    items.remove(position);
-                    recyclerAdapter.notifyItemRemoved(position);
-                    recyclerAdapter.notifyItemRangeChanged(position, items.size());
-
-                    itemInLaundry = items.get(position);
-                    Snackbar.make(recyclerView, itemInLaundry, Snackbar.LENGTH_LONG).setAction("Rimetti item nel cesto", new View.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("sure?");
+                    final TextView sex = new TextView(getActivity());
+                    sex.setText("Adding item to Washing Machine, are you sure?");
+                    sex.setGravity(Gravity.CENTER);
+                    builder.setView(sex);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            items.add(position, itemInLaundry);
-                            recyclerAdapter.notifyItemInserted(position);
-                            recyclerAdapter.notifyItemRangeChanged(position, items.size());
+                        public void onClick(DialogInterface dialog, int which) {
+                        mDatabaseHelper2.toLaundry(mMainActivity.Name,position+1);
+                        populateBasket();
                         }
-                    }).show();
+                    });
+                    builder.show();
                     break;
             }
         }
