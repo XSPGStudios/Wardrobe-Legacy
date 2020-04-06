@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -48,6 +50,23 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
         buttonlist.setOnClickListener(this);
         populateGridItems();
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Cursor magiabianca = mDatabaseHelper32.GetItemData(position+1,mMainActivity.Name);
+                final ArrayList<String> itemdata2 = new ArrayList<>();
+                final ArrayList<byte[]> negromatto = new ArrayList<>();
+                while (magiabianca.moveToNext()){
+                    itemdata2.add(magiabianca.getString(1));
+                    itemdata2.add(magiabianca.getString(5));
+                    itemdata2.add(String.valueOf(magiabianca.getInt(6)));
+                    negromatto.add(magiabianca.getBlob(8));
+                }
+                final VisualDialogItemDialogTrue  dialogItemDialogTrue = new VisualDialogItemDialogTrue(getActivity(),itemdata2,negromatto);
+                dialogItemDialogTrue.show();
+                Log.i("msg","Traffica"+itemdata2.get(1));
+            }
+            });
 
 
 
@@ -76,6 +95,7 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
             transaction.replace(R.id.container,new ListFragment());
             transaction.commit();
             break;
+
 
         }
     }

@@ -66,6 +66,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
 
+
     RecyclerAdapterItems recyclerAdapter;
 
 
@@ -178,7 +179,18 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 int pos = mRecyclerView.indexOfChild(v);
-                Log.i("msg","Traffica"+pos);
+                final Cursor magiabianca = mDatabaseHelper1.GetItemData(pos+1,mMainActivity.Name);
+                final ArrayList<String> itemdata2 = new ArrayList<>();
+                final ArrayList<byte[]> negromatto = new ArrayList<>();
+                while (magiabianca.moveToNext()){
+                    itemdata2.add(magiabianca.getString(1));
+                    itemdata2.add(magiabianca.getString(5));
+                    itemdata2.add(String.valueOf(magiabianca.getInt(6)));
+                    negromatto.add(magiabianca.getBlob(8));
+                }
+              final VisualDialogItemDialogTrue  dialogItemDialogTrue = new VisualDialogItemDialogTrue(getActivity(),itemdata2,negromatto);
+                dialogItemDialogTrue.show();
+                Log.i("msg","Traffica"+itemdata2.get(1));
             }
         });
         //dragListener.onDrag(recyclerView, risultato);
