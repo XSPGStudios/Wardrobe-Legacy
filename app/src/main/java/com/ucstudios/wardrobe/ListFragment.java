@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -190,6 +192,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 }
               final VisualDialogItemDialogTrue  dialogItemDialogTrue = new VisualDialogItemDialogTrue(getActivity(),itemdata2,negromatto);
                 dialogItemDialogTrue.show();
+                dialogItemDialogTrue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 Log.i("msg","Traffica"+itemdata2.get(1));
             }
         });

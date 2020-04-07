@@ -1,15 +1,22 @@
 package com.ucstudios.wardrobe;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+
+import static com.ucstudios.wardrobe.R.id.dialogtoolbar;
 
 public class VisualDialogItemDialogTrue extends Dialog implements View.OnClickListener {
 
@@ -29,6 +36,7 @@ public class VisualDialogItemDialogTrue extends Dialog implements View.OnClickLi
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -38,6 +46,8 @@ public class VisualDialogItemDialogTrue extends Dialog implements View.OnClickLi
         brand = findViewById(R.id.Brand);
         value = findViewById(R.id.value);
         image = findViewById(R.id.imageViewsas);
+        image.setClipToOutline(true);
+
 
 
 
