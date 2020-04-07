@@ -44,24 +44,31 @@
 
     <TextView
         android:id="@+id/Brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="312dp"
+        android:layout_width="61dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="308dp"
+        android:background="@drawable/roundedcorners"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintHorizontal_bias="0.225"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="312dp"
+        android:layout_width="61dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="308dp"
+        android:background="@drawable/roundedcorners"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
         android:text="TextView"
-        android:textColor="#4CAF50"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.793"
+        app:layout_constraintHorizontal_bias="0.775"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
