@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 //RISOLVERE PROBLEMA POSITION SWAPS
 import java.util.ArrayList;
 
@@ -64,6 +65,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     final ArrayList<byte[]> tech = new ArrayList<>();
     final ArrayList<byte[]> tecca = new ArrayList<>();
     Button gridbutton;
+    ArrayList<String> ItemsInBasket = new ArrayList<>();
 
 
 
@@ -165,7 +167,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             tech.add(data.getBlob(8));
         }
 
-
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -251,37 +252,16 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            populateItems();
-                        }
-                    });
-                    builder.setTitle("Are you sure?");
-                    final TextView sex = new TextView(getActivity());
-                    sex.setText("Adding item to laundry basket, are you sure?");
-                    sex.setGravity(Gravity.CENTER);
+                    mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
+                    populateItems();
 
-                    builder.setView(sex);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
-                            dialog.dismiss();
-                            populateItems();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            populateItems();
-                        }
-                    });
-builder.show();
-
-
+                    Snackbar.make(mRecyclerView, mMainActivity.Name, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position);
+                                    populateItems();
+                                }
+                            }).show();
 break;
 
 
