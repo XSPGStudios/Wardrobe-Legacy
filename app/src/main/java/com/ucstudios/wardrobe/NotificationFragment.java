@@ -182,11 +182,12 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     }
 
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
+
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -209,9 +210,23 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
                     }
                     populateBasket();
+                    break;
+                case ItemTouchHelper.LEFT:
+                    ArrayList<String> dacestoalavatrices = new ArrayList<>();
+                    for(int i=0;i<TotalCategories.size();i++){
+                        Cursor c = mDatabaseHelper2.GetBasketSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
+                        while(c.moveToNext()){
+                            dacestoalavatrices.add(c.getString(1));
+                            Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
+                        }
+                    }
 
-
-
+                    for(int is=0;is<TotalCategories.size();is++){
+                        //get the table name
+                        mDatabaseHelper2.toWardrobe(TotalCategories.get(is),dacestoalavatrices.get(0));
+                        Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
+                    }
+                    populateBasket();
                     break;
             }
         }
@@ -221,6 +236,11 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
                     .addSwipeRightActionIcon(R.drawable.ic_chevron_right_black_24dp)
+                    .create()
+                    .decorate();
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
+                    .addSwipeLeftActionIcon(R.drawable.ic_chevron_right_black_24dp)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

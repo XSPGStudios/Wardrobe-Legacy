@@ -273,6 +273,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(tablename, cv,"names='"+SpecificItem+"'",null);
         return true;
     }
+    public boolean toWardrobe(String tablename, String SpecificItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("POS", (byte[]) null);
+        db.update(tablename, cv,"names='"+SpecificItem+"'",null);
+        return true;
+    }
+
+    public boolean toBasketmodif(String tablename, String SpecificItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("POS", 1);
+        db.update(tablename, cv,"names='"+SpecificItem+"'",null);
+        return true;
+    }
 
     public Cursor GetItemData(int pos,String tablename){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -292,6 +307,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor GetBasketSpecific(String tablename,String itemname){
         SQLiteDatabase db = this.getWritableDatabase();
         String query1 = "SELECT * FROM "+tablename+" WHERE POS = 1 AND names = '"+itemname+"'";
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
+    }
+
+    public Cursor GetWMSpecific(String tablename,String itemname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 2 AND names = '"+itemname+"'";
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
     }
