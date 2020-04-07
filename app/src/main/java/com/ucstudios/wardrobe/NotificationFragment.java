@@ -6,10 +6,12 @@ import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,15 +51,16 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     DatabaseHelper mDatabaseHelper2;
     private String mParam1;
     private String mParam2;
-    private ListView listView;
+    ArrayList<String> TotalCategories = new ArrayList<>();
+    ArrayList<String> ItemsInBasket = new ArrayList<>();
+
     public NotificationFragment() {
         // Required empty public constructor
     }
 
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
-    List<String> items;
-    MainActivity mMainActivity;
+
 
 
 
@@ -106,8 +109,12 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
         final Cursor data1 = mDatabaseHelper2.getData();
         final ArrayList<String> categories = new ArrayList<>();
+
+
         while(data1.moveToNext()){
             categories.add(data1.getString(1));
+            TotalCategories.add(data1.getString(1));
+
         }
 
 
@@ -117,6 +124,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             Cursor data = mDatabaseHelper2.GetBasket(categories.get(i));
             while(data.moveToNext()){
                 listData.add(data.getString(1));
+               ItemsInBasket.add(data.getString(1));
         }
 
         }
@@ -186,20 +194,24 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("sure?");
-                    final TextView sex = new TextView(getActivity());
-                    sex.setText("Adding item to Washing Machine, are you sure?");
-                    sex.setGravity(Gravity.CENTER);
-                    builder.setView(sex);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        mDatabaseHelper2.toLaundry(mMainActivity.Name,position+1);
-                        populateBasket();
-                        }
-                    });
-                    builder.show();
+                    ArrayList<String> dacestoalavatrice = new ArrayList<>();
+                    for(int i=0;i<TotalCategories.size();i++){
+                       Cursor c = mDatabaseHelper2.GetBasketSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
+                       while(c.moveToNext()){
+                           dacestoalavatrice.add(c.getString(1));
+                           Log.i("msg :","Swiped "+ dacestoalavatrice.get(0));
+                       }
+                    }
+
+                    for(int is=0;is<TotalCategories.size();is++){
+                        //get the table name
+                        mDatabaseHelper2.toLaundry(TotalCategories.get(is),dacestoalavatrice.get(0));
+                        Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
+                    }
+                    populateBasket();
+
+
+
                     break;
             }
         }

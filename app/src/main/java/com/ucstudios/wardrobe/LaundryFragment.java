@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 
 import android.app.TimePickerDialog;
 import android.content.ClipData;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private String mParam1;
     private String mParam2;
+    DatabaseHelper mDatabaseHelper;
     public LaundryFragment() {
         // Required empty public constructor
     }
@@ -72,7 +74,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView = view.findViewById(R.id.gThunbergView3);
-        recyclerAdapter = new RecyclerAdapter(itemsLaundry);
+        mDatabaseHelper = new DatabaseHelper(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -82,7 +84,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 new SimpleItemTouchHelperCallback(recyclerAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
-
+        populateWM();
         return view;
     }
 
@@ -111,6 +113,35 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             return true;
         }
     };
+
+    public void populateWM(){
+        final Cursor data1 = mDatabaseHelper.getData();
+        final ArrayList<String> categories = new ArrayList<>();
+
+
+        while(data1.moveToNext()){
+            categories.add(data1.getString(1));
+
+
+        }
+
+
+        final ArrayList<String> listData = new ArrayList<>();
+
+        for(int i=0; i<categories.size();i++) {
+            Cursor data = mDatabaseHelper.GetWM(categories.get(i));
+            while(data.moveToNext()){
+                listData.add(data.getString(1));
+
+            }
+
+        }
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+    recyclerAdapter = new RecyclerAdapter(listData);
+    recyclerView.setLayoutManager(layoutManager);
+    recyclerView.setAdapter(recyclerAdapter);
+
+    }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

@@ -33,6 +33,11 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
     };
 
+    private Integer[] iconwm ={
+            R.drawable.ic_wm,
+            R.drawable.ic_basket
+    };
+
 
 
 
@@ -73,6 +78,12 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         holder.imageView.setImageResource(Icons[icons[position]]);
         //holder.imageView.setImageBitmap(Utils.getImage(tech.get(position))); Mostra immagine vera
         if(ppos[position]==1){
+            holder.imageView2.setImageResource(iconwm[1]);
+            holder.imageView2.setVisibility(View.VISIBLE);
+
+        }
+        if(ppos[position]==2){
+            holder.imageView2.setImageResource(iconwm[0]);
             holder.imageView2.setVisibility(View.VISIBLE);
         }
     }

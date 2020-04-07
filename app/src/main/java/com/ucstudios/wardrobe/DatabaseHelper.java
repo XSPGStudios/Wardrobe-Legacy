@@ -266,11 +266,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean toLaundry(String tablename, int i){
+    public boolean toLaundry(String tablename, String SpecificItem){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("POS", 2);
-        db.update(tablename, cv,"ID="+i,null);
+        db.update(tablename, cv,"names='"+SpecificItem+"'",null);
         return true;
     }
 
@@ -289,13 +289,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(tablename,cv,"ID="+i,null);
     }
 
-    public Cursor GetImage(String tablename){
+    public Cursor GetBasketSpecific(String tablename,String itemname){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT image FROM "+tablename;
-        Cursor data = db.rawQuery(query,null);
-        return data;
-
+        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 1 AND names = '"+itemname+"'";
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
     }
+
+    public Cursor GetWM(String tablename){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 2";
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
+    }
+
 
 
 
