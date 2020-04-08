@@ -258,7 +258,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     Snackbar.make(mRecyclerView, mMainActivity.Name, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position);
+                                    mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position+1);
                                     populateItems();
                                 }
                             }).show();

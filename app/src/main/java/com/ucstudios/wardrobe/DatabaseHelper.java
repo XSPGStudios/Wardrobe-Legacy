@@ -270,7 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean toWardrobemodif(String tablename, int i){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("POS", 1);
+        cv.put("POS", (byte[]) null);
         db.update(tablename, cv,"ID="+i,null);
         return true;
     }
