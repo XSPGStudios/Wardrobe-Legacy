@@ -186,8 +186,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
         return db.delete(table,"name=?", new String[]{item}) > 0;
+    }
 
-
+    public boolean delete4(String table, String item){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
+        return db.delete(table,"name=?", new String[]{item}) > 0;
     }
 
     public boolean TABLEDROP(String table){
@@ -263,6 +267,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean toWardrobemodif(String tablename, int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("POS", 1);
+        db.update(tablename, cv,"ID="+i,null);
+        return true;
+    }
     public boolean toLaundry(String tablename, String SpecificItem){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
