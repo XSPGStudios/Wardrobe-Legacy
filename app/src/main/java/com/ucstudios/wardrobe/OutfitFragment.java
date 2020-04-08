@@ -3,6 +3,8 @@ package com.ucstudios.wardrobe;
 
 import android.content.ClipData;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -105,8 +107,13 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         while (data.moveToNext()) {
             listData.add(data.getString(0));
         }
+        Cursor categories = mDatabaseHelper.getData();
+        final ArrayList<String> categories2 = new ArrayList<>();
+        while (categories.moveToNext()){
+            categories2.add(categories.getString(1));
+        }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData);
+        final RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData);
         mListview.setLayoutManager(layoutManager);
         mListview.setAdapter(adapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
@@ -119,7 +126,29 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         adapter.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //VisualDialogOutfit dialog = new VisualDialogOutfit(getContext(),//pinzare immagine per nome outfit,//pinzare posizione click)
+                int position = mListview.indexOfChild(v);
+                final ArrayList<String> OutfitComponents = new ArrayList<>();
+                for(int i = 0; i<categories2.size();i++){
+                    Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
+                    while(c.moveToNext()){
+                        OutfitComponents.add(c.getString(0));
+                    }
+                }
+                final ArrayList<byte[]> fumo = new ArrayList<>();
+                for(int u=0;u<categories2.size();u++){
+                    for(int i =0;i<OutfitComponents.size();i++) {
+                      Cursor cursor =  mDatabaseHelper.GetByteOutfit(categories2.get(u),OutfitComponents.get(i));
+                        while(cursor.moveToNext()){
+                            fumo.add(cursor.getBlob(0));
+                        }
+                    }
+                }
+
+
+                Log.i("Componenti outfit ","Ecco "+OutfitComponents);
+               VisualDialogOutfit dialog = new VisualDialogOutfit(getContext(),fumo,OutfitComponents);
+               dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+               dialog.show();
 
             }
         });

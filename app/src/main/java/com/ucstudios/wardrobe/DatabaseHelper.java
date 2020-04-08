@@ -333,6 +333,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data1;
     }
 
+    public Cursor GetItemOutfit(String columname,String outfitname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT "+columname+" FROM outfit_table WHERE name ='"+outfitname+"'";
+        Cursor data = db.rawQuery(query,null);
+        return data;
+
+    }
+
+    public Cursor GetByteOutfit(String tablename,String itemname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT image FROM "+tablename+" WHERE names=+'"+itemname+"'";
+        Cursor data = db.rawQuery(query,null);
+        return data;
+    }
+
 
 
 
