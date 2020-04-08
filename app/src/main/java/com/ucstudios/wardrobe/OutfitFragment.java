@@ -1,6 +1,7 @@
 package com.ucstudios.wardrobe;
 
 
+import android.content.ClipData;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,10 @@ import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +38,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
 
     DatabaseHelper mDatabaseHelper;
-    ListView mListview;
+    RecyclerView mListview;
     private String mParam1;
     private String mParam2;
     public int a=0;
@@ -100,9 +105,38 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         while (data.moveToNext()) {
             listData.add(data.getString(0));
         }
-        ListAdapter adapter = new ArrayAdapter<>(mListview.getContext(), android.R.layout.simple_list_item_1, listData);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData);
+        mListview.setLayoutManager(layoutManager);
         mListview.setAdapter(adapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+        mListview.addItemDecoration(dividerItemDecoration);
+        boolean risultato = longClickListener.onLongClick(mListview);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mListview);
+        adapter.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //VisualDialogOutfit dialog = new VisualDialogOutfit(getContext(),//pinzare immagine per nome outfit,//pinzare posizione click)
+
+            }
+        });
     }
+
+    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+
+
+            ClipData merda = ClipData.newPlainText("", "");
+            View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+            v.startDrag(merda, myShadowBuilder, v, 0);
+            return true;
+        }
+    };
 
    public void AddOutfit(String cocco){
         mDatabaseHelper.addData2(cocco);

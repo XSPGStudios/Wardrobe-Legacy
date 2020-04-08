@@ -1,14 +1,11 @@
 package com.ucstudios.wardrobe;
 
-import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 import static android.content.ContentValues.TAG;
 
@@ -243,12 +240,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public boolean ReplaceIcon(int icon, int i){
+    public void ReplaceIcon(int icon, int i){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("IC", icon);
-        db.update("categories_table", cv,"ID="+i,null);
-        return true;
+        db.update("categories_table",cv,"ID="+i,null);
+
     }
 
     public Cursor GetBasket(String tablename){
