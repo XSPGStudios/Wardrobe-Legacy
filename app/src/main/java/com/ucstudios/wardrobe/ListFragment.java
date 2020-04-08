@@ -249,7 +249,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
             final int position = viewHolder.getAdapterPosition();
             tac = position;
-//commitfail
+
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
                     mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);

@@ -319,6 +319,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data1;
     }
 
+    public Cursor GetWardrobeSpecific(String tablename,String itemname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 1 AND names = '"+itemname+"'";
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
+    }
+
     public Cursor GetWMSpecific(String tablename,String itemname){
         SQLiteDatabase db = this.getWritableDatabase();
         String query1 = "SELECT * FROM "+tablename+" WHERE POS = 2 AND names = '"+itemname+"'";

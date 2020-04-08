@@ -218,7 +218,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                     .decorate();
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
-                    .addSwipeLeftActionIcon(R.drawable.ic_chevron_right_black_24dp)
+                    .addSwipeLeftActionIcon(R.drawable.ic_basket24)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

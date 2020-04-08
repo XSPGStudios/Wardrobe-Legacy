@@ -114,7 +114,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         while(data1.moveToNext()){
             categories.add(data1.getString(1));
             TotalCategories.add(data1.getString(1));
-
         }
 
 
@@ -125,8 +124,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             while(data.moveToNext()){
                 listData.add(data.getString(1));
                ItemsInBasket.add(data.getString(1));
-        }
-
+            }
         }
 
 
@@ -235,12 +233,12 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                    .addSwipeRightActionIcon(R.drawable.ic_chevron_right_black_24dp)
+                    .addSwipeRightActionIcon(R.drawable.ic_wm24)
                     .create()
                     .decorate();
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
-                    .addSwipeLeftActionIcon(R.drawable.ic_chevron_right_black_24dp)
+                    .addSwipeLeftActionIcon(R.drawable.closet24)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
