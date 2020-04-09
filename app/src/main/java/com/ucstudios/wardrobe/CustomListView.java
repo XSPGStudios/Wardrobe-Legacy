@@ -83,9 +83,10 @@ int stato;
         final Switch aSwitch = (Switch) convertView.findViewById(R.id.switch1);
         final Spinner spinner = convertView.findViewById(R.id.spinner);
 
+if(stato==1){
         if (switchStatus.get(position) != "0") {
             aSwitch.setChecked(true);
-        }
+        }}
 
         if (stato == 0){
             aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
