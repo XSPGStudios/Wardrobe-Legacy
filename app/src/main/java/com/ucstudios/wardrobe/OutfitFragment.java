@@ -1,11 +1,16 @@
 package com.ucstudios.wardrobe;
 
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +22,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,8 +32,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +55,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     public int a=0;
+    ArrayList<String> dro = new ArrayList<>();
+    ArrayList<String> drog = new ArrayList<>();
 
 
     public OutfitFragment() {
@@ -74,6 +86,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         gridbutton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mListview = view.findViewById(R.id.spezzaossa4);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(mListview);
 
         Spinner spinner = view.findViewById(R.id.spinner_nav);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -109,6 +123,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         final ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(0));
+            dro.add("0");
         }
         Cursor categories = mDatabaseHelper.getData();
         final ArrayList<String> categories2 = new ArrayList<>();
@@ -122,10 +137,6 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
         mListview.addItemDecoration(dividerItemDecoration);
         boolean risultato = longClickListener.onLongClick(mListview);
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(mListview);
         adapter.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,15 +145,24 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 for(int i = 0; i<categories2.size();i++){
                     Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
                     while(c.moveToNext()){
+                        if(c.getString(0)!=null){
                         OutfitComponents.add(c.getString(0));
+                        drog.add("1");
                     }
+                        else{
+                            drog.add("0");
+                        }
+                    }
+
                 }
                 final ArrayList<byte[]> fumo = new ArrayList<>();
                 for(int u=0;u<categories2.size();u++){
                     for(int i =0;i<OutfitComponents.size();i++) {
                       Cursor cursor =  mDatabaseHelper.GetByteOutfit(categories2.get(u),OutfitComponents.get(i));
                         while(cursor.moveToNext()){
-                            fumo.add(cursor.getBlob(0));
+                            if(OutfitComponents.get(i)!="null") {
+                                fumo.add(cursor.getBlob(0));
+                            }
                         }
                     }
                 }
@@ -175,6 +195,69 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
    }
 
+   ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+   @SuppressLint("SetTextI18n")
+    @Override
+    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        final int position = viewHolder.getAdapterPosition();
+
+        switch (direction) {
+
+            case ItemTouchHelper.LEFT:
+                Cursor data = mDatabaseHelper.getData2();
+                final ArrayList<String> listData = new ArrayList<>();
+                while (data.moveToNext()) {
+                    listData.add(data.getString(0));
+                    dro.add("0");
+                }
+                Cursor categories = mDatabaseHelper.getData();
+                final ArrayList<String> categories2 = new ArrayList<>();
+                while (categories.moveToNext()){
+                    categories2.add(categories.getString(1));
+                }
+                final ArrayList<String> OutfitComponents = new ArrayList<>();
+                for(int i = 0; i<categories2.size();i++){
+                    Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
+                    while(c.moveToNext()){
+                        if(c.getString(0)!=null){
+                            OutfitComponents.add(c.getString(0));
+                            drog.add("1");
+                        }
+                        else{
+                            drog.add("0");
+                        }
+                    }
+
+                }
+                CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(),drog,1);
+                customDialogClass.show();
+
+                break;
+
+
+        }
+    }
+
+
+
+    @Override
+    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                .addSwipeLeftActionIcon(R.drawable.ic_edit24)
+                .create()
+                .decorate();
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
+};
+
+
 
     @Override
     public void onClick(View v) {
@@ -182,7 +265,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
             case R.id.floating_action_button:
 
-                CustomDialogClass cdd = new CustomDialogClass(getActivity());
+                CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0);
                 cdd.show();
                 cdd.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override

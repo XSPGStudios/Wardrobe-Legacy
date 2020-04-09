@@ -50,8 +50,7 @@ public class AdapterOutfitGrid extends BaseAdapter {
         text.setText(itemname.get(position));
         imageView = convertView.findViewById(R.id.imageViewGridnumber1);
         imageView.setImageBitmap(Utils.getImage(imagedata.get(position).get(0)));
-        imageView2 = convertView.findViewById(R.id.imageViewGridNumber2);
-        imageView2.setImageBitmap(Utils.getImage(imagedata.get(position).get(1)));
+       
        //Build if to check imagedata actual presence
 
         return convertView;

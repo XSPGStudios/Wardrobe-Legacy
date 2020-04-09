@@ -39,16 +39,18 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     MainActivity mainActivity;
     OutfitFragment mOutfit;
     EditText editText;
-
-
+    ArrayList<String> switchStatus;
+    int stato;
 
     private ListView mRecyclerView;
 
 
 
 
-    public CustomDialogClass(Activity a) {
+    public CustomDialogClass(Activity a,ArrayList<String> ColumnsAction,int stato) {
         super(a);
+        this.switchStatus=ColumnsAction;
+        this.stato=stato;
 
 
 
@@ -78,7 +80,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         }
 
 
-        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData);
+        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato);
         mRecyclerView.setAdapter(adapter);
     }
 

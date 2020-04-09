@@ -92,9 +92,9 @@ public class OutfitGridFragment extends Fragment implements View.OnClickListener
                 Cursor c = mDatabasehelper.GetItemOutfit(categories2.get(u),listData.get(i));
 
                while(c.moveToNext()){
-
+                    if(c.getString(0)!=null){
                     currentrow.add(c.getString(0));
-                }
+                }}
 
             }
             AllOutfitComponents.add(currentrow);

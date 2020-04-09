@@ -32,15 +32,18 @@ public class CustomListView extends ArrayAdapter<String>  {
     int mResource;
     DatabaseHelper mDatabaseHelper;
     public int a=2;
-
+ArrayList<String> switchStatus;
+int stato;
 
 
 
     MainActivity mainActivity;
-    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData) {
+    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato) {
         super(context, adapter_view_layout, listData);
         mResource = adapter_view_layout;
         this.mContext= context;
+        this.switchStatus=switchStatus;
+        this.stato=stato;
     }
 
 
@@ -62,12 +65,12 @@ public class CustomListView extends ArrayAdapter<String>  {
     }
 
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         mDatabaseHelper = new DatabaseHelper(getContext());
         String category = getItem(position);
 
 
-        Cursor Drugs =  mDatabaseHelper.getData1(category);
+        Cursor Drugs = mDatabaseHelper.getData1(category);
         final ArrayList<String> drugs = new ArrayList<>();
         while (Drugs.moveToNext()) {
             drugs.add(Drugs.getString(1));
@@ -80,50 +83,50 @@ public class CustomListView extends ArrayAdapter<String>  {
         final Switch aSwitch = (Switch) convertView.findViewById(R.id.switch1);
         final Spinner spinner = convertView.findViewById(R.id.spinner);
 
+        if (switchStatus.get(position) != "0") {
+            aSwitch.setChecked(true);
+        }
 
+        if (stato == 0){
+            aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    spinnerVisibility();
 
-
-        aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                spinnerVisibility();
-
-            }
-
-            private void spinnerVisibility() {
-                if (aSwitch.isChecked()){
-                    spinner.setVisibility(View.VISIBLE);
-
-
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                            final String item = (String) spinner.getSelectedItem();
-                               final String column = (String) checkbox.getText();
-                               if(a==2) {
-                                   addItem(item, column);
-                                   a=1;
-                               }else{
-                                   replaceItemOutfit(item, column);}}
-
-
-
-
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                        }});
                 }
-                else{
-                    final String porno = (String) spinner.getSelectedItem();
-                    final String perno = (String) checkbox.getText();
-                    spinner.setVisibility(View.GONE);
-                    DeleteData(perno, porno);
-                }
-            }
+                private void spinnerVisibility() {
+                    if (aSwitch.isChecked()) {
+                        spinner.setVisibility(View.VISIBLE);
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        });
+                                final String item = (String) spinner.getSelectedItem();
+                                final String column = (String) checkbox.getText();
+                                if (a == 2) {
+                                    addItem(item, column);
+                                    a = 1;
+                                } else {
+                                    replaceItemOutfit(item, column);
+                                }
+                            }
+
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                            }
+                        });
+                    } else {
+                        final String porno = (String) spinner.getSelectedItem();
+                        final String perno = (String) checkbox.getText();
+                        spinner.setVisibility(View.GONE);
+                        DeleteData(perno, porno);
+
+                    }
+                }
+
+            });
+    }
         checkbox.setText(category);
 
         ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter(getContext(),

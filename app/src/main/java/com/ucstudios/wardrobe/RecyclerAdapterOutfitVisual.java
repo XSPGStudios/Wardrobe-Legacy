@@ -67,7 +67,7 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.imageView.setClipToOutline(true);
-    holder.imageView.setImageBitmap(Utils.getImage(imagedatas.get(position)));
+         holder.imageView.setImageBitmap(Utils.getImage(imagedatas.get(position)));
 
 
     }
