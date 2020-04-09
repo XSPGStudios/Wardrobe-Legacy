@@ -51,14 +51,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME1);
         onCreate(db);
     }
-    public boolean addData(String item){
+    public boolean addData(String item,int icon){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         ContentValues cv = new ContentValues();
         ContentValues a = new ContentValues();
         contentValues.put(COL1, item);
-        contentValues.put("IC",0);
+        contentValues.put("IC",icon);
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");

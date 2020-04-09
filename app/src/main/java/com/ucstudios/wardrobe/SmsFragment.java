@@ -113,8 +113,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
 
     }
 
-    public void AddData(String newEntry) {
-        boolean insertData = mDatabaseHelper.addData(newEntry);
+    public void AddData(String newEntry, int icon) {
+        boolean insertData = mDatabaseHelper.addData(newEntry,icon);
         toastMessage("New Category Created!");
     }
 
@@ -258,8 +258,19 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         switch (v.getId()) {
             case R.id.floating_action_button:
 
+                EditCategoriesDialog editCategoriesDialog = new EditCategoriesDialog(getContext(),0);
+                editCategoriesDialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
+                    @Override
+                    public void finish(String result1, int icon) {
+                        mDatabaseHelper.PINZA = result1;
+                        AddData(mDatabaseHelper.PINZA,icon);
+                        populateButtons();
+                    }
+                });
+                editCategoriesDialog.show();
+                break;
 
-                final String[] m_Text = {""};
+                /*final String[] m_Text = {""};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Title");
                 final EditText input = new EditText(getActivity());
@@ -287,7 +298,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                     }
                 });
                 builder.show();
-                break;
+                break;*/
 
         }
     }

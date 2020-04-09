@@ -24,7 +24,7 @@ public class AdapterCategories extends ArrayAdapter<String> {
     private Context mContext;
     int mResource;
     private onMyAdapterResult1 mAdapterResult12;
-    EditCategoriesDialog dialog = new EditCategoriesDialog(getContext());
+    EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1);
     DatabaseHelper mDatabaseHelper = new DatabaseHelper(getContext());
     Integer[] icons;
 

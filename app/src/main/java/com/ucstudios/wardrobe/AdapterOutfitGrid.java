@@ -21,6 +21,7 @@ public class AdapterOutfitGrid extends BaseAdapter {
     ArrayList<ArrayList<byte[]>> imagedata;
     ImageView imageView;
     ImageView imageView2;
+    ImageView imageView3;
     public AdapterOutfitGrid(Context context, ArrayList<String> itemname,ArrayList<ArrayList<byte[]>> alloutfitimagess) {
         this.thisInflater = LayoutInflater.from(context);
         this.itemname = itemname;
@@ -51,6 +52,7 @@ public class AdapterOutfitGrid extends BaseAdapter {
         imageView.setImageBitmap(Utils.getImage(imagedata.get(position).get(0)));
         imageView2 = convertView.findViewById(R.id.imageViewGridNumber2);
         imageView2.setImageBitmap(Utils.getImage(imagedata.get(position).get(1)));
+       //Build if to check imagedata actual presence
 
         return convertView;
     }
