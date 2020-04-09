@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -69,6 +70,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_outfit, container, false);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floating_action_button);
         floatingActionButton.setOnClickListener(this);
+        Button gridbutton = view.findViewById(R.id.gridbutton1);
+        gridbutton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mListview = view.findViewById(R.id.spezzaossa4);
 
@@ -190,7 +193,15 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 });
                 break;
 
+            case R.id.gridbutton1:
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container,new OutfitGridFragment());
+                transaction.commit();
+
+break;
         }
+
 
 
     }}

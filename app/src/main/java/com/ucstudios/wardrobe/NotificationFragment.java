@@ -170,6 +170,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
             case R.id.floatingActionButton8:
 
+                assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new LaundryFragment());
                 transaction.commit();

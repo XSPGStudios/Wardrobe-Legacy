@@ -75,6 +75,20 @@
             app:rippleColor="#FFFFFF"
             app:srcCompat="@drawable/ic_outfit" />
 
+        <Button
+            android:id="@+id/gridbutton1"
+            android:layout_width="22dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="350dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/ic_gridview"
+            android:clickable="true"
+            android:focusable="auto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
