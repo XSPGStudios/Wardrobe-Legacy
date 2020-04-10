@@ -137,10 +137,7 @@ if(stato==1){
                 }
             });
 
-            /*TODO :
-                then setonChangeClickListener and replace any item that is switched in the appropriate Outfit_Table column
-                Solve dialog problems
-             */
+
         }
 
         if (stato == 0){

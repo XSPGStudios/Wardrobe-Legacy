@@ -133,6 +133,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         final RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData);
+        mDatabaseHelper.GetNullOutfitName();
         mListview.setLayoutManager(layoutManager);
         mListview.setAdapter(adapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
@@ -176,7 +177,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        mDatabaseHelper.GetNullOutfitName();
+
     }
 
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
@@ -264,6 +265,24 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 Log.i("Ecco Valori","Ecco"+drog);
                 CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(),drog,1,SpinnerValue);
                 customDialogClass.show();
+                customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
+                    @Override
+                    public void finish(String result) {
+
+                        if(!result.equals("")&&!result.equals("ELIMINAZIONETOTALE")){
+                            mDatabaseHelper.ReplaceOutfit(result,position+1);
+                            mDatabaseHelper.GetNullOutfitName();
+
+                        }
+                        else if(result.equals("ELIMINAZIONETOTALE")){
+                            mDatabaseHelper.delete4("Outfit_Table",listData.get(position));
+                            populateOutfits();
+                            Log.i("msg","Eliminazione completata!");
+                        }
+
+                    }
+                });
+
                 customDialogClass.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -272,15 +291,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                     }
                 });
-                customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
-                    @Override
-                    public void finish(String result) {
-                        if(!result.equals("")){
-                            mDatabaseHelper.ReplaceOutfit(result,position+1);
-                            populateOutfits();
-                        }
-                    }
-                });
+
 
                 break;
 

@@ -1,6 +1,7 @@
 package com.ucstudios.wardrobe;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -45,6 +46,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
 
     private ListView mRecyclerView;
     private ArrayList<Integer> SpinnerValue;
+    String itemdelcaso;
 
 
 
@@ -53,6 +55,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         this.switchStatus=ColumnsAction;
         this.stato=stato;
         this.SpinnerValue=SpinnerValue;
+        this.itemdelcaso=itemdelcaso;
 
 
 
@@ -68,10 +71,15 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         button.setOnClickListener(this);
         buttoncancel = findViewById(R.id.button2);
         buttoncancel.setOnClickListener(this);
+
         mDatabaseHelper = new DatabaseHelper(getContext());
         editText = findViewById(R.id.editText);
         mRecyclerView = findViewById(R.id.spezzaossa4);
         populateButtons();
+
+        if(stato==1){
+            buttoncancel.setVisibility(View.VISIBLE);
+        }
 
 
     }
@@ -111,14 +119,12 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
                         mAdapterResult.finish(String.valueOf(editText.getText()));
                         dismiss();
                     }
-
-
-
-                break;
+                    break;
             case R.id.button2:
-                mAdapterResult.finish("mattototale");
-                dismiss();
+               mAdapterResult.finish("ELIMINAZIONETOTALE");
 
+                dismiss();
+                break;
 
 
         }

@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL0 = "ID";
     private static final String COL1 = "name";
     public String PINZA;
-    public String help;//sendHelppls
+
 
 
     private static final String COL01= "names";
@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        ContentValues cv = new ContentValues();
+
         ContentValues a = new ContentValues();
         contentValues.put(COL1, item);
         contentValues.put("IC",icon);
@@ -386,6 +386,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void GetNullOutfitName(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_NAME1+" WHERE name IS NULL");
+
+    }
+
+    public void DeleteOutfit(int position){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_NAME1+" WHERE ID="+position+"");
 
     }
 
