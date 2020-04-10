@@ -6,11 +6,13 @@ import android.content.ClipData;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -26,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -42,6 +46,15 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private String mParam1;
     private String mParam2;
+    private int pickedHour = 0;
+    private int pickedMin = 0;
+    private TextView mTextViewCountDown;
+    private CountDownTimer mCountDownTimer;
+    private boolean mTimerRunning;
+    private long mStartTimeInMillis;
+    private long mTimeLeftInMillis;
+    private long mEndTime;
+
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
     ArrayList<String> ItemsInBasket = new ArrayList<>();
@@ -77,6 +90,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         floatingActionButton.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gThunbergView3);
         mDatabaseHelper = new DatabaseHelper(getActivity());
+
+
         populateWM();
         return view;
     }
@@ -151,7 +166,67 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        mTextViewCountDown = view.findViewById(R.id.textViewTimer);
+        pickedHour = hourOfDay;
+            pickedMin = minute;
+                Calendar rightNow = Calendar.getInstance();
+                     int oreAttuali = rightNow.get(Calendar.HOUR_OF_DAY);
+                        int minutiAttuali = rightNow.get(Calendar.MINUTE);
+                            int timerOre = 0;
+                                int timerMinuti = 0;
+                                    if (pickedHour > oreAttuali) {
+                                        timerOre = (pickedHour - oreAttuali);
+                                    }
+                                    else {
+                                        timerOre = (oreAttuali - pickedHour);
+                                    }
+                                    if (pickedMin > minutiAttuali) {
+                                        timerMinuti = (pickedMin - minutiAttuali);
+                                    }
+                                    else {
+                                        timerMinuti = (minutiAttuali - pickedMin);
+                                    }
+                                    long millisTempo = (timerOre * 3600000) + (timerMinuti * 60000);
+                                        setTime(millisTempo);
+                                        startTimer();
+    }
 
+    private void setTime(long milliseconds) {
+        mStartTimeInMillis = milliseconds;
+    }
+
+    private void startTimer() {
+        mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
+
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftInMillis = millisUntilFinished;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+                mTimerRunning = false;
+            }
+        }.start();
+        mTimerRunning = true;
+    }
+
+    private void updateCountDownText() {
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
+        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted;
+        if (hours > 0) {
+            timeLeftFormatted = String.format(Locale.getDefault(),
+                    "%d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            timeLeftFormatted = String.format(Locale.getDefault(),
+                    "%02d:%02d", minutes, seconds);
+        }
+        mTextViewCountDown.setText(timeLeftFormatted);
     }
 
     @Override
