@@ -176,6 +176,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+        mDatabaseHelper.GetNullOutfitName();
     }
 
     View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
@@ -266,7 +267,9 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 customDialogClass.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
+                        mDatabaseHelper.GetNullOutfitName();
                         populateOutfits();
+
                     }
                 });
                 customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
@@ -308,6 +311,12 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 ArrayList<Integer> cocco = new ArrayList<>();
                 CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0,cocco);
                 cdd.show();
+                cdd.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        mDatabaseHelper.GetNullOutfitName();
+                    }
+                });
                 cdd.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override
                     public void finish(String result) {

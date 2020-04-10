@@ -383,6 +383,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public void GetNullOutfitName(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_NAME1+" WHERE name IS NULL");
+
+    }
+
 
 
 
