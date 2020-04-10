@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -224,19 +225,59 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 final ArrayList<String> OutfitComponents = new ArrayList<>();
                 for(int i = 0; i<categories2.size();i++){
                     Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
+
                     while(c.moveToNext()){
                         if(c.getString(0)!=null){
                             OutfitComponents.add(c.getString(0));
                             drog.add("1");
+
                         }
                         else{
                             drog.add("0");
                         }
+
+
                     }
 
+
                 }
-                CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(),drog,1);
+                final ArrayList<Integer> SpinnerValue = new ArrayList<>();
+                for(int i=0;i<categories2.size();i++){
+                    if(drog.get(i).equals("0")){
+                        SpinnerValue.add(-1);
+                    }
+                    for(int u=0;u<OutfitComponents.size();u++){
+                        Cursor c = mDatabaseHelper.GetSpecificIdItem(categories2.get(i),OutfitComponents.get(u));
+                        while(c.moveToNext()){
+                        if(!drog.get(i).equals("0")){
+                            SpinnerValue.add(c.getInt(0));
+                        }
+
+                    }
+
+                    }
+
+
+                }
+                Log.i("Ecco componenti","Ecco"+SpinnerValue);
+                Log.i("Ecco Valori","Ecco"+drog);
+                CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(),drog,1,SpinnerValue);
                 customDialogClass.show();
+                customDialogClass.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        populateOutfits();
+                    }
+                });
+                customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
+                    @Override
+                    public void finish(String result) {
+                        if(!result.equals("")){
+                            mDatabaseHelper.ReplaceOutfit(result,position+1);
+                            populateOutfits();
+                        }
+                    }
+                });
 
                 break;
 
@@ -264,14 +305,17 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.floating_action_button:
-
-                CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0);
+                ArrayList<Integer> cocco = new ArrayList<>();
+                CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0,cocco);
                 cdd.show();
                 cdd.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override
                     public void finish(String result) {
-                        AddOutfit(result);
-                        populateOutfits();
+                       if (!result.equals("mattototale")){AddOutfit(result);
+                        populateOutfits(); }
+                       else{
+                           Toast.makeText(getContext(),"Creazione Outfit interrotta!",Toast.LENGTH_SHORT).show();
+                       }
                     }
                 });
                 break;

@@ -1,5 +1,6 @@
 package com.ucstudios.wardrobe;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +8,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
+
 import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -148,6 +152,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean ReplaceOutfit(String nome,Integer pos){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("name",nome);
+        db.update(TABLE_NAME1,cv,"ID="+pos,null);
+        return true;
+    }
+
     public boolean ReplaceItem4(String tabletitle, String item, int i){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -161,6 +173,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(negro, item);
         db.update("outfit_table", cv,"ID=(SELECT MAX(ID) FROM outfit_table)",null);
+        Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
+        return true;
+    }
+
+    public boolean ReplaceItemOutfitatId(String item,String negro,Integer position){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(negro, item);
+        db.update("outfit_table", cv,"ID="+position+"",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
         return true;
     }
@@ -354,6 +375,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery(query,null);
         return data;
     }
+
+    public Cursor GetSpecificIdItem(String tablename, String Itemname){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT ID FROM "+tablename+" WHERE names=+'"+Itemname+"'";
+        Cursor data = db.rawQuery(query,null);
+        return data;
+    }
+
+
 
 
 

@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,14 +44,15 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     int stato;
 
     private ListView mRecyclerView;
+    private ArrayList<Integer> SpinnerValue;
 
 
 
-
-    public CustomDialogClass(Activity a,ArrayList<String> ColumnsAction,int stato) {
+    public CustomDialogClass(Activity a,ArrayList<String> ColumnsAction,int stato,ArrayList<Integer>SpinnerValue) {
         super(a);
         this.switchStatus=ColumnsAction;
         this.stato=stato;
+        this.SpinnerValue=SpinnerValue;
 
 
 
@@ -71,6 +73,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         mRecyclerView = findViewById(R.id.spezzaossa4);
         populateButtons();
 
+
     }
     private void populateButtons() {
         Cursor data = mDatabaseHelper.getData();
@@ -79,8 +82,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
             listData.add(data.getString(1));
         }
 
-
-        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato);
+        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato,SpinnerValue);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -100,13 +102,21 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
             case R.id.button:
 
                 Log.i("msg",editText.getText().toString());
-                if(mAdapterResult!=null){
-                    mAdapterResult.finish(String.valueOf(editText.getText()));
-                }
 
-                dismiss();
+
+                    if(String.valueOf(editText.getText()).equals("")){
+                        Toast.makeText(getContext(),"POLIZIA NOME!",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        mAdapterResult.finish(String.valueOf(editText.getText()));
+                        dismiss();
+                    }
+
+
+
                 break;
             case R.id.button2:
+                mAdapterResult.finish("mattototale");
                 dismiss();
 
 

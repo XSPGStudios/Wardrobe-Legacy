@@ -5,6 +5,7 @@ import android.app.Person;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,16 +35,17 @@ public class CustomListView extends ArrayAdapter<String>  {
     public int a=2;
 ArrayList<String> switchStatus;
 int stato;
-
+ArrayList<Integer> SpinnerValue;
 
 
     MainActivity mainActivity;
-    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato) {
+    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato,ArrayList<Integer> SpinnerValue) {
         super(context, adapter_view_layout, listData);
         mResource = adapter_view_layout;
         this.mContext= context;
         this.switchStatus=switchStatus;
         this.stato=stato;
+        this.SpinnerValue=SpinnerValue;
     }
 
 
@@ -76,6 +78,7 @@ int stato;
             drugs.add(Drugs.getString(1));
         }
 
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
@@ -84,11 +87,69 @@ int stato;
         final Spinner spinner = convertView.findViewById(R.id.spinner);
 
 if(stato==1){
+    ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter(getContext(),
+            android.R.layout.simple_spinner_item, drugs );
+
+    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    spinner.setAdapter(adapter1);
         if (switchStatus.get(position) != "0") {
+
             aSwitch.setChecked(true);
-        }}
+        }
+            if(aSwitch.isChecked()){
+                spinner.setVisibility(View.VISIBLE);
+                if(SpinnerValue.get(position)-1>0){
+                spinner.setSelection(SpinnerValue.get(position)-1);
+                }}
+
+            aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(aSwitch.isChecked()){
+                        spinner.setVisibility(View.VISIBLE);
+                        final String item = (String) spinner.getSelectedItem();
+                        final String column = (String) checkbox.getText();
+                        mDatabaseHelper.ReplaceItemOutfitatId(item,column,1);
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                                final String item = (String) spinner.getSelectedItem();
+                                final String column = (String) checkbox.getText();
+                                mDatabaseHelper.ReplaceItemOutfitatId(item,column,1);
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    }
+                    else {
+                        spinner.setVisibility(View.GONE);
+
+                        final String perno = (String) checkbox.getText();
+                        spinner.setVisibility(View.GONE);
+                        mDatabaseHelper.ReplaceItemOutfitatId(null, perno,1);
+                    }
+                }
+            });
+
+            /*TODO :
+                then setonChangeClickListener and replace any item that is switched in the appropriate Outfit_Table column
+                Solve dialog problems
+             */
+        }
 
         if (stato == 0){
+            ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter(getContext(),
+                    android.R.layout.simple_spinner_item, drugs );
+
+            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            spinner.setAdapter(adapter1);
             aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -130,12 +191,7 @@ if(stato==1){
     }
         checkbox.setText(category);
 
-        ArrayAdapter<CharSequence> adapter1 = new ArrayAdapter(getContext(),
-                android.R.layout.simple_spinner_item, drugs );
 
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter1);
 
 
 
