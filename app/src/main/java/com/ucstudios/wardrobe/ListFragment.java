@@ -280,7 +280,7 @@ break;
                         tecca.add(C.getBlob(8));
 
                     }
-                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata,tecca);
+                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata,tecca,mMainActivity.Name);
                     dialog.show();
                     dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
                         @Override
@@ -353,7 +353,7 @@ break;
 
                 final ArrayList<String> crack = new ArrayList<>();
                 final ArrayList<byte[]> technon = new ArrayList<>();
-                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon);
+                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon,mMainActivity.Name);
 
                 dialog.show();
                 dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {

@@ -272,6 +272,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                         if(!result.equals("")&&!result.equals("ELIMINAZIONETOTALE")){
                             mDatabaseHelper.ReplaceOutfit(result,position+1);
                             mDatabaseHelper.GetNullOutfitName();
+                            populateOutfits();
 
                         }
                         else if(result.equals("ELIMINAZIONETOTALE")){

@@ -33,22 +33,27 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
     public Button okbutton;
     public ImageView icons;
     public ImageView image;
+    public Button binbutton;
     ItemCreatedInterface mItemCreation;
     CustomIconPickerDialogItems dialogItems;
     CameraActivation mCameraActivation;
     Integer iconvalue;
     String[] itemdatas;
     ArrayList<byte[]> tech;
+    DatabaseHelper mDatabaseHelper;
+    MainActivity mainActivity;
+    String table;
 
 
 
-    public ItemVisualDialog(Context context, Integer mistico, ArrayList<String> itemdata,ArrayList<byte[]> tech){
+    public ItemVisualDialog(Context context, Integer mistico, ArrayList<String> itemdata,ArrayList<byte[]> tech,String table){
         super(context);
 
 
         this.alieno=mistico;
         this.itemdatas= itemdata.toArray(new String[0]);
         this.tech = tech;
+        this.table=table;
 
     }
 
@@ -67,6 +72,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
         okbutton = findViewById(R.id.button3);
         icons = findViewById(R.id.icon);
         image = findViewById(R.id.image);
+        binbutton = findViewById(R.id.button4);
         dialogItems = new CustomIconPickerDialogItems(getContext());
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.currencies,android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -74,7 +80,10 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
         okbutton.setOnClickListener(this);
         icons.setOnClickListener(this);
         image.setOnClickListener(this);
+        binbutton.setOnClickListener(this);
         iconvalue=0;
+        mDatabaseHelper=new DatabaseHelper(getContext());
+        mainActivity = new MainActivity();
 
       if(alieno==1){
             name.setText(itemdatas[0]);
@@ -82,6 +91,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
             brand.setText(itemdatas[2]);
             value.setText(itemdatas[3]);
             image.setImageBitmap(Utils.getImage(tech.get(0)));
+            binbutton.setVisibility(View.VISIBLE);
 
         }
 
@@ -152,6 +162,11 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
                     case R.id.image:
                     mCameraActivation.activation(2);
+                    break;
+
+                case R.id.button4:
+                    mDatabaseHelper.delete2(table,itemdatas[0]);
+                    dismiss();
                     break;
 
 

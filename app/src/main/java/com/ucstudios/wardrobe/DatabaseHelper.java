@@ -39,8 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT," + COL1 +" TEXT,IC INTEGER "+")";
-        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)";
+        String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY ," + COL1 +" TEXT,IC INTEGER "+")";
+        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY , name TEXT)";
 
 
 
@@ -66,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");
-        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER,image BLOB)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY , names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER,image BLOB)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
         a.put("POS",0);
@@ -318,12 +318,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor GetItemData(int pos,String tablename){
+    public Cursor GetItemData(Integer pos,String tablename){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM "+tablename+" WHERE ID="+pos+"";
         Cursor data= db.rawQuery(query,null);
         return data;
     }
+
+
 
     public void AddPictureItem(String tablename,byte[] image,int i) throws SQLException{
 

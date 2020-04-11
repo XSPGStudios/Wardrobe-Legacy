@@ -238,6 +238,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                             Replace("categories_table", result, position + 1);
                             TableRenamer(listData.get(position),result);
                             Log.i("msg", "Modified "+listData.get(position)+" to "+ result);
+                            populateButtons();
 
                         }
                     }

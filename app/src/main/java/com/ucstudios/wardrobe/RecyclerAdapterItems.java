@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +38,8 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
             R.drawable.ic_wm,
             R.drawable.ic_basket
     };
+    AdapterListResult mAdapterResult;
+    ArrayList<String> asd;
 
 
 
@@ -61,7 +64,9 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            mClickListener.onClick(view);
+
+                mClickListener.onClick(view);
+
             }
         });
 
@@ -75,6 +80,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(items[position]);
+
         holder.imageView.setImageResource(Icons[icons[position]]);
         //holder.imageView.setImageBitmap(Utils.getImage(tech.get(position))); Mostra immagine vera
         if(ppos[position]==1){
@@ -140,5 +146,16 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
 
         }
+    }
+
+    public void setAdapterResult(AdapterListResult adapterResult){
+
+        mAdapterResult = adapterResult;
+    }
+
+
+
+    public interface AdapterListResult{
+        void finish(String result);
     }
 }
