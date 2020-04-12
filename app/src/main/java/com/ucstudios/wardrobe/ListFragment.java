@@ -254,7 +254,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 case ItemTouchHelper.RIGHT:
                     mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
                     populateItems();
-
                     Snackbar.make(mRecyclerView, mMainActivity.Name, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -262,7 +261,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                     populateItems();
                                 }
                             }).show();
-break;
+            break;
 
 
 

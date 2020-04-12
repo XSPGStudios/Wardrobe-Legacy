@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -46,14 +47,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private String mParam1;
     private String mParam2;
+
+
     private int pickedHour = 0;
     private int pickedMin = 0;
-    private TextView mTextViewCountDown;
-    private CountDownTimer mCountDownTimer;
-    private boolean mTimerRunning;
-    private long mStartTimeInMillis;
-    private long mTimeLeftInMillis;
-    private long mEndTime;
+    private TextView mTextViewTimer;
 
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
@@ -90,9 +88,10 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         floatingActionButton.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gThunbergView3);
         mDatabaseHelper = new DatabaseHelper(getActivity());
-
-
         populateWM();
+
+        mTextViewTimer = view.findViewById(R.id.textViewTimer);
+
         return view;
     }
 
@@ -166,73 +165,47 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        mTextViewCountDown = view.findViewById(R.id.textViewTimer);
-        pickedHour = hourOfDay;
-            pickedMin = minute;
-                Calendar rightNow = Calendar.getInstance();
-                     int oreAttuali = rightNow.get(Calendar.HOUR_OF_DAY);
-                        int minutiAttuali = rightNow.get(Calendar.MINUTE);
-                            int timerOre = 0;
-                                int timerMinuti = 0;
-                                    if (pickedHour > oreAttuali) {
-                                        timerOre = (pickedHour - oreAttuali);
-                                    }
-                                    else {
-                                        timerOre = (oreAttuali - pickedHour);
-                                    }
-                                    if (pickedMin > minutiAttuali) {
-                                        timerMinuti = (pickedMin - minutiAttuali);
-                                    }
-                                    else {
-                                        timerMinuti = (minutiAttuali - pickedMin);
-                                    }
-                                    long millisTempo = (timerOre * 3600000) + (timerMinuti * 60000);
-                                        setTime(millisTempo);
-                                        startTimer();
+
     }
 
-    private void setTime(long milliseconds) {
-        mStartTimeInMillis = milliseconds;
+    TimePickerDialog.OnTimeSetListener mTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(android.widget.TimePicker view,
+                                      int hourOfDay, int minute) {
+                    pickedHour = hourOfDay;
+                        pickedMin = minute;
+                            final long passedTime = (pickedHour * 3600000) + (pickedMin * 60000);
+                                mTextViewTimer.setText(formatMilliSecondsToTime(passedTime));
+                }
+            };
+
+    private String formatMilliSecondsToTime(long milliseconds) {
+
+        int seconds = (int) (milliseconds / 1000) % 60;
+        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
+        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
+        return twoDigitString(hours) + " : " + twoDigitString(minutes) + " : "
+                + twoDigitString(seconds);
     }
 
-    private void startTimer() {
-        mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
+    private String twoDigitString(long number) {
 
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
-                updateCountDownText();
-            }
-
-            @Override
-            public void onFinish() {
-                mTimerRunning = false;
-            }
-        }.start();
-        mTimerRunning = true;
-    }
-
-    private void updateCountDownText() {
-        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
-        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
-        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-
-        String timeLeftFormatted;
-        if (hours > 0) {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%d:%02d:%02d", hours, minutes, seconds);
-        } else {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%02d:%02d", minutes, seconds);
+        if (number == 0) {
+            return "00";
         }
-        mTextViewCountDown.setText(timeLeftFormatted);
+
+        if (number / 10 == 0) {
+            return "0" + number;
+        }
+
+        return String.valueOf(number);
     }
 
     @Override
     public void onClick(View v) {
-        DialogFragment timePicker = new TimePickerFragment();
-        timePicker.show(getFragmentManager(), "time picker");
+        DialogFragment timePicker = new TimePickerFragment(mTimeSetListener);
+            timePicker.show(getFragmentManager(), "time picker");
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
@@ -288,7 +261,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                    .addSwipeRightActionIcon(R.drawable.ic_chevron_right_black_24dp)
+                    .addSwipeRightActionIcon(R.drawable.closet24)
                     .create()
                     .decorate();
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -299,7 +272,5 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-
-
 }
 
