@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 
 import android.app.TimePickerDialog;
 import android.content.ClipData;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -51,7 +52,13 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private int pickedHour = 0;
     private int pickedMin = 0;
-    private TextView mTextViewTimer;
+    private TextView mTextViewCountdown;
+    private CountDownTimer mCountDownTimer;
+    private boolean mTimerRunning;
+    private long mStartTimeInMillis;
+    private long mTimeLeftInMillis;
+    private long mEndTime;
+
 
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
@@ -90,7 +97,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         mDatabaseHelper = new DatabaseHelper(getActivity());
         populateWM();
 
-        mTextViewTimer = view.findViewById(R.id.textViewTimer);
+        mTextViewCountdown = view.findViewById(R.id.textViewCountdown);
 
         return view;
     }
@@ -175,10 +182,75 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                       int hourOfDay, int minute) {
                     pickedHour = hourOfDay;
                         pickedMin = minute;
-                            final long passedTime = (pickedHour * 3600000) + (pickedMin * 60000);
-                                mTextViewTimer.setText(formatMilliSecondsToTime(passedTime));
+                    Calendar rightNow = Calendar.getInstance();
+                    int currentHour = rightNow.get(Calendar.HOUR_OF_DAY); // return the hour in 24 hrs format (ranging from 0-23)
+                        int currentMinutes = rightNow.get(Calendar.MINUTE);
+                            int passedHour = 0;
+                                int passedMinutes = 0;
+                                    if (pickedHour > currentHour) {
+                                        passedHour = pickedHour - currentHour;
+                                    }
+                                    else {
+                                        passedHour = currentHour - pickedHour;
+                                    }
+                                    if (pickedHour > currentHour) {
+                                        passedMinutes = pickedMin - currentMinutes;
+                                    }
+                                    else {
+                                        passedMinutes = currentMinutes - pickedMin;
+                                    }
+                                long passedTime = (passedHour * 3600000) + (passedMinutes * 60000);
+
+                                    setTime(passedTime);
+
                 }
             };
+
+    private void setTime(long milliseconds) {
+        mStartTimeInMillis = milliseconds;
+        startTimer();
+    }
+
+    private void startTimer() {
+        mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
+
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftInMillis = millisUntilFinished;
+                mTimerRunning = true;
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+                mTimerRunning = false;
+                    mTextViewCountdown.setText("Ho finito shlett: " + formatMilliSecondsToTime(0));
+            }
+        }.start();
+
+        mTimerRunning = true;
+
+    }
+
+
+    private void updateCountDownText() {
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
+        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted;
+        if (hours > 0) {
+            timeLeftFormatted = String.format(Locale.getDefault(),
+                    "%d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            timeLeftFormatted = String.format(Locale.getDefault(),
+                    "%02d:%02d", minutes, seconds);
+        }
+
+        mTextViewCountdown.setText(timeLeftFormatted);
+    }
+
 
     private String formatMilliSecondsToTime(long milliseconds) {
 
@@ -200,6 +272,33 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         }
 
         return String.valueOf(number);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        SharedPreferences prefs = getContext().getSharedPreferences("prefs", getContext().MODE_PRIVATE);
+
+        mStartTimeInMillis = prefs.getLong("startTimeInMillis", 6000);
+        mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
+        mTimerRunning = prefs.getBoolean("timerRunning", false);
+
+        updateCountDownText();
+
+
+        if (mTimerRunning) {
+            mEndTime = prefs.getLong("endTime", 0);
+            mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
+
+            if (mTimeLeftInMillis < 0) {
+                mTimeLeftInMillis = 0;
+                mTimerRunning = false;
+                updateCountDownText();
+            } else {
+                startTimer();
+            }
+        }
     }
 
     @Override
