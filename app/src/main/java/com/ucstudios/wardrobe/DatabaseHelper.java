@@ -186,6 +186,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean ReplaceIteminOutfitTable(String item,String column){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(column, item);
+        db.update("outfit_table", cv,"'"+column+"="+item+"",null);
+        Log.d(TAG, "ReplaceData : Adding "+item+" to "+column);
+        return true;
+    }
+
 
     public boolean delete1(String sex, String edit){
         SQLiteDatabase db = this.getWritableDatabase();

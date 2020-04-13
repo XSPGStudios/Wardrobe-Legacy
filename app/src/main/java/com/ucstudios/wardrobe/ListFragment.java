@@ -303,6 +303,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
                             Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);
+                            mDatabaseHelper1.ReplaceIteminOutfitTable(name,mMainActivity.Name);
                             dialog.dismiss();
                             populateItems();
                         }
