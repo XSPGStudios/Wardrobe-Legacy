@@ -211,10 +211,10 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             c.add(Calendar.DATE, 1);
         }
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+            //starto il countdown
     }
 
     public void resetText () {
-
         mTextViewTime.setText("Impostare un orario");
     }
 
