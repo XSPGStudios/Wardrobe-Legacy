@@ -38,6 +38,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     private Integer[] iconwm ={
             R.drawable.ic_wm,
             R.drawable.ic_basket
+
     };
     AdapterListResult mAdapterResult;
 
@@ -93,6 +94,9 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         if(ppos[position]==2){
             holder.imageView2.setImageResource(iconwm[0]);
             holder.imageView2.setVisibility(View.VISIBLE);
+        }
+        if(ppos[position]==3){
+            //SETTARE GIF
         }
     }
 

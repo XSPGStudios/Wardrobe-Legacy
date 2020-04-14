@@ -69,6 +69,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     ArrayList<String> TotalCategories = new ArrayList<>();
     ArrayList<String> ItemsInBasket = new ArrayList<>();
 
+
     public LaundryFragment() {
         // Required empty public constructor
     }
@@ -102,9 +103,10 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         recyclerView = view.findViewById(R.id.gThunbergView3);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         populateWM();
-
         mTextViewTime = view.findViewById(R.id.textViewTime);
         resetText();
+
+
 
         return view;
     }
@@ -193,6 +195,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                 c.set(Calendar.SECOND, 0);
                                                         updateTimeText(c);
                                                             startAlarm(c);
+                                                            //Add Database Function "WashingMachineGif"
                 }
             };
 
@@ -200,7 +203,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         String timeText = "La lavatrice terminerà il suo processo alle: ";
             timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
                 mTextViewTime.setText(timeText);
+
+
     }
+
+
 
     private void startAlarm (Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);

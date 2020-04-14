@@ -1,10 +1,10 @@
 package com.ucstudios.wardrobe;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import gr.net.maroulis.library.EasySplashScreen;
 
@@ -17,7 +17,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)
             .withFullScreen()
                 .withTargetActivity(MainActivity.class)
-                    .withSplashTimeOut(5000)
+                    .withSplashTimeOut(1750)
                         .withBackgroundColor(Color.parseColor("#1a1b29"))
                             .withLogo(R.drawable.locker);
 

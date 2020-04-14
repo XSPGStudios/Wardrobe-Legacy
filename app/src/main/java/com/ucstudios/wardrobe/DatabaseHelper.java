@@ -341,6 +341,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+
+    public boolean WashingMachineActivacted(String tablename, String SpecificItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("POS", 3);
+        db.update(tablename, cv,"names='"+SpecificItem+"'",null);
+        return true;
+    }
+
+
+
+
     public boolean toBasketmodif(String tablename, String SpecificItem){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
