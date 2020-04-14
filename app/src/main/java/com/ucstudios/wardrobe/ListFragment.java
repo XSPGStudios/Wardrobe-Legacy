@@ -66,6 +66,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     final ArrayList<byte[]> tecca = new ArrayList<>();
     Button gridbutton;
     ArrayList<String> ItemsInBasket = new ArrayList<>();
+    int controllodivider;
 
 
 
@@ -115,7 +116,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         mTextView.setText(mMainActivity.Name);
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
         mDatabaseHelper1.getData();
-
+        controllodivider=0;
 
         populateItems();
 
@@ -171,8 +172,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech,mMainActivity.Name);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
+        if(controllodivider==0){
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
+        controllodivider=1;
+        }
         boolean risultato = longClickListener.onLongClick(mRecyclerView);
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(recyclerAdapter);
