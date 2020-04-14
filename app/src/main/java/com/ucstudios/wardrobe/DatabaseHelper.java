@@ -152,6 +152,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean ReplaceItemnoPic(String tabletitle, String item,String size,String brand,Integer value,Integer currency,Integer icon,int i){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("names",item);
+        cv.put("IC2",icon);
+        cv.put("size",size);
+        cv.put("brand",brand);
+        cv.put("value",value);
+        cv.put("currency",currency);
+        db.update(tabletitle,cv,"ID="+i,null);
+        return true;
+    }
+
     public boolean ReplaceOutfit(String nome,Integer pos){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -186,11 +199,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean ReplaceIteminOutfitTable(String item,String column){
+    public boolean ReplaceIteminOutfitTable(String item,String column,String itemvecchio){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(column, item);
-        db.update("outfit_table", cv,"'"+column+"="+item+"",null);
+        db.update("outfit_table", cv,column+"='"+itemvecchio+"'",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+column);
         return true;
     }

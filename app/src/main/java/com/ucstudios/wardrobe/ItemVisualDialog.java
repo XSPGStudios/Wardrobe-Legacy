@@ -43,6 +43,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
     DatabaseHelper mDatabaseHelper;
     MainActivity mainActivity;
     String table;
+    String olditem;
 
 
 
@@ -92,8 +93,10 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
             value.setText(itemdatas[3]);
             image.setImageBitmap(Utils.getImage(tech.get(0)));
             binbutton.setVisibility(View.VISIBLE);
+           olditem=itemdatas[0];
 
         }
+
 
 
 }
@@ -122,7 +125,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                 }
 
                 else {
-                    mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue);Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
+                    mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue,olditem);Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
                 }
 
             break;
@@ -155,7 +158,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                     }
 
                     else {
-                        mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue);
+                        mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue,olditem);
                         Toast.makeText(getContext(), "Item modified!", Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -192,7 +195,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
     public interface ItemCreatedInterface{
 
-        void finish(String name,String size,String brand,Integer value,Integer currency,Integer icon);
+        void finish(String name,String size,String brand,Integer value,Integer currency,Integer icon,String olditemname);
     }
 
     public void CameraActivation(CameraActivation activation){

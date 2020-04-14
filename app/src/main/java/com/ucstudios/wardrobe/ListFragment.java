@@ -301,9 +301,13 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     });
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
                         @Override
-                        public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
-                            Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);
-                            mDatabaseHelper1.ReplaceIteminOutfitTable(name,mMainActivity.Name);
+                        public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
+                            if(alien2o!=null){
+                                Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);}
+                            else{
+                                mDatabaseHelper1.ReplaceItemnoPic(mMainActivity.Name,name,size,brand,value,currency,icon,position+1);
+                            }
+                            mDatabaseHelper1.ReplaceIteminOutfitTable(name,mMainActivity.Name,olditemname);
                             dialog.dismiss();
                             populateItems();
                         }
@@ -311,10 +315,12 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     });
 
                     break;
+                        }
+
 
 
             }
-        }
+
 
 
 
@@ -373,18 +379,21 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
                     @Override
-                    public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon) {
+                    public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
                         if(magianera==1){
-                        AddData1(name,size,brand,value,currency,icon,alien2o);
-                        mDatabaseHelper1.AddPictureItem(mMainActivity.Name,alien2o,tac);
-                        dialog.dismiss();
-                        populateItems();}
+                            AddData1(name,size,brand,value,currency,icon,alien2o);
+                            mDatabaseHelper1.AddPictureItem(mMainActivity.Name,alien2o,tac);
+                            dialog.dismiss();
+                            populateItems();}
                         else{
                             Toast.makeText(getContext(),"Pic missing!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
                 break;
+
+
+
 
             case R.id.buttongrid:
                 Log.i("msg","cliccato");
