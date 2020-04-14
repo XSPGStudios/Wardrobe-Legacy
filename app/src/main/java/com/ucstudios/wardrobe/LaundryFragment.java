@@ -1,8 +1,12 @@
 package com.ucstudios.wardrobe;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Canvas;
@@ -28,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,7 +57,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private int pickedHour = 0;
     private int pickedMin = 0;
-    private TextView mTextViewCountdown;
+    private TextView mTextViewTime;
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
     private long mStartTimeInMillis;
@@ -63,6 +68,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
     ArrayList<String> ItemsInBasket = new ArrayList<>();
+
     public LaundryFragment() {
         // Required empty public constructor
     }
@@ -97,7 +103,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         mDatabaseHelper = new DatabaseHelper(getActivity());
         populateWM();
 
-        mTextViewCountdown = view.findViewById(R.id.textViewCountdown);
+        mTextViewTime = view.findViewById(R.id.textViewTime);
+        resetText();
 
         return view;
     }
@@ -180,125 +187,35 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 @Override
                 public void onTimeSet(android.widget.TimePicker view,
                                       int hourOfDay, int minute) {
-                    pickedHour = hourOfDay;
-                        pickedMin = minute;
-                    Calendar rightNow = Calendar.getInstance();
-                    int currentHour = rightNow.get(Calendar.HOUR_OF_DAY); // return the hour in 24 hrs format (ranging from 0-23)
-                        int currentMinutes = rightNow.get(Calendar.MINUTE);
-                            int passedHour = 0;
-                                int passedMinutes = 0;
-                                    if (pickedHour > currentHour) {
-                                        passedHour = pickedHour - currentHour;
-                                    }
-                                    else {
-                                        passedHour = currentHour - pickedHour;
-                                    }
-                                    if (pickedHour > currentHour) {
-                                        passedMinutes = pickedMin - currentMinutes;
-                                    }
-                                    else {
-                                        passedMinutes = currentMinutes - pickedMin;
-                                    }
-                                long passedTime = (passedHour * 3600000) + (passedMinutes * 60000);
-
-                                    setTime(passedTime);
-
+                                    Calendar c = Calendar.getInstance();
+                                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                                            c.set(Calendar.MINUTE, minute);
+                                                c.set(Calendar.SECOND, 0);
+                                                        updateTimeText(c);
+                                                            startAlarm(c);
                 }
             };
 
-    private void setTime(long milliseconds) {
-        mStartTimeInMillis = milliseconds;
-        startTimer();
+    private void updateTimeText (Calendar c) {
+        String timeText = "La lavatrice terminerà il suo processo alle: ";
+            timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+                mTextViewTime.setText(timeText);
     }
 
-    private void startTimer() {
-        mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
+    private void startAlarm (Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+             Intent intent = new Intent(getContext(), AlertReceiver.class);
+                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
 
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
-                mTimerRunning = true;
-                updateCountDownText();
-            }
-
-            @Override
-            public void onFinish() {
-                mTimerRunning = false;
-                    mTextViewCountdown.setText("Ho finito shlett: " + formatMilliSecondsToTime(0));
-            }
-        }.start();
-
-        mTimerRunning = true;
-
-    }
-
-
-    private void updateCountDownText() {
-        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
-        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
-        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-
-        String timeLeftFormatted;
-        if (hours > 0) {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%d:%02d:%02d", hours, minutes, seconds);
-        } else {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%02d:%02d", minutes, seconds);
+        if (c.before(Calendar.getInstance())) {
+            c.add(Calendar.DATE, 1);
         }
-
-        mTextViewCountdown.setText(timeLeftFormatted);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
+    public void resetText () {
 
-    private String formatMilliSecondsToTime(long milliseconds) {
-
-        int seconds = (int) (milliseconds / 1000) % 60;
-        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
-        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
-        return twoDigitString(hours) + " : " + twoDigitString(minutes) + " : "
-                + twoDigitString(seconds);
-    }
-
-    private String twoDigitString(long number) {
-
-        if (number == 0) {
-            return "00";
-        }
-
-        if (number / 10 == 0) {
-            return "0" + number;
-        }
-
-        return String.valueOf(number);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", getContext().MODE_PRIVATE);
-
-        mStartTimeInMillis = prefs.getLong("startTimeInMillis", 6000);
-        mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
-        mTimerRunning = prefs.getBoolean("timerRunning", false);
-
-        updateCountDownText();
-
-
-        if (mTimerRunning) {
-            mEndTime = prefs.getLong("endTime", 0);
-            mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
-
-            if (mTimeLeftInMillis < 0) {
-                mTimeLeftInMillis = 0;
-                mTimerRunning = false;
-                updateCountDownText();
-            } else {
-                startTimer();
-            }
-        }
+        mTextViewTime.setText("Impostare un orario");
     }
 
     @Override
