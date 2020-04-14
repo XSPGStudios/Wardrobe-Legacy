@@ -169,6 +169,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
                 case R.id.button4:
                     mDatabaseHelper.delete2(table,itemdatas[0]);
+                    mDatabaseHelper.DeleteIteminOutfitafteredit(table,olditem);
                     dismiss();
                     break;
 

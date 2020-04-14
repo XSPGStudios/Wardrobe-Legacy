@@ -1,5 +1,6 @@
 package com.ucstudios.wardrobe;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
@@ -206,6 +207,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update("outfit_table", cv,column+"='"+itemvecchio+"'",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+column);
         return true;
+    }
+
+    public boolean DeleteIteminOutfitafteredit(String column,String itemvecchio){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(column, (byte[]) null);
+        db.update("outfit_table",cv,column+"='"+itemvecchio+"'",null);
+    return true;
     }
 
 
@@ -416,6 +425,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void DeleteOutfit(int position){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_NAME1+" WHERE ID="+position+"");
+
+    }
+
+    public void SwapRows(int position1,int position2,String table){
+       SQLiteDatabase db = this.getWritableDatabase();
+
+       String query = "SELECT * FROM "+table+" WHERE ID="+position1;
+       String query2 = "SELECT * FROM "+table+" WHERE ID="+position2;
+       @SuppressLint("Recycle") Cursor datafirst = db.rawQuery(query,null);
+        @SuppressLint("Recycle") Cursor datasecond = db.rawQuery(query2,null);
+        ContentValues cv2 = new ContentValues();
+        ContentValues cv = new ContentValues();
+       while(datafirst.moveToNext()){
+           cv.put("names",datafirst.getString(1));
+           cv.put("IC2",datafirst.getString(2));
+           cv.put("POS",datafirst.getString(3));
+           cv.put("size",datafirst.getString(4));
+           cv.put("brand",datafirst.getString(5));
+           cv.put("value",datafirst.getInt(6));
+           cv.put("currency",datafirst.getInt(7));
+           cv.put("image",datafirst.getBlob(8));
+       }
+
+
+
+       while(datasecond.moveToNext()){
+           cv2.put("names",datasecond.getString(1));
+           cv2.put("IC2",datasecond.getString(2));
+           cv2.put("POS",datasecond.getString(3));
+           cv2.put("size",datasecond.getString(4));
+           cv2.put("brand",datasecond.getString(5));
+           cv2.put("value",datasecond.getInt(6));
+           cv2.put("currency",datasecond.getInt(7));
+           cv2.put("image",datasecond.getBlob(8));
+
+       }
+
+       db.update(table,cv,"ID="+position2,null);
+       db.update(table,cv2,"ID="+position1,null);
+
+
 
     }
 

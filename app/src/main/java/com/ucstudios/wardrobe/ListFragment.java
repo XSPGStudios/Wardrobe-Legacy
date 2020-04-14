@@ -168,7 +168,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech);
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech,mMainActivity.Name);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -215,6 +215,13 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             ClipData merda = ClipData.newPlainText("", "");
             View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
             v.startDrag(merda, myShadowBuilder, v, 0);
+            v.setOnDragListener(new View.OnDragListener() {
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    Log.i("msg","PICCHIASPORHI");
+                    return false;
+                }
+            });
             return true;
         }
     };
@@ -225,10 +232,13 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             int dragEvent = event.getAction(); //aspetta
             switch(dragEvent) {
                 case DragEvent.ACTION_DRAG_ENTERED:
+                    Log.i("msg","PICCHIASPORHI");
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
+                    Log.i("msg","PICCHIASPORHI");
                     break;
                 case DragEvent.ACTION_DROP:
+                    Log.i("msg","PICCHIASPORHI");
                     break;
             }
             return true;

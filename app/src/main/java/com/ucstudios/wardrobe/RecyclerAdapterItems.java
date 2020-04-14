@@ -19,6 +19,7 @@ import java.util.List;
 public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterItems.ViewHolder> implements  ItemTouchHelperAdapter{
 
     private static final String TAG = "RecyclerAdapter";
+    DatabaseHelper mDatabaseHelper;
     Context mContext;
     int count = 0;
     String[] items;
@@ -39,24 +40,25 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
             R.drawable.ic_basket
     };
     AdapterListResult mAdapterResult;
-    ArrayList<String> asd;
+
+    String table;
 
 
 
 
-    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons,List<byte[]> tech) {
+    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons,List<byte[]> tech,String table) {
         this.mContext=context;
         this.items = items.toArray(new String[0]);
         this.ppos = position2.toArray(new Integer[0]);
         this.icons = icons.toArray(new Integer[0]);
         this.tech= tech;
+        this.table=table;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
+        mDatabaseHelper = new DatabaseHelper(mContext);
         Log.i(TAG,"onCreateViewHolder: " + count++ );
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
@@ -109,6 +111,8 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        Log.i("position1","ecco"+fromPosition);
+        Log.i("position2","ecco"+toPosition);
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(Arrays.asList(items), i, i + 1);
@@ -116,9 +120,13 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(Arrays.asList(items), i, i - 1);
+
+
             }
         }
         notifyItemMoved(fromPosition, toPosition);
+        mDatabaseHelper.SwapRows(fromPosition+1,toPosition+1,table);
+
         return true;
     }
 
