@@ -26,3 +26,4 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     }
 }
+//commit test
