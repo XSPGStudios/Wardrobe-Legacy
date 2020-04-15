@@ -194,9 +194,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 public void onTimeSet(android.widget.TimePicker view,
                                       final int hourOfDay, final int minute) {
                     final Calendar c = Calendar.getInstance();
-                    if (hourOfDay < c.get(Calendar.HOUR_OF_DAY)) {
-                        Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
-                    } else if (minute <= c.get(Calendar.MINUTE)) {
+
+                    if ((hourOfDay == c.get(Calendar.HOUR_OF_DAY) && minute <= c.get(Calendar.MINUTE)) || hourOfDay < c.get(Calendar.HOUR_OF_DAY)) {
                         Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
