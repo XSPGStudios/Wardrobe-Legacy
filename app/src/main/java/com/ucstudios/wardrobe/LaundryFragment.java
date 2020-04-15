@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
@@ -11,8 +12,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -26,6 +29,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -45,6 +50,8 @@ import java.util.concurrent.TimeUnit;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+import static com.ucstudios.wardrobe.App.CHANNEL_1_ID;
+
 
 //LAVATRICE
 
@@ -61,13 +68,12 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private int pickedHour = 0;
     private int pickedMin = 0;
-    private TextView mTextViewTime;
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
     private long mStartTimeInMillis;
     private long mTimeLeftInMillis;
     private long mEndTime;
-
+    private NotificationManagerCompat notificationManager;
 
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
@@ -107,8 +113,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         recyclerView = view.findViewById(R.id.gThunbergView3);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         populateWM();
-        mTextViewTime = view.findViewById(R.id.textViewTime);
-        resetText();
+        notificationManager = NotificationManagerCompat.from(getContext());
+
 
 
 
@@ -219,8 +225,42 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                 c.set(Calendar.SECOND, 0);
 
                                 updateTimeText(c);
-                                startAlarm(c);
-                                //Add Database Function "WashingMachineGif"
+
+                                //mando notifica con progresso
+                                Intent resultIntent = new Intent (getContext(), LaundryFragment.class);
+                                    PendingIntent resultPendingItent = PendingIntent.getActivity(getContext(), 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                long tempoInMillis = 10000/100;
+                                final int progressMax = (int) tempoInMillis;
+                                final NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
+                                        .setSmallIcon(R.drawable.ic_wm24)
+                                        .setContentTitle("Laundry status")
+                                        .setContentText("Lavaggio in corso...")
+                                        .setColor(Color.BLUE)
+                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                        .setOngoing(true)
+                                        .setOnlyAlertOnce(true)
+                                        .setProgress(progressMax, 0, false)
+                                        .setAutoCancel(true)
+                                        .setContentIntent(resultPendingItent);
+
+                                        notificationManager.notify(2, notification.build());
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        SystemClock.sleep(2000);
+                                        for (int progress = 0; progress <= progressMax; progress += 10) {
+                                            notification.setProgress(progressMax, progress, false);
+                                                 notificationManager.notify(2, notification.build());
+                                                        SystemClock.sleep(1000);
+                                        }
+                                        notification.setContentText("Lavatrice pronta!")
+                                                .setProgress(0, 0, false)
+                                                .setOngoing(false);
+                                        notificationManager.notify(2, notification.build());
+                                    }
+                                }).start();
+                                //Add Database Function "WashingMachineGif" (aggiorno stato item(s))
                                 dialog.dismiss();
                             }
                         });
@@ -236,29 +276,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             };
 
     private void updateTimeText (Calendar c) {
-        String timeText = "La lavatrice terminerà il suo processo alle: ";
-            timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
-                mTextViewTime.setText(timeText);
-
-
-    }
-
-
-
-    private void startAlarm (Calendar c) {
-        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-             Intent intent = new Intent(getContext(), AlertReceiver.class);
-                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
-
-        if (c.before(Calendar.getInstance())) {
-            c.add(Calendar.DATE, 1);
-        }
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-            //starto il countdown
-    }
-
-    public void resetText () {
-        mTextViewTime.setText("Impostare un orario");
+        Toast.makeText(getContext(), "Laundry started, check the notification for the progress!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

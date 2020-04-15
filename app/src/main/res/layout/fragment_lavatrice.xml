@@ -63,16 +63,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            tools:layout_editor_absoluteX="335dp"
-            tools:layout_editor_absoluteY="20dp"
-            tools:ignore="MissingConstraints"
-            android:textSize="15sp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
