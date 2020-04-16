@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
 
 public class CustomListView extends ArrayAdapter<String>  {
 
@@ -36,16 +37,18 @@ public class CustomListView extends ArrayAdapter<String>  {
 ArrayList<String> switchStatus;
 int stato;
 ArrayList<Integer> SpinnerValue;
+ArrayList<Integer> SpinnerActivability;
 
 
     MainActivity mainActivity;
-    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato,ArrayList<Integer> SpinnerValue) {
+    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato,ArrayList<Integer> SpinnerValue,ArrayList<Integer> SpinnerActivability) {
         super(context, adapter_view_layout, listData);
         mResource = adapter_view_layout;
         this.mContext= context;
         this.switchStatus=switchStatus;
         this.stato=stato;
         this.SpinnerValue=SpinnerValue;
+        this.SpinnerActivability=SpinnerActivability;
     }
 
 
@@ -67,7 +70,7 @@ ArrayList<Integer> SpinnerValue;
     }
 
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         mDatabaseHelper = new DatabaseHelper(getContext());
         String category = getItem(position);
 
@@ -107,6 +110,11 @@ if(stato==1){
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(aSwitch.isChecked()){
+                        if(SpinnerActivability.get(position)==0){
+                            Toast.makeText(mContext, "Category is empty!", Toast.LENGTH_SHORT).show();
+                            aSwitch.setChecked(false);
+                        }
+                        else {
                         spinner.setVisibility(View.VISIBLE);
                         final String item = (String) spinner.getSelectedItem();
                         final String column = (String) checkbox.getText();
@@ -126,7 +134,7 @@ if(stato==1){
 
                             }
                         });
-                    }
+                    }}
                     else {
                         spinner.setVisibility(View.GONE);
 
@@ -155,6 +163,11 @@ if(stato==1){
                 }
                 private void spinnerVisibility() {
                     if (aSwitch.isChecked()) {
+                        if(SpinnerActivability.get(position)==0){
+                            Toast.makeText(mContext, "Category is empty!", Toast.LENGTH_SHORT).show();
+                            aSwitch.setChecked(false);
+                        }
+                        else{
                         spinner.setVisibility(View.VISIBLE);
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
@@ -175,7 +188,7 @@ if(stato==1){
                             public void onNothingSelected(AdapterView<?> parent) {
                             }
                         });
-                    } else {
+                    }} else {
                         final String porno = (String) spinner.getSelectedItem();
                         final String perno = (String) checkbox.getText();
                         spinner.setVisibility(View.GONE);

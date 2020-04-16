@@ -58,6 +58,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     public int a=0;
     ArrayList<String> dro = new ArrayList<>();
     ArrayList<String> drog = new ArrayList<>();
+    int controllodivider;
 
 
     public OutfitFragment() {
@@ -89,7 +90,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         mListview = view.findViewById(R.id.spezzaossa4);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mListview);
-
+        controllodivider=0;
         Spinner spinner = view.findViewById(R.id.spinner_nav);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -136,8 +137,11 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper.GetNullOutfitName();
         mListview.setLayoutManager(layoutManager);
         mListview.setAdapter(adapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
-        mListview.addItemDecoration(dividerItemDecoration);
+        if(controllodivider==0) {
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+            mListview.addItemDecoration(dividerItemDecoration);
+            controllodivider=1;
+        }
         boolean risultato = longClickListener.onLongClick(mListview);
         adapter.setClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +219,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
             case ItemTouchHelper.LEFT:
                 Cursor data = mDatabaseHelper.getData2();
                 final ArrayList<String> listData = new ArrayList<>();
+                final ArrayList<String> spinnarcontrol = new ArrayList<>();
                 while (data.moveToNext()) {
                     listData.add(data.getString(0));
                     dro.add("0");
@@ -231,11 +236,11 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                     while(c.moveToNext()){
                         if(c.getString(0)!=null){
                             OutfitComponents.add(c.getString(0));
-                            drog.add("1");
+                            spinnarcontrol.add("1");
 
                         }
                         else{
-                            drog.add("0");
+                            spinnarcontrol.add("0");
                         }
 
 
@@ -245,13 +250,13 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 }
                 final ArrayList<Integer> SpinnerValue = new ArrayList<>();
                 for(int i=0;i<categories2.size();i++){
-                    if(drog.get(i).equals("0")){
+                    if(spinnarcontrol.get(i).equals("0")){
                         SpinnerValue.add(-1);
                     }
                     for(int u=0;u<OutfitComponents.size();u++){
                         Cursor c = mDatabaseHelper.GetSpecificIdItem(categories2.get(i),OutfitComponents.get(u));
                         while(c.moveToNext()){
-                        if(!drog.get(i).equals("0")){
+                        if(!spinnarcontrol.get(i).equals("0")){
                             SpinnerValue.add(c.getInt(0));
                         }
 
@@ -263,7 +268,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 }
                 Log.i("Ecco componenti","Ecco"+SpinnerValue);
                 Log.i("Ecco Valori","Ecco"+drog);
-                CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(),drog,1,SpinnerValue);
+                final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue);
                 customDialogClass.show();
                 customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override
@@ -273,6 +278,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                             mDatabaseHelper.ReplaceOutfit(result,position+1);
                             mDatabaseHelper.GetNullOutfitName();
                             populateOutfits();
+
 
                         }
                         else if(result.equals("ELIMINAZIONETOTALE")){
@@ -333,7 +339,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void finish(String result) {
                        if (!result.equals("mattototale")){AddOutfit(result);
-                        populateOutfits(); }
+                        populateOutfits();
+                       }
                        else{
                            Toast.makeText(getContext(),"Creazione Outfit interrotta!",Toast.LENGTH_SHORT).show();
                        }

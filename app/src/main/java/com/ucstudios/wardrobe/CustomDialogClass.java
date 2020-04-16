@@ -89,8 +89,27 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         while (data.moveToNext()) {
             listData.add(data.getString(1));
         }
+        final ArrayList<Integer> CategoryFullness = new ArrayList<>();
 
-        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato,SpinnerValue);
+        for(int i=0;i<listData.size();i++){
+            int controllo = 0;
+
+            Cursor dataitems = mDatabaseHelper.getData1(listData.get(i));
+            while (dataitems.moveToNext()){
+                if(dataitems.getString(0)!=null){
+                    controllo++;
+                }
+            }
+            if(controllo==0){
+                CategoryFullness.add(0); //0 means the category is empty
+            }
+            else {
+                CategoryFullness.add(1); //1 means the category has at least one item in it
+            }
+        }
+        Log.i("Controllo","Ecco"+CategoryFullness);
+
+        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato,SpinnerValue,CategoryFullness);
         mRecyclerView.setAdapter(adapter);
     }
 
