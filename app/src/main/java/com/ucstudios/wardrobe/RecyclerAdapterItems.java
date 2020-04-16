@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterItems.ViewHolder> implements  ItemTouchHelperAdapter{
 
     private static final String TAG = "RecyclerAdapter";
@@ -37,8 +39,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
     private Integer[] iconwm ={
             R.drawable.ic_wm,
-            R.drawable.ic_basket
-
+            R.drawable.ic_basket,
     };
     AdapterListResult mAdapterResult;
 
@@ -95,9 +96,12 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
             holder.imageView2.setImageResource(iconwm[0]);
             holder.imageView2.setVisibility(View.VISIBLE);
         }
-        if(ppos[position]==3){
-            //SETTARE GIF
-        }
+        /*Crea varibile GifImageView che contiene appunto la gif,
+        dopodichè passala all'holder gif, se è uguale a 3, allora starta la gif*/
+        /*if(ppos[position]==3){
+            holder.imageView2.setImageResource();
+            holder.imageView2.setVisibility(View.VISIBLE);
+        }*/
     }
 
 

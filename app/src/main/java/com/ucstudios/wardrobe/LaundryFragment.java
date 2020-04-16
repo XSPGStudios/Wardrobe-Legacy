@@ -231,8 +231,14 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                     //mando notifica con progresso, e cambio stato flag
                                     updateTimeText(c);
                                     flagLaundry = true;
+                                    String message = "Lavaggio interrotto";
                                     Intent resultIntent = new Intent(getContext(), MainActivity.class);
                                         PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    Intent cancelIntent = new Intent (getContext(), LaundryFragment.class);
+                                        PendingIntent cancelPendingItent = PendingIntent.getActivity(getContext(), 0, resultIntent, 0);
+                                            Intent broadcastIntent = new Intent (getContext(), NotificationReceiver.class);
+                                                broadcastIntent.putExtra("toastMessage", message);
+                                                    PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                     long tempoInMillis = 10000 / 100;
                                     final int progressMax = (int) tempoInMillis;
@@ -246,7 +252,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             .setOnlyAlertOnce(true)
                                             .setProgress(progressMax, 0, false)
                                             .setAutoCancel(true)
-                                            .setContentIntent(resultPendingIntent);
+                                            .setContentIntent(resultPendingIntent)
+                                            .addAction(R.drawable.ic_wm24, "CANCEL", actionIntent);
 
                                     notificationManager.notify(2, notification.build());
                                     new Thread(new Runnable() {
@@ -265,7 +272,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             flagLaundry = false;
                                         }
                                     }).start();
-                                    //Add Database Function "WashingMachineGif" (aggiorno stato item(s))
+
                                     dialog.dismiss();
                                 }
                                 else {
