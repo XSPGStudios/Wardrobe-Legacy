@@ -231,8 +231,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                     //mando notifica con progresso, e cambio stato flag
                                     updateTimeText(c);
                                     flagLaundry = true;
-                                    Intent resultIntent = new Intent(getContext(), LaundryFragment.class);
-                                    PendingIntent resultPendingItent = PendingIntent.getActivity(getContext(), 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    Intent resultIntent = new Intent(getContext(), MainActivity.class);
+                                        PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                     long tempoInMillis = 10000 / 100;
                                     final int progressMax = (int) tempoInMillis;
@@ -246,7 +246,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             .setOnlyAlertOnce(true)
                                             .setProgress(progressMax, 0, false)
                                             .setAutoCancel(true)
-                                            .setContentIntent(resultPendingItent);
+                                            .setContentIntent(resultPendingIntent);
 
                                     notificationManager.notify(2, notification.build());
                                     new Thread(new Runnable() {
