@@ -74,6 +74,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private long mTimeLeftInMillis;
     private long mEndTime;
     private NotificationManagerCompat notificationManager;
+    private boolean flagLaundry = false;
 
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
@@ -224,44 +225,53 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                 c.set(Calendar.MINUTE, minute);
                                 c.set(Calendar.SECOND, 0);
 
-                                updateTimeText(c);
 
-                                //mando notifica con progresso
-                                Intent resultIntent = new Intent (getContext(), LaundryFragment.class);
+
+                                if (!flagLaundry) {
+                                    //mando notifica con progresso, e cambio stato flag
+                                    updateTimeText(c);
+                                    flagLaundry = true;
+                                    Intent resultIntent = new Intent(getContext(), LaundryFragment.class);
                                     PendingIntent resultPendingItent = PendingIntent.getActivity(getContext(), 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                long tempoInMillis = 10000/100;
-                                final int progressMax = (int) tempoInMillis;
-                                final NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
-                                        .setSmallIcon(R.drawable.ic_wm24)
-                                        .setContentTitle("Laundry status")
-                                        .setContentText("Lavaggio in corso...")
-                                        .setColor(Color.BLUE)
-                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                        .setOngoing(true)
-                                        .setOnlyAlertOnce(true)
-                                        .setProgress(progressMax, 0, false)
-                                        .setAutoCancel(true)
-                                        .setContentIntent(resultPendingItent);
+                                    long tempoInMillis = 10000 / 100;
+                                    final int progressMax = (int) tempoInMillis;
+                                    final NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
+                                            .setSmallIcon(R.drawable.ic_wm24)
+                                            .setContentTitle("Laundry status")
+                                            .setContentText("Lavaggio in corso...")
+                                            .setColor(Color.BLUE)
+                                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                            .setOngoing(true)
+                                            .setOnlyAlertOnce(true)
+                                            .setProgress(progressMax, 0, false)
+                                            .setAutoCancel(true)
+                                            .setContentIntent(resultPendingItent);
 
-                                        notificationManager.notify(2, notification.build());
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        SystemClock.sleep(2000);
-                                        for (int progress = 0; progress <= progressMax; progress += 10) {
-                                            notification.setProgress(progressMax, progress, false);
-                                                 notificationManager.notify(2, notification.build());
-                                                        SystemClock.sleep(1000);
+                                    notificationManager.notify(2, notification.build());
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            SystemClock.sleep(2000);
+                                            for (int progress = 0; progress <= progressMax; progress += 10) {
+                                                notification.setProgress(progressMax, progress, false);
+                                                notificationManager.notify(2, notification.build());
+                                                SystemClock.sleep(1000);
+                                            }
+                                            notification.setContentText("Lavatrice pronta!")
+                                                    .setProgress(0, 0, false)
+                                                    .setOngoing(false);
+                                            notificationManager.notify(2, notification.build());
+                                            flagLaundry = false;
                                         }
-                                        notification.setContentText("Lavatrice pronta!")
-                                                .setProgress(0, 0, false)
-                                                .setOngoing(false);
-                                        notificationManager.notify(2, notification.build());
-                                    }
-                                }).start();
-                                //Add Database Function "WashingMachineGif" (aggiorno stato item(s))
-                                dialog.dismiss();
+                                    }).start();
+                                    //Add Database Function "WashingMachineGif" (aggiorno stato item(s))
+                                    dialog.dismiss();
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "A laundry has already been set", Toast.LENGTH_SHORT).show();
+
+                                }
                             }
                         });
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
