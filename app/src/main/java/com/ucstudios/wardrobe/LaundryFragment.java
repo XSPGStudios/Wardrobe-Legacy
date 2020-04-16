@@ -291,7 +291,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                     }
                 }
             };
-
+//push failed
     private void updateTimeText (Calendar c) {
         Toast.makeText(getContext(), "Laundry started, check the notification for the progress!", Toast.LENGTH_SHORT).show();
     }
