@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "categories_table";
     private static final String TABLE_NAME1 = "outfit_table";
-    private static final String COL0 = "ID";
+    private static final String COL0 = "ROWID";
     private static final String COL1 = "name";
     public String PINZA;
 
@@ -40,8 +40,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE "+ TABLE_NAME + " (ID INTEGER PRIMARY KEY ," + COL1 +" TEXT,IC INTEGER "+")";
-        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(ID INTEGER PRIMARY KEY , name TEXT)";
+        String createTable = "CREATE TABLE "+ TABLE_NAME + " ("+ COL1 +" TEXT,IC INTEGER "+")";
+        String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(name TEXT)";
 
 
 
@@ -67,11 +67,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG,"addData : Adding " + item + " to " + TABLE_NAME);
         db.execSQL("BEGIN TRANSACTION");
-        db.execSQL(" CREATE TABLE "+ PINZA +"(ID INTEGER PRIMARY KEY , names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER,image BLOB)");
+        db.execSQL(" CREATE TABLE "+ PINZA +"(names TEXT,IC2 INTEGER,POS INTEGER,size TEXT,brand TEXT,value INTEGER,currency INTEGER,image BLOB)");
         Log.d(TAG, "Table "+ PINZA +" created");
         db.execSQL("ALTER TABLE "+TABLE_NAME1+" ADD COLUMN "+PINZA+" TEXT");
         a.put("POS",0);
-        db.update(PINZA,a,"ID=(SELECT MAX(ID) FROM "+ PINZA +")", null);
+        db.update(PINZA,a,"ROWID=(SELECT MAX(ROWID) FROM "+ PINZA +")", null);
         db.execSQL("COMMIT");
 
         Log.d(TAG, PINZA+" column created in "+ TABLE_NAME1);
@@ -102,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL1, item1);
-        db.update("outfit_table", cv,"ID=(SELECT MAX(ID) FROM outfit_table)",null);
+        db.update("outfit_table", cv,"ROWID=(SELECT MAX(ROWID) FROM outfit_table)",null);
         Log.d(TAG, "ReplaceData : Adding "+item1+" to "+COL1);
         return true;
     }
@@ -149,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("value",value);
         cv.put("currency",currency);
         cv.put("image",image);
-        db.update(tabletitle, cv,"ID="+i,null);
+        db.update(tabletitle, cv,"ROWID="+i,null);
         return true;
     }
 
@@ -162,7 +162,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("brand",brand);
         cv.put("value",value);
         cv.put("currency",currency);
-        db.update(tabletitle,cv,"ID="+i,null);
+        db.update(tabletitle,cv,"ROWID="+i,null);
         return true;
     }
 
@@ -170,7 +170,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name",nome);
-        db.update(TABLE_NAME1,cv,"ID="+pos,null);
+        db.update(TABLE_NAME1,cv,"ROWID="+pos,null);
         return true;
     }
 
@@ -178,7 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name", item);
-        db.update(tabletitle, cv,"ID="+i,null);
+        db.update(tabletitle, cv,"ROWID="+i,null);
         return true;
     }
 
@@ -186,7 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(negro, item);
-        db.update("outfit_table", cv,"ID=(SELECT MAX(ID) FROM outfit_table)",null);
+        db.update("outfit_table", cv,"ROWID=(SELECT MAX(ROWID) FROM outfit_table)",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
         return true;
     }
@@ -195,7 +195,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(negro, item);
-        db.update("outfit_table", cv,"ID="+position+"",null);
+        db.update("outfit_table", cv,"ROWID="+position+"",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
         return true;
     }
@@ -237,13 +237,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean delete3(String table, String item){
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
-        return db.delete(table,"name=?", new String[]{item}) > 0;
+        db.delete(table,"name=?", new String[]{item});
+        db.execSQL("VACUUM");
+        return true;
+
     }
 
-    public boolean delete4(String table, String item){
+    public  boolean delete4(String table, String item){
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
-        return db.delete(table,"name=?", new String[]{item}) > 0;
+        db.delete(table,"names=?", new String[]{item});
+        db.execSQL("VACUUM");
+        return true;
+
     }
 
     public boolean TABLEDROP(String table){
@@ -300,7 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("IC", icon);
-        db.update("categories_table",cv,"ID="+i,null);
+        db.update("categories_table",cv,"ROWID="+i,null);
 
     }
 
@@ -315,7 +321,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("POS", 1);
-        db.update(tablename, cv,"ID="+i,null);
+        db.update(tablename, cv,"ROWID="+i,null);
         return true;
     }
 
@@ -323,7 +329,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("POS", (byte[]) null);
-        db.update(tablename, cv,"ID="+i,null);
+        db.update(tablename, cv,"ROWID="+i,null);
         return true;
     }
     public boolean toLaundry(String tablename, String SpecificItem){
@@ -363,7 +369,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor GetItemData(Integer pos,String tablename){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM "+tablename+" WHERE ID="+pos+"";
+        String query = "SELECT * FROM "+tablename+" WHERE ROWID="+pos+"";
         Cursor data= db.rawQuery(query,null);
         return data;
     }
@@ -375,7 +381,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("image",image);
-        db.update(tablename,cv,"ID="+i,null);
+        db.update(tablename,cv,"ROWID="+i,null);
     }
 
     public Cursor GetBasketSpecific(String tablename,String itemname){
@@ -423,7 +429,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor GetSpecificIdItem(String tablename, String Itemname){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT ID FROM "+tablename+" WHERE names=+'"+Itemname+"'";
+        String query = "SELECT ROWID FROM "+tablename+" WHERE names=+'"+Itemname+"'";
         Cursor data = db.rawQuery(query,null);
         return data;
     }
@@ -434,48 +440,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void DeleteOutfit(int position){
+    public void DeleteOutfit(String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_NAME1+" WHERE ID="+position+"");
-
+        db.execSQL("DELETE FROM "+TABLE_NAME1+" WHERE name='"+name+"'");
     }
 
     public void SwapRows(int position1,int position2,String table){
        SQLiteDatabase db = this.getWritableDatabase();
 
-       String query = "SELECT * FROM "+table+" WHERE ID="+position1;
-       String query2 = "SELECT * FROM "+table+" WHERE ID="+position2;
+       String query = "SELECT * FROM "+table+" WHERE ROWID="+position1;
+       String query2 = "SELECT * FROM "+table+" WHERE ROWID="+position2;
        @SuppressLint("Recycle") Cursor datafirst = db.rawQuery(query,null);
         @SuppressLint("Recycle") Cursor datasecond = db.rawQuery(query2,null);
         ContentValues cv2 = new ContentValues();
         ContentValues cv = new ContentValues();
        while(datafirst.moveToNext()){
-           cv.put("names",datafirst.getString(1));
-           cv.put("IC2",datafirst.getString(2));
-           cv.put("POS",datafirst.getString(3));
-           cv.put("size",datafirst.getString(4));
-           cv.put("brand",datafirst.getString(5));
-           cv.put("value",datafirst.getInt(6));
-           cv.put("currency",datafirst.getInt(7));
-           cv.put("image",datafirst.getBlob(8));
+           cv.put("names",datafirst.getString(0));
+           cv.put("IC2",datafirst.getString(1));
+           cv.put("POS",datafirst.getString(2));
+           cv.put("size",datafirst.getString(3));
+           cv.put("brand",datafirst.getString(4));
+           cv.put("value",datafirst.getInt(5));
+           cv.put("currency",datafirst.getInt(6));
+           cv.put("image",datafirst.getBlob(7));
        }
 
 
 
        while(datasecond.moveToNext()){
-           cv2.put("names",datasecond.getString(1));
-           cv2.put("IC2",datasecond.getString(2));
-           cv2.put("POS",datasecond.getString(3));
-           cv2.put("size",datasecond.getString(4));
-           cv2.put("brand",datasecond.getString(5));
-           cv2.put("value",datasecond.getInt(6));
-           cv2.put("currency",datasecond.getInt(7));
-           cv2.put("image",datasecond.getBlob(8));
+           cv2.put("names",datasecond.getString(0));
+           cv2.put("IC2",datasecond.getString(1));
+           cv2.put("POS",datasecond.getString(2));
+           cv2.put("size",datasecond.getString(3));
+           cv2.put("brand",datasecond.getString(4));
+           cv2.put("value",datasecond.getInt(5));
+           cv2.put("currency",datasecond.getInt(6));
+           cv2.put("image",datasecond.getBlob(7));
 
        }
 
-       db.update(table,cv,"ID="+position2,null);
-       db.update(table,cv2,"ID="+position1,null);
+       db.update(table,cv,"ROWID="+position2,null);
+       db.update(table,cv2,"ROWID="+position1,null);
 
 
 

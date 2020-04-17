@@ -87,7 +87,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         Cursor data = mDatabaseHelper.getData();
         final ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()) {
-            listData.add(data.getString(1));
+            listData.add(data.getString(0));
         }
         final ArrayList<Integer> CategoryFullness = new ArrayList<>();
 

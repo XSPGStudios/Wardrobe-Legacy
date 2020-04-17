@@ -82,7 +82,7 @@ public class OutfitGridFragment extends Fragment implements View.OnClickListener
         Cursor categories = mDatabasehelper.getData();
         final ArrayList<String> categories2 = new ArrayList<>();
         while (categories.moveToNext()){
-            categories2.add(categories.getString(1));
+            categories2.add(categories.getString(0));
         }
         final ArrayList<ArrayList<String>> AllOutfitComponents = new ArrayList<>();
 

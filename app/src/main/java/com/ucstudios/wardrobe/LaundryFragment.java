@@ -141,8 +141,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
 
         while(data1.moveToNext()){
-            categories.add(data1.getString(1));
-            TotalCategories.add(data1.getString(1));
+            categories.add(data1.getString(0));
+            TotalCategories.add(data1.getString(0));
 
         }
 
@@ -152,8 +152,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         for(int i=0; i<categories.size();i++) {
             Cursor data = mDatabaseHelper.GetWM(categories.get(i));
             while(data.moveToNext()){
-                listData.add(data.getString(1));
-                ItemsInBasket.add(data.getString(1));
+                listData.add(data.getString(0));
+                ItemsInBasket.add(data.getString(0));
             }
 
         }
@@ -322,7 +322,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                     for(int i=0;i<TotalCategories.size();i++){
                         Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
                         while(c.moveToNext()){
-                            dacestoalavatrice.add(c.getString(1));
+                            dacestoalavatrice.add(c.getString(0));
                             Log.i("msg :","Swiped "+ dacestoalavatrice.get(0));
                         }
                     }
@@ -339,7 +339,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                     for(int i=0;i<TotalCategories.size();i++){
                         Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
                         while(c.moveToNext()){
-                            dacestoalavatrices.add(c.getString(1));
+                            dacestoalavatrices.add(c.getString(0));
                             Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
                         }
                     }

@@ -78,8 +78,8 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
         final ArrayList<byte[]> magic = new ArrayList<>();
         final ArrayList<String> tactic = new ArrayList<>();
         while(C.moveToNext()){
-            magic.add(C.getBlob(8));
-            tactic.add(C.getString(1));
+            magic.add(C.getBlob(7));
+            tactic.add(C.getString(0));
         }
         AdapterGridList adapterGridList = new AdapterGridList(mGridView.getContext(),magic,tactic);
         mGridView.setAdapter(adapterGridList);

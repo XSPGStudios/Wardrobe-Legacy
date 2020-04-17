@@ -114,10 +114,44 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
         spinner.setAdapter(adapter1);
 
+        deleteEmptyOutfit();
         populateOutfits();
 
 
         return view;
+    }
+
+    public void deleteEmptyOutfit(){
+        Cursor data = mDatabaseHelper.getData2();
+        final ArrayList<String> listData = new ArrayList<>();
+        while (data.moveToNext()) {
+            listData.add(data.getString(0));
+            dro.add("0");
+        }
+        Cursor categories = mDatabaseHelper.getData();
+        final ArrayList<String> categories2 = new ArrayList<>();
+        while (categories.moveToNext()){
+            categories2.add(categories.getString(0));
+        }
+
+        for(int u=0;u<listData.size();u++){
+            int controllomatto=0;
+            for(int i=0;i<categories2.size();i++){
+                Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(u));
+
+                while(c.moveToNext()){
+                    if(c.getString(0)!=null){
+                        controllomatto++;
+                    }
+                }
+            }
+            if(controllomatto==0){
+                mDatabaseHelper.delete3("outfit_table",listData.get(u));
+                Toast.makeText(getContext(),"Outfit "+listData.get(u)+" automatically deleted",Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
     }
 
     public void populateOutfits() {
@@ -130,7 +164,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         Cursor categories = mDatabaseHelper.getData();
         final ArrayList<String> categories2 = new ArrayList<>();
         while (categories.moveToNext()){
-            categories2.add(categories.getString(1));
+            categories2.add(categories.getString(0));
         }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         final RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData);
@@ -141,6 +175,23 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             mListview.addItemDecoration(dividerItemDecoration);
             controllodivider=1;
+        }
+        for(int u=0;u<listData.size();u++){
+            int controllomatto=0;
+            for(int i=0;i<categories2.size();i++){
+                Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(u));
+
+                while(c.moveToNext()){
+                    if(c.getString(0)!=null){
+                        controllomatto++;
+                    }
+                }
+            }
+            if(controllomatto==0){
+                mDatabaseHelper.DeleteOutfit(listData.get(u));
+                Toast.makeText(getContext(),"Outfit "+listData.get(u)+" automatically deleted",Toast.LENGTH_SHORT).show();
+
+            }
         }
         boolean risultato = longClickListener.onLongClick(mListview);
         adapter.setClickListener(new View.OnClickListener() {
@@ -227,7 +278,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 Cursor categories = mDatabaseHelper.getData();
                 final ArrayList<String> categories2 = new ArrayList<>();
                 while (categories.moveToNext()){
-                    categories2.add(categories.getString(1));
+                    categories2.add(categories.getString(0));
                 }
                 final ArrayList<String> OutfitComponents = new ArrayList<>();
                 for(int i = 0; i<categories2.size();i++){
@@ -282,13 +333,16 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                                 UniquenessControl.add(c.getString(0));
                             }
                             for(int i=0;i<UniquenessControl.size();i++){
+                                if(!result.equals(listData.get(position))){
                                 if(result.equals(UniquenessControl.get(i))){
                                     control++;
+                                }
                                 }
                             }
                             if(control==0){
                             mDatabaseHelper.ReplaceOutfit(result,position+1);
                             mDatabaseHelper.GetNullOutfitName();
+                            deleteEmptyOutfit();
                             populateOutfits();}
                             else{
                                 Toast.makeText(getContext(),"An Outfit with that name already exists! Change name", Toast.LENGTH_SHORT).show();
@@ -298,6 +352,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                         }
                         else if(result.equals("ELIMINAZIONETOTALE")){
                             mDatabaseHelper.delete4("Outfit_Table",listData.get(position));
+                            deleteEmptyOutfit();
                             populateOutfits();
                             Log.i("msg","Eliminazione completata!");
                         }
@@ -309,6 +364,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         mDatabaseHelper.GetNullOutfitName();
+                        deleteEmptyOutfit();
                         populateOutfits();
 
                     }
@@ -368,6 +424,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                            }
                            if(control==0) {
                                AddOutfit(result);
+
                                populateOutfits();
                            }
                            else{

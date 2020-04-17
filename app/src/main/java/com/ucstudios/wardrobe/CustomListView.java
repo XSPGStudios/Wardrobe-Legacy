@@ -78,7 +78,7 @@ ArrayList<Integer> SpinnerActivability;
         Cursor Drugs = mDatabaseHelper.getData1(category);
         final ArrayList<String> drugs = new ArrayList<>();
         while (Drugs.moveToNext()) {
-            drugs.add(Drugs.getString(1));
+            drugs.add(Drugs.getString(0));
         }
 
 

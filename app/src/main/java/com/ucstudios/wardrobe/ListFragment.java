@@ -150,7 +150,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     }
 
     public void Delete(String MainActName, String item){
-        mDatabaseHelper1.delete2(MainActName, item);
+        mDatabaseHelper1.delete4(MainActName, item);
     }
 
 
@@ -162,11 +162,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         final ArrayList<Integer> icons = new ArrayList<>();
 
         while (data.moveToNext()) {
-            listData.add(data.getString(1));
-            canecazzo.add(data.getString(1));
-            position.add(data.getInt(3));
-            icons.add(data.getInt(2));
-            tech.add(data.getBlob(8));
+            listData.add(data.getString(0));
+            canecazzo.add(data.getString(0));
+            position.add(data.getInt(2));
+            icons.add(data.getInt(1));
+            tech.add(data.getBlob(7));
         }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -191,10 +191,10 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 final ArrayList<String> itemdata2 = new ArrayList<>();
                 final ArrayList<byte[]> negromatto = new ArrayList<>();
                 while (magiabianca.moveToNext()){
-                    itemdata2.add(magiabianca.getString(1));
-                    itemdata2.add(magiabianca.getString(5));
-                    itemdata2.add(String.valueOf(magiabianca.getInt(6)));
-                    negromatto.add(magiabianca.getBlob(8));
+                    itemdata2.add(magiabianca.getString(0));
+                    itemdata2.add(magiabianca.getString(4));
+                    itemdata2.add(String.valueOf(magiabianca.getInt(5)));
+                    negromatto.add(magiabianca.getBlob(7));
                 }
               final VisualDialogItemDialogTrue  dialogItemDialogTrue = new VisualDialogItemDialogTrue(getActivity(),itemdata2,negromatto);
                 dialogItemDialogTrue.show();
@@ -287,11 +287,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
                     while (C.moveToNext()){
-                        itemdata.add(C.getString(1));
+                        itemdata.add(C.getString(0));
+                        itemdata.add(C.getString(3));
                         itemdata.add(C.getString(4));
-                        itemdata.add(C.getString(5));
-                        itemdata.add(String.valueOf(C.getInt(6)));
-                        tecca.add(C.getBlob(8));
+                        itemdata.add(String.valueOf(C.getInt(5)));
+                        tecca.add(C.getBlob(7));
 
                     }
                     final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata,tecca,mMainActivity.Name);

@@ -154,8 +154,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         final ArrayList<String> listData = new ArrayList<>();
         final ArrayList<Integer> iconsdata = new ArrayList<>();
         while (data.moveToNext()) {
-            listData.add(data.getString(1));
-            iconsdata.add(data.getInt(2));
+            listData.add(data.getString(0));
+            iconsdata.add(data.getInt(1));
         }
         mMainActivity.Categories=listData;
         final AdapterCategories adapterCategories = new AdapterCategories(mRecyclerView.getContext(), R.layout.adapter_categories, listData, iconsdata);
@@ -194,8 +194,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                         }
                         if(control==0){
                         String cocco = String.valueOf(result);
-                        String ketamina ="ID INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT";
-                        String sugone = "ID, name";
+                        String ketamina ="name  TEXT";
+                        String sugone = "name";
                         if (cocco.equals("CANE")) {
                             pennsylvania = listData.get(position);
 
@@ -226,8 +226,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
 
                         else if (!cocco.equals("")&!cocco.equals("CANE")&!cocco.equals("culocane")){
 
-                            String ketamina2="ID INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT";
-                            String sugone2="ID ,name";
+                            String ketamina2="name  TEXT";
+                            String sugone2="name";
                             int peso = position;
 
 
@@ -283,7 +283,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                         final ArrayList<String> UniquenessControl = new ArrayList<>();
                         int control=0;
                         while(c.moveToNext()){
-                            UniquenessControl.add(c.getString(1));
+                            UniquenessControl.add(c.getString(0));
                         }
                         for(int i=0;i<UniquenessControl.size();i++){
                             if(result1.equals(UniquenessControl.get(i))){
