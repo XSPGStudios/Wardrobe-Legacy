@@ -144,6 +144,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                         controllomatto++;
                     }
                 }
+
+
             }
             if(controllomatto==0){
                 mDatabaseHelper.delete3("outfit_table",listData.get(u));

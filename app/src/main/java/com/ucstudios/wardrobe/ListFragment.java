@@ -321,7 +321,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                            final ArrayList<String> UniquenessControl = new ArrayList<>();
                            int control=0;
                            while(c.moveToNext()){
-                               UniquenessControl.add(c.getString(1));
+                               UniquenessControl.add(c.getString(0));
                            }
                            for(int i=0;i<UniquenessControl.size();i++){
                                if(name.equals(UniquenessControl.get(i))){
@@ -418,7 +418,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                             final ArrayList<String> UniquenessControl = new ArrayList<>();
                             int control=0;
                             while(c.moveToNext()) {
-                                UniquenessControl.add(c.getString(1));
+                                UniquenessControl.add(c.getString(0));
                             }
                             for(int i=0;i<UniquenessControl.size();i++){
                                 if(name.equals(UniquenessControl.get(i))){

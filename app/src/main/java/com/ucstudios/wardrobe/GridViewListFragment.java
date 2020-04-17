@@ -57,14 +57,14 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
                 final ArrayList<String> itemdata2 = new ArrayList<>();
                 final ArrayList<byte[]> negromatto = new ArrayList<>();
                 while (magiabianca.moveToNext()){
-                    itemdata2.add(magiabianca.getString(1));
-                    itemdata2.add(magiabianca.getString(5));
-                    itemdata2.add(String.valueOf(magiabianca.getInt(6)));
-                    negromatto.add(magiabianca.getBlob(8));
+                    itemdata2.add(magiabianca.getString(0));
+                    itemdata2.add(magiabianca.getString(4));
+                    itemdata2.add(String.valueOf(magiabianca.getInt(5)));
+                    negromatto.add(magiabianca.getBlob(7));
                 }
                 final VisualDialogItemDialogTrue  dialogItemDialogTrue = new VisualDialogItemDialogTrue(getActivity(),itemdata2,negromatto);
                 dialogItemDialogTrue.show();
-                Log.i("msg","Traffica"+itemdata2.get(1));
+                Log.i("msg","Traffica"+itemdata2.get(0));
             }
             });
 
