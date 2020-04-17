@@ -1,11 +1,14 @@
 package com.ucstudios.wardrobe;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -70,7 +74,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     int controllodivider;
 
 
-
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.CAMERA
+    };
 
 
     RecyclerAdapterItems recyclerAdapter;
@@ -120,6 +128,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         controllodivider=0;
 
         populateItems();
+
+
 
 
 
@@ -380,7 +390,16 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
 
-
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 
 
@@ -394,51 +413,61 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 final ArrayList<byte[]> technon = new ArrayList<>();
                 final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon,mMainActivity.Name);
 
-                dialog.show();
-                dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
-                    @Override
-                    public void activation(int a) {
-                        if (a==1){
+                if (!hasPermissions(getContext(), PERMISSIONS)) {
+                    ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
+                }
 
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            if(intent.resolveActivity(getActivity().getPackageManager())!=null) {
+                if (hasPermissions(getContext(), PERMISSIONS)) {
+                    dialog.show();
+                    dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
+                        @Override
+                        public void activation(int a) {
+                            if (a == 1) {
 
-                                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                            }
-                        }
-                    }
-                });
-                dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
-
-                    @Override
-                    public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
-                        if(magianera==1){
-                            Cursor c = mDatabaseHelper1.getData1(mMainActivity.Name);
-                            final ArrayList<String> UniquenessControl = new ArrayList<>();
-                            int control=0;
-                            while(c.moveToNext()) {
-                                UniquenessControl.add(c.getString(0));
-                            }
-                            for(int i=0;i<UniquenessControl.size();i++){
-                                if(name.equals(UniquenessControl.get(i))){
-                                    control++;
+                                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                                 }
                             }
-                            if(control==0){
-                            AddData1(name,size,brand,value,currency,icon,alien2o);
-                            mDatabaseHelper1.AddPictureItem(mMainActivity.Name,alien2o,tac);
-                            dialog.dismiss();
-                            populateItems();}
-                            else{
-                                Toast.makeText(getContext(),"Item doppio!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
+
+
+                        @Override
+                        public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
+                            if (magianera == 1) {
+                                Cursor c = mDatabaseHelper1.getData1(mMainActivity.Name);
+                                final ArrayList<String> UniquenessControl = new ArrayList<>();
+                                int control = 0;
+                                while (c.moveToNext()) {
+                                    UniquenessControl.add(c.getString(0));
+                                }
+                                for (int i = 0; i < UniquenessControl.size(); i++) {
+                                    if (name.equals(UniquenessControl.get(i))) {
+                                        control++;
+                                    }
+                                }
+                                if (control == 0) {
+                                    AddData1(name, size, brand, value, currency, icon, alien2o);
+                                    mDatabaseHelper1.AddPictureItem(mMainActivity.Name, alien2o, tac);
+                                    dialog.dismiss();
+                                    populateItems();
+                                } else {
+                                    Toast.makeText(getContext(), "Item doppio!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "Pic missing!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else{
-                            Toast.makeText(getContext(),"Pic missing!",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+                }
+
+                else {
+                    Toast.makeText(getContext(), "Permissions were denied", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
 
 
