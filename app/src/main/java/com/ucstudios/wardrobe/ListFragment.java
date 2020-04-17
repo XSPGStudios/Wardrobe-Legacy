@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.telephony.CellSignalStrength;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -316,6 +317,21 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
                         @Override
                         public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
+                           Cursor c = mDatabaseHelper1.getData1(mMainActivity.Name);
+                           final ArrayList<String> UniquenessControl = new ArrayList<>();
+                           int control=0;
+                           while(c.moveToNext()){
+                               UniquenessControl.add(c.getString(1));
+                           }
+                           for(int i=0;i<UniquenessControl.size();i++){
+                               if(name.equals(UniquenessControl.get(i))){
+                                   control++;
+                               }
+                           }
+
+                           if(control==0){
+
+
                             if(alien2o!=null){
                                 Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);}
                             else{
@@ -325,6 +341,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                             dialog.dismiss();
                             populateItems();
                         }
+                        else {
+                            Toast.makeText(getContext(),"An item with this name already exists!",Toast.LENGTH_SHORT).show();
+                           }}
 
                     });
 
@@ -395,10 +414,26 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
                         if(magianera==1){
+                            Cursor c = mDatabaseHelper1.getData1(mMainActivity.Name);
+                            final ArrayList<String> UniquenessControl = new ArrayList<>();
+                            int control=0;
+                            while(c.moveToNext()) {
+                                UniquenessControl.add(c.getString(1));
+                            }
+                            for(int i=0;i<UniquenessControl.size();i++){
+                                if(name.equals(UniquenessControl.get(i))){
+                                    control++;
+                                }
+                            }
+                            if(control==0){
                             AddData1(name,size,brand,value,currency,icon,alien2o);
                             mDatabaseHelper1.AddPictureItem(mMainActivity.Name,alien2o,tac);
                             dialog.dismiss();
                             populateItems();}
+                            else{
+                                Toast.makeText(getContext(),"Item doppio!",Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         else{
                             Toast.makeText(getContext(),"Pic missing!",Toast.LENGTH_SHORT).show();
                         }

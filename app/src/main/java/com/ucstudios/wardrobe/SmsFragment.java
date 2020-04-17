@@ -181,6 +181,18 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                 adapterCategories.setAdapterResult(new AdapterCategories.onMyAdapterResult1(){
                     @Override
                     public void finish(String result) {
+                        Cursor c = mDatabaseHelper.getData();
+                        ArrayList<String> UniquenessControl = new ArrayList<>();
+                        int control=0;
+                        while(c.moveToNext()){
+                            UniquenessControl.add(c.getString(1));
+                        }
+                        for(int i=0;i<UniquenessControl.size();i++){
+                            if(result.equals(UniquenessControl.get(i))){
+                                control++;
+                            }
+                        }
+                        if(control==0){
                         String cocco = String.valueOf(result);
                         String ketamina ="ID INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT";
                         String sugone = "ID, name";
@@ -240,6 +252,9 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
                             Log.i("msg", "Modified "+listData.get(position)+" to "+ result);
                             populateButtons();
 
+                        }}
+                        else{
+                            Toast.makeText(getContext(),"A Category with that name already exists!",Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -259,16 +274,34 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         switch (v.getId()) {
             case R.id.floating_action_button:
 
-                EditCategoriesDialog editCategoriesDialog = new EditCategoriesDialog(getContext(),0);
+                final EditCategoriesDialog editCategoriesDialog = new EditCategoriesDialog(getContext(),0);
+                editCategoriesDialog.show();
                 editCategoriesDialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
                     @Override
                     public void finish(String result1, int icon) {
+                        Cursor c = mDatabaseHelper.getData();
+                        final ArrayList<String> UniquenessControl = new ArrayList<>();
+                        int control=0;
+                        while(c.moveToNext()){
+                            UniquenessControl.add(c.getString(1));
+                        }
+                        for(int i=0;i<UniquenessControl.size();i++){
+                            if(result1.equals(UniquenessControl.get(i))){
+                                control++;
+                            }
+                        }
+                        if(control==0){
                         mDatabaseHelper.PINZA = result1;
                         AddData(mDatabaseHelper.PINZA,icon);
                         populateButtons();
+                        editCategoriesDialog.dismiss();
+                    }
+                        else {
+                            Toast.makeText(getContext(), "A category with this name already exists!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                editCategoriesDialog.show();
+
                 break;
 
                 /*final String[] m_Text = {""};

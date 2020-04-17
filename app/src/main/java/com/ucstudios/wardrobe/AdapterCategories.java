@@ -87,7 +87,8 @@ public class AdapterCategories extends ArrayAdapter<String> {
                         if(!cocaina.equals(""))
                         {
                             if(!cocaina.equals("CANE")&!cocaina.equals("culocane")){
-                                textView.setText(result1);}
+                            //   textView.setText(result1);
+                            }
                                 mAdapterResult12.finish(result1);
                                 dialog.dismiss();
                             if(cocaina=="culocane"){

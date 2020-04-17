@@ -125,7 +125,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                 }
 
                 else {
-                    mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue,olditem);Toast.makeText(getContext(), "Item inserted!", Toast.LENGTH_SHORT).show();
+                    mItemCreation.finish(String.valueOf(name.getText()), String.valueOf(size.getText()), String.valueOf(brand.getText()), Integer.parseInt(String.valueOf(value.getText())), spinner.getSelectedItemPosition(), iconvalue,olditem);
                 }
 
             break;

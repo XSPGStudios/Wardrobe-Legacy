@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 
@@ -23,7 +24,8 @@ public class NotificationHelper extends ContextWrapper {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void createChannel() {
         NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
 

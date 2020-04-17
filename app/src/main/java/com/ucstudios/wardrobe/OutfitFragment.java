@@ -275,9 +275,24 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                     public void finish(String result) {
 
                         if(!result.equals("")&&!result.equals("ELIMINAZIONETOTALE")){
+                            Cursor c = mDatabaseHelper.getData2();
+                            final ArrayList<String> UniquenessControl = new ArrayList<>();
+                            int control =0;
+                            while(c.moveToNext()){
+                                UniquenessControl.add(c.getString(0));
+                            }
+                            for(int i=0;i<UniquenessControl.size();i++){
+                                if(result.equals(UniquenessControl.get(i))){
+                                    control++;
+                                }
+                            }
+                            if(control==0){
                             mDatabaseHelper.ReplaceOutfit(result,position+1);
                             mDatabaseHelper.GetNullOutfitName();
-                            populateOutfits();
+                            populateOutfits();}
+                            else{
+                                Toast.makeText(getContext(),"An Outfit with that name already exists! Change name", Toast.LENGTH_SHORT).show();
+                            }
 
 
                         }
@@ -338,12 +353,28 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 cdd.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override
                     public void finish(String result) {
-                       if (!result.equals("mattototale")){AddOutfit(result);
-                        populateOutfits();
+                       if (!result.equals("mattototale")){
+                           Cursor c = mDatabaseHelper.getData2();
+                           int control=0;
+                           final ArrayList<String> UniquenessControl = new ArrayList<>();
+                           while(c.moveToNext()){
+                               UniquenessControl.add(c.getString(0));
+                               Log.i("msg","ecco"+UniquenessControl);
+                           }
+                           for(int i=0;i<UniquenessControl.size();i++){
+                               if(result.equals(UniquenessControl.get(i))){
+                                   control++;
+                               }
+                           }
+                           if(control==0) {
+                               AddOutfit(result);
+                               populateOutfits();
+                           }
+                           else{
+                               Toast.makeText(getContext(),"Outfit with this name already exists!",Toast.LENGTH_SHORT).show();
+                           }
                        }
-                       else{
-                           Toast.makeText(getContext(),"Creazione Outfit interrotta!",Toast.LENGTH_SHORT).show();
-                       }
+
                     }
                 });
                 break;

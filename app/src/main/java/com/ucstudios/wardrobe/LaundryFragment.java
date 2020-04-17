@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -227,6 +228,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
 
 
+
                                 if (!flagLaundry) {
                                     //mando notifica con progresso, e cambio stato flag
                                     updateTimeText(c);
@@ -242,7 +244,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
                                     long tempoInMillis = 10000 / 100;
                                     final int progressMax = (int) tempoInMillis;
-                                    final NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID)
+                                    final NotificationCompat.Builder notification = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), CHANNEL_1_ID)
                                             .setSmallIcon(R.drawable.ic_wm24)
                                             .setContentTitle("Laundry status")
                                             .setContentText("Lavaggio in corso...")
@@ -264,6 +266,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                 notification.setProgress(progressMax, progress, false);
                                                 notificationManager.notify(2, notification.build());
                                                 SystemClock.sleep(1000);
+
                                             }
                                             notification.setContentText("Lavatrice pronta!")
                                                     .setProgress(0, 0, false)
