@@ -25,4 +25,4 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(easySplashScreen);
 
     }
-}
+}//tattico
