@@ -36,7 +36,7 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/buttontrue"
             android:clickable="true"
             android:text="OK"
             app:layout_constraintBottom_toBottomOf="parent"

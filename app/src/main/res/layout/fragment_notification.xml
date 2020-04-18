@@ -13,12 +13,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="#141414"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:titleTextColor="@android:color/white"
-        app:title="Cesto"
+
         app:titleMarginEnd="1dp"
-        >
+        app:titleTextColor="@android:color/white">
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -36,7 +35,7 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:tint="#FFFFFF"
-            app:backgroundTint="#00897B"
+            app:backgroundTint="@color/buttontrue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.96"

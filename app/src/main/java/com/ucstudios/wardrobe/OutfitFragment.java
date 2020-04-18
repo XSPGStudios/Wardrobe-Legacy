@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,6 +197,10 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
             }
         }
         boolean risultato = longClickListener.onLongClick(mListview);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mListview);
         adapter.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,6 +259,25 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper.addData2(cocco);
 
    }
+
+    View.OnDragListener dragListener = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int dragEvent = event.getAction(); //aspetta
+            switch(dragEvent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    Log.i("msg","PICCHIASPORHI");
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    Log.i("msg","PICCHIASPORHI");
+                    break;
+                case DragEvent.ACTION_DROP:
+                    Log.i("msg","PICCHIASPORHI");
+                    break;
+            }
+            return true;
+        }
+    };
 
    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
@@ -321,7 +345,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 }
                 Log.i("Ecco componenti","Ecco"+SpinnerValue);
                 Log.i("Ecco Valori","Ecco"+drog);
-                final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue);
+                final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue,position);
                 customDialogClass.show();
                 customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override
@@ -353,7 +377,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                         }
                         else if(result.equals("ELIMINAZIONETOTALE")){
-                            mDatabaseHelper.delete4("Outfit_Table",listData.get(position));
+                            mDatabaseHelper.delete3("Outfit_Table",listData.get(position));
                             deleteEmptyOutfit();
                             populateOutfits();
                             Log.i("msg","Eliminazione completata!");
@@ -400,7 +424,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
             case R.id.floating_action_button:
                 ArrayList<Integer> cocco = new ArrayList<>();
-                CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0,cocco);
+                CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0,cocco,0);
                 cdd.show();
                 cdd.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override

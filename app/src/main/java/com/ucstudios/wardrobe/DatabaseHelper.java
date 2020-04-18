@@ -12,6 +12,8 @@ import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+
 import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -195,8 +197,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(negro, item);
-        db.update("outfit_table", cv,"ROWID="+position+"",null);
-        Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
+        db.update("outfit_table", cv,"ROWID="+position,null);
+        Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro+" at "+position);
         return true;
     }
 
@@ -481,18 +483,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
        db.update(table,cv,"ROWID="+position2,null);
        db.update(table,cv2,"ROWID="+position1,null);
-
+       db.execSQL("VACUUM");
 
 
     }
 
+    public void SwapRowsOutfit(int position1,int position2){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT * FROM outfit_table WHERE ROWID="+position1;
+        String query2 = "SELECT * FROM outfit_table WHERE ROWID="+position2;
+        @SuppressLint("Recycle") Cursor datafirst  = db.rawQuery(query,null);
+        @SuppressLint("Recycle") Cursor datasecond  = db.rawQuery(query2,null);
+        Cursor c = getData();
+        ContentValues cv = new ContentValues();
+        ContentValues cv2 = new ContentValues();
+        final ArrayList<String> columns = new ArrayList<>();
+        while (c.moveToNext()){
+             columns.add(c.getString(0));
+        }
+        while(datafirst.moveToNext()){
+        for(int i=0;(i<columns.size()+1);i++){
+            if(i==0){
+                cv.put("name",datafirst.getString(i));
+            }
+            else{
+                cv.put(columns.get(i-1),datafirst.getString(i));
+            }
+        }
+        while(datasecond.moveToNext()){
+                for(int i=0;(i<columns.size()+1);i++){
+                    if(i==0){
+                        cv2.put("name",datasecond.getString(i));
+                    }
+                    else{
+                        cv2.put(columns.get(i-1),datasecond.getString(i));
+                    }
+                }
+
+        }
 
 
+    }
 
-
-
-
-
-
+        db.update("outfit_table",cv,"ROWID="+position2,null);
+        db.update("outfit_table",cv2,"ROWID="+position1,null);
+        db.execSQL("VACUUM");
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -48,7 +48,7 @@
             android:clickable="true"
             android:hapticFeedbackEnabled="true"
             android:text="DELETE ITEM"
-            android:textColor="#E91E63"
+            android:textColor="#F43636"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +59,7 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginBottom="44dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/buttontrue"
             android:clickable="true"
             android:hapticFeedbackEnabled="true"
             android:text="OK"

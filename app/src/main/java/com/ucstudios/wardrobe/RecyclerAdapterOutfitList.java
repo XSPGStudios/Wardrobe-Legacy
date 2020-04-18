@@ -23,6 +23,7 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
     String[] items;
     Context mContext;
     View.OnClickListener mClickListener;
+    DatabaseHelper mDatabaseHelper;
 
 
 
@@ -38,7 +39,7 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        mDatabaseHelper = new DatabaseHelper(mContext);
         Log.i(TAG,"onCreateViewHolder: " + count++ );
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
@@ -85,7 +86,10 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
                 Collections.swap(Arrays.asList(items), i, i - 1);
             }
         }
+
         notifyItemMoved(fromPosition, toPosition);
+        mDatabaseHelper.SwapRowsOutfit(fromPosition+1,toPosition+1);
+
         return true;
     }
 

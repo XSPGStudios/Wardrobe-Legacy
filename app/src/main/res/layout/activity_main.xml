@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:id="@+id/mainLayout"
+    android:background="@color/Black"
 
 
 
@@ -24,20 +25,22 @@
         <!-- Main content -->
 
 
-
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:itemIconTint="#E7DBF8"
-            app:itemRippleColor="#75FFFFFF"
-            app:itemTextColor="#F5EEEE"
+            app:backgroundTint="#141414"
+            app:itemIconTint="@color/bottom_nav_color"
+            app:itemRippleColor="#D1D1D0"
+            app:itemTextColor="@color/bottom_nav_color"
             app:menu="@menu/bottom_navigation_menu">
 
+
+
         </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
 
 
     </FrameLayout>

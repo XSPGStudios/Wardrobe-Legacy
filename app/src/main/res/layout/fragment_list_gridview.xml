@@ -26,7 +26,7 @@
             android:id="@+id/toolbar1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="#141414"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +60,7 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:tint="#FFFFFF"
+            android:visibility="gone"
             app:backgroundTint="#00897B"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,14 +76,16 @@
             android:layout_width="22dp"
             android:layout_height="23dp"
             android:layout_marginStart="109dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/ic_list"
             android:clickable="true"
             android:focusable="auto"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintStart_toEndOf="@+id/textViewGrid"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.51" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

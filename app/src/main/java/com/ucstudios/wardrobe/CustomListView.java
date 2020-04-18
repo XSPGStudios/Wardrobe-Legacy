@@ -38,10 +38,10 @@ ArrayList<String> switchStatus;
 int stato;
 ArrayList<Integer> SpinnerValue;
 ArrayList<Integer> SpinnerActivability;
-
+int valorerecycler;
 
     MainActivity mainActivity;
-    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato,ArrayList<Integer> SpinnerValue,ArrayList<Integer> SpinnerActivability) {
+    public CustomListView(Context context, int adapter_view_layout, ArrayList<String> listData,ArrayList<String> switchStatus,int stato,ArrayList<Integer> SpinnerValue,ArrayList<Integer> SpinnerActivability,int valorerecycler) {
         super(context, adapter_view_layout, listData);
         mResource = adapter_view_layout;
         this.mContext= context;
@@ -49,6 +49,7 @@ ArrayList<Integer> SpinnerActivability;
         this.stato=stato;
         this.SpinnerValue=SpinnerValue;
         this.SpinnerActivability=SpinnerActivability;
+        this.valorerecycler=valorerecycler;
     }
 
 
@@ -96,15 +97,32 @@ if(stato==1){
     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     spinner.setAdapter(adapter1);
-        if (switchStatus.get(position) != "0") {
+        if (!switchStatus.get(position).equals("0")) {
 
             aSwitch.setChecked(true);
         }
             if(aSwitch.isChecked()){
                 spinner.setVisibility(View.VISIBLE);
                 if(SpinnerValue.get(position)-1>0){
-                spinner.setSelection(SpinnerValue.get(position)-1);
-                }}
+                spinner.setSelection(SpinnerValue.get(position)-1);}
+                    final String item = (String) spinner.getSelectedItem();
+                    final String column = (String) checkbox.getText();
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                            final String item = (String) spinner.getSelectedItem();
+                            final String column = (String) checkbox.getText();
+                            mDatabaseHelper.ReplaceItemOutfitatId(item,column,valorerecycler+1);
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
 
             aSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
@@ -118,14 +136,14 @@ if(stato==1){
                         spinner.setVisibility(View.VISIBLE);
                         final String item = (String) spinner.getSelectedItem();
                         final String column = (String) checkbox.getText();
-                        mDatabaseHelper.ReplaceItemOutfitatId(item,column,1);
+                        mDatabaseHelper.ReplaceItemOutfitatId(item,column,valorerecycler+1);
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                                 final String item = (String) spinner.getSelectedItem();
                                 final String column = (String) checkbox.getText();
-                                mDatabaseHelper.ReplaceItemOutfitatId(item,column,1);
+                                mDatabaseHelper.ReplaceItemOutfitatId(item,column,valorerecycler+1);
 
                             }
 
@@ -140,7 +158,7 @@ if(stato==1){
 
                         final String perno = (String) checkbox.getText();
                         spinner.setVisibility(View.GONE);
-                        mDatabaseHelper.ReplaceItemOutfitatId(null, perno,1);
+                        mDatabaseHelper.ReplaceItemOutfitatId(null, perno,valorerecycler+1);
                     }
                 }
             });

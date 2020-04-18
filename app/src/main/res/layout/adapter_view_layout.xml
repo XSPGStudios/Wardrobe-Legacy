@@ -24,6 +24,7 @@
             android:id="@+id/switch1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:theme="@style/SwitchTheme"
             android:layout_weight="1"
             android:checked="false"
             android:gravity="center|center_horizontal" />

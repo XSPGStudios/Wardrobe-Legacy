@@ -43,19 +43,20 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
     EditText editText;
     ArrayList<String> switchStatus;
     int stato;
-
+    int recyclerposition;
     private ListView mRecyclerView;
     private ArrayList<Integer> SpinnerValue;
     String itemdelcaso;
 
 
 
-    public CustomDialogClass(Activity a,ArrayList<String> ColumnsAction,int stato,ArrayList<Integer>SpinnerValue) {
+    public CustomDialogClass(Activity a,ArrayList<String> ColumnsAction,int stato,ArrayList<Integer>SpinnerValue,int recyclerposition) {
         super(a);
         this.switchStatus=ColumnsAction;
         this.stato=stato;
         this.SpinnerValue=SpinnerValue;
         this.itemdelcaso=itemdelcaso;
+        this.recyclerposition=recyclerposition;
 
 
 
@@ -109,7 +110,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
         }
         Log.i("Controllo","Ecco"+CategoryFullness);
 
-        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato,SpinnerValue,CategoryFullness);
+        CustomListView adapter = new CustomListView(mRecyclerView.getContext(), R.layout.adapter_view_layout, listData,switchStatus,stato,SpinnerValue,CategoryFullness,recyclerposition);
         mRecyclerView.setAdapter(adapter);
     }
 
