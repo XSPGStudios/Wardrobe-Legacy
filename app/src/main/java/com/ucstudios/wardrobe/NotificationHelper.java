@@ -39,4 +39,11 @@ public class NotificationHelper extends ContextWrapper {
 
         return mManager;
     }
+
+    public NotificationCompat.Builder getChannelNotification() {
+        return new NotificationCompat.Builder(getApplicationContext(), channelID)
+                .setContentTitle("Lavatrice pronta!")
+                .setContentText("La lavatrice ha concluso il suo processo.")
+                .setSmallIcon(R.drawable.ic_wm24);
+    }
 }
