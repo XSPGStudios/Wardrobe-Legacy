@@ -1,14 +1,21 @@
 package com.ucstudios.wardrobe;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.VoiceInteractor;
+import android.content.ClipData;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,27 +30,36 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class SmsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+public class SmsFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ListView mRecyclerView;
+    private RecyclerView mRecyclerView;
     public String pennsylvania=null;
 
     DatabaseHelper mDatabaseHelper;
     MainActivity mMainActivity;
-
+    int controllodivider;
     private String mParam1;
     private String mParam2;
+    RecyclerAdapterCategories recyclerAdapterCategories;
 
 
     public SmsFragment() {
@@ -90,6 +106,9 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         ActionButton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();
+        controllodivider=0;
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
         Spinner spinner = view.findViewById(R.id.spinner_nav);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -164,116 +183,211 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
             listData.add(data.getString(0));
             iconsdata.add(data.getInt(1));
         }
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerAdapterCategories= new RecyclerAdapterCategories(getContext(),listData,iconsdata);
         mMainActivity.Categories=listData;
-        final AdapterCategories adapterCategories = new AdapterCategories(mRecyclerView.getContext(), R.layout.adapter_categories, listData, iconsdata);
-        mRecyclerView.setAdapter(adapterCategories);
-        mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       // final AdapterCategories adapterCategories = new AdapterCategories(mRecyclerView.getContext(), R.layout.adapter_categories, listData, iconsdata);
+       // mRecyclerView.setAdapter(adapterCategories);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(recyclerAdapterCategories);
+        if(controllodivider==0){
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+            mRecyclerView.addItemDecoration(dividerItemDecoration);
+            controllodivider=1;
+        }
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(recyclerAdapterCategories);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
+        boolean risultato = longClickListener.onLongClick(mRecyclerView);
+
+        recyclerAdapterCategories.setClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int pirla = (int) id;
-                String lecca = listData.get(pirla);
-                mMainActivity.Name = lecca;
-                Log.v("message", "List Item " + id + " Click");
+            public void onClick(View v) {
+            int pos = mRecyclerView.indexOfChild(v);
+                mMainActivity.Name = listData.get(pos);
+                Log.v("message", "List Item " + pos + " Click");
                 Log.v("asd", mMainActivity.Name+" selected");
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new ListFragment());
                 transaction.commit();
             }
-
         });
-        mRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                adapterCategories.setAdapterResult(new AdapterCategories.onMyAdapterResult1(){
-                    @Override
-                    public void finish(String result) {
-                        Cursor c = mDatabaseHelper.getData();
-                        ArrayList<String> UniquenessControl = new ArrayList<>();
-                        int control=0;
-                        while(c.moveToNext()){
-                            UniquenessControl.add(c.getString(1));
-                        }
-                        for(int i=0;i<UniquenessControl.size();i++){
-                            if(result.equals(UniquenessControl.get(i))){
-                                control++;
-                            }
-                        }
-                        if(control==0){
-                        String cocco = String.valueOf(result);
-                        String ketamina ="name  TEXT";
-                        String sugone = "name";
-                        if (cocco.equals("CANE")) {
-                            pennsylvania = listData.get(position);
-
-                            for(int i=0;i<listData.size();i++) { //MAGIC FIRST FOR LOOP
-                                String minipera = listData.get(i);
-                                if (!minipera.equals(pennsylvania)) {
-
-                                    ketamina = ketamina + "," + listData.get(i) + " TEXT";
-                                    sugone = sugone + "," + listData.get(i) + "";
-
-                                }
-                            }
-
-                                OutfitColumnRemover(ketamina, sugone);
-
-
-                            Toast.makeText(mMainActivity, listData.get(position)+" Deleted!", Toast.LENGTH_SHORT).show();
-                            Delete("categories_table", listData.get(position));
-                            TableRemover(listData.get(position));
-                            Log.i("msg", "Table "+ listData.get(position)+" removed");
-                            populateButtons();
-
-                        }
-                        else if(cocco=="culocane"){
-                            Log.i("msg","pic changed!");
-                        }
-
-
-                        else if (!cocco.equals("")&!cocco.equals("CANE")&!cocco.equals("culocane")){
-
-                            String ketamina2="name  TEXT";
-                            String sugone2="name";
-                            int peso = position;
-
-
-                            for(int i=0;i<listData.size();i++) {
-
-                                sugone2 = sugone2 + "," + listData.get(i) + "";
-                                if (i!=peso) {
-
-                                    ketamina2 = ketamina2 + "," + listData.get(i) + " TEXT";
-
-
-                                }else{
-                                    ketamina2=ketamina2+", "+result+" TEXT";
-
-                                }
-                            }
-
-
-                            OutfitColumnNameChaneger(ketamina2,sugone2);
-                            Replace("categories_table", result, position + 1);
-                            TableRenamer(listData.get(position),result);
-                            Log.i("msg", "Modified "+listData.get(position)+" to "+ result);
-                            populateButtons();
-
-                        }}
-                        else{
-                            Toast.makeText(getContext(),"A Category with that name already exists!",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                });
-
-
-                return true;
-            }
-        });
-
 
     }
+
+    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+
+
+            ClipData merda = ClipData.newPlainText("", "");
+            View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
+            v.startDrag(merda, myShadowBuilder, v, 0);
+
+            return true;
+        }
+
+    };
+
+    View.OnDragListener dragListener = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int dragEvent = event.getAction(); //aspetta
+            switch(dragEvent) {
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    Log.i("msg","PICCHIASPORHI");
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    Log.i("msg","PICCHIASPORHI");
+                    break;
+                case DragEvent.ACTION_DROP:
+                    Log.i("msg","PICCHIASPORHI");
+                    break;
+            }
+            return true;
+        }
+    };
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+            return false;
+
+        }
+
+
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+
+
+            switch (direction) {
+
+
+
+
+
+                case ItemTouchHelper.LEFT:
+                    final ArrayList<String> listData = new ArrayList<>();
+                    final Cursor c = mDatabaseHelper.getData();
+                    while (c.moveToNext()){
+                        listData.add(c.getString(0));
+                    }
+
+                    final EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1);
+                    dialog.show();
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            populateButtons();
+                        }
+                    });
+                    dialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
+                        @Override
+                        public void finish(String result1, int icon) {
+                            Cursor c = mDatabaseHelper.getData();
+                            ArrayList<String> UniquenessControl = new ArrayList<>();
+                            int control = 0;
+                            while (c.moveToNext()) {
+                                UniquenessControl.add(c.getString(1));
+                            }
+                            for (int i = 0; i < UniquenessControl.size(); i++) {
+                                if (result1.equals(UniquenessControl.get(i))) {
+                                    control++;
+                                }
+                            }
+                            if (control == 0) {
+                                String cocco = String.valueOf(result1);
+                                String ketamina = "name  TEXT";
+                                String sugone = "name";
+                                if (cocco.equals("CANE")) {
+                                    pennsylvania = listData.get(position);
+
+                                    for (int i = 0; i < listData.size(); i++) { //MAGIC FIRST FOR LOOP
+                                        String minipera = listData.get(i);
+                                        if (!minipera.equals(pennsylvania)) {
+
+                                            ketamina = ketamina + "," + listData.get(i) + " TEXT";
+                                            sugone = sugone + "," + listData.get(i) + "";
+
+                                        }
+                                    }
+
+                                    OutfitColumnRemover(ketamina, sugone);
+
+
+                                    Toast.makeText(mMainActivity, listData.get(position) + " Deleted!", Toast.LENGTH_SHORT).show();
+                                    Delete("categories_table", listData.get(position));
+                                    TableRemover(listData.get(position));
+                                    Log.i("msg", "Table " + listData.get(position) + " removed");
+                                    populateButtons();
+
+                                } else if (cocco.equals("culocane")) {
+                                    mDatabaseHelper.ReplaceIcon(icon,position+1);
+                                    dialog.dismiss();
+                                    populateButtons();
+                                    Log.i("msg", "pic changed!");
+                                } else if (!cocco.equals("") & !cocco.equals("CANE") & !cocco.equals("culocane")) {
+
+                                    String ketamina2 = "name  TEXT";
+                                    String sugone2 = "name";
+                                    int peso = position;
+
+
+                                    for (int i = 0; i < listData.size(); i++) {
+
+                                        sugone2 = sugone2 + "," + listData.get(i) + "";
+                                        if (i != peso) {
+
+                                            ketamina2 = ketamina2 + "," + listData.get(i) + " TEXT";
+
+
+                                        } else {
+                                            ketamina2 = ketamina2 + ", " + result1 + " TEXT";
+
+                                        }
+                                    }
+
+
+                                    OutfitColumnNameChaneger(ketamina2, sugone2);
+                                    Replace("categories_table", result1, position + 1);
+                                    TableRenamer(listData.get(position), result1);
+                                    Log.i("msg", "Modified " + listData.get(position) + " to " + result1);
+                                    dialog.dismiss();
+                                    populateButtons();
+
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "A Category with that name already exists!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    break;
+            }
+        }
+
+
+
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.buttontrue))
+                    .addSwipeLeftActionIcon(R.drawable.ic_edit24)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+
+
 
     @Override
     public void onClick(View v) {
@@ -344,11 +458,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener, Adapt
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 
     }
-}
+
+
+
+
 
 
 

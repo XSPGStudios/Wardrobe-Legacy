@@ -70,8 +70,9 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
             buttonCancel.setVisibility(View.INVISIBLE);
         }
         mDatabasehelper1 = new DatabaseHelper(getContext());
-
-
+        if(stato==1){
+            imageView.setVisibility(View.GONE);
+        }
 
     }
 
@@ -85,6 +86,7 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if(stato==1){
+
         switch(v.getId()) {
             case R.id.button:
                 mDialogResult.finish(String.valueOf(editText.getText()), 0);

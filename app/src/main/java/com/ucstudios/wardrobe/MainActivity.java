@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> Categories ;
     ArrayList<String> Items;
     Bitmap imagepreview;
+    int positionaftweswapcateg;
 
 
 

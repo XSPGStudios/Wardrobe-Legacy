@@ -531,6 +531,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("VACUUM");
     }
 
+    public void SwapRowsCategories(int position1,int position2){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM categories_table WHERE ROWID="+position1;
+        String query2 = "SELECT * FROM categories_table WHERE ROWID="+position2;
+        ContentValues cv = new ContentValues();
+        ContentValues cv2 = new ContentValues();
+        @SuppressLint("Recycle") Cursor datafirst  = db.rawQuery(query,null);
+        @SuppressLint("Recycle") Cursor datasecond  = db.rawQuery(query2,null);
+        while(datafirst.moveToNext()){
+            cv.put("name",datafirst.getString(0));
+            cv.put("IC",datafirst.getInt(1));
+        }
+        while (datasecond.moveToNext()){
+            cv2.put("name",datasecond.getString(0));
+            cv2.put("IC",datasecond.getInt(1));
+        }
+
+        db.update("categories_table",cv,"ROWID="+position2,null);
+        db.update("categories_table",cv2,"ROWID="+position1,null);
+        db.execSQL("VACUUM");
+
+
+    }
+
+
 }
 
 

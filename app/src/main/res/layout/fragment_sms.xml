@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/spezzaossa4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="57dp"
+        android:clickable="true" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -36,6 +45,7 @@
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -44,17 +54,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
-
-    <ListView
-        android:id="@+id/spezzaossa4"
-        android:layout_width="match_parent"
-        android:layout_height="547dp"
-        android:layout_marginTop="55dp"
-        android:clickable="true"
-        android:longClickable="true">
-
-    </ListView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
