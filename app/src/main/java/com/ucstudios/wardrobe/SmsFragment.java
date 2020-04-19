@@ -328,6 +328,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                                     TableRemover(listData.get(position));
                                     Log.i("msg", "Table " + listData.get(position) + " removed");
                                     populateButtons();
+                                    dialog.dismiss();
 
                                 } else if (cocco.equals("culocane")) {
                                     mDatabaseHelper.ReplaceIcon(icon,position+1);
