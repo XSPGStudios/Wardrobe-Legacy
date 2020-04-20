@@ -3,42 +3,28 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:context=".HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageViewalien"
-            android:layout_width="40dp"
-            android:layout_height="39dp"
-            android:src="@drawable/ic_denim"
-            android:tint="#A6A6A6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.018"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.229" />
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="56dp"
-            android:layout_height="55dp"
+            android:layout_width="57dp"
+            android:layout_height="67dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:src="@android:drawable/ic_menu_crop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.154"
+            app:layout_constraintHorizontal_bias="0.06"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.193" />
+            app:layout_constraintVertical_bias="0.149" />
 
         <TextView
             android:id="@+id/textView3"
@@ -48,7 +34,7 @@
             android:clickable="true"
             android:hapticFeedbackEnabled="true"
             android:text="DELETE ITEM"
-            android:textColor="#F43636"
+            android:textColor="#BCAEAE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +45,7 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginBottom="44dp"
-            android:background="@color/buttontrue"
+            android:background="@drawable/layoutbg2orange"
             android:clickable="true"
             android:hapticFeedbackEnabled="true"
             android:text="OK"
@@ -68,37 +54,43 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ImageView
+            android:id="@+id/imageViewalien"
+            android:layout_width="39dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="1dp"
+            android:src="@drawable/ic_denim"
+            android:tint="#A6A6A6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.088"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.206" />
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="167dp"
             android:layout_height="46dp"
             android:layout_marginStart="96dp"
-            android:layout_marginLeft="96dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="96dp"
-            android:layout_marginRight="96dp"
             android:layout_marginBottom="104dp"
+            android:backgroundTint="@color/buttontrue"
             android:ems="10"
             android:gravity="center_horizontal"
             android:hint="Edit Item Name"
             android:inputType="textPersonName"
+            android:shadowColor="#FFFFFF"
+            android:textColorHighlight="#FF9800"
+            android:textColorLink="#FF9800"
+            android:textCursorDrawable="@color/buttontrue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="53dp"
-            android:layout_height="20dp"
-            android:layout_marginBottom="76dp"
-            android:gravity="center|center_horizontal"
-            android:text="icon "
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.153"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

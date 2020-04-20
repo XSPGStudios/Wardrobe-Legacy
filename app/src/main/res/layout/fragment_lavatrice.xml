@@ -41,7 +41,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.874"
             app:rippleColor="#FFFFFF"
-            app:srcCompat="@android:drawable/ic_menu_recent_history" />
+            app:srcCompat="@drawable/ic_clock" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gThunbergView3"
@@ -61,7 +61,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-            />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="68dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="2dp"
+            android:text="Laundry"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
+        />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

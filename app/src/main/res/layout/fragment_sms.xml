@@ -77,6 +77,33 @@
             app:rippleColor="#FFFFFF"
             app:srcCompat="@drawable/ic_plus" />
 
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="213dp"
+            android:layout_height="253dp"
+            android:src="@drawable/ic_empty_categ"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.376" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="219dp"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="Yo, your wardrobe is empty!"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.626" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

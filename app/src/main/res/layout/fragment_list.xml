@@ -29,6 +29,7 @@
             android:background="#141414"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="@android:color/white">
@@ -38,19 +39,19 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="117dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="176dp"
-            android:layout_marginLeft="176dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="176dp"
-            android:layout_marginRight="176dp"
+            android:layout_width="66dp"
+            android:layout_height="23dp"
             android:gravity="center"
-            android:textSize="18sp"
+            android:text="Wardrobe"
+            android:textSize="14sp"
             android:typeface="normal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button2"
@@ -72,17 +73,18 @@
 
         <Button
             android:id="@+id/buttongrid"
-            android:layout_width="22dp"
-            android:layout_height="23dp"
-            android:layout_marginStart="109dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
+            android:layout_width="24dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="13dp"
             android:background="@drawable/ic_gridview"
             android:clickable="true"
             android:focusable="auto"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.958"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
