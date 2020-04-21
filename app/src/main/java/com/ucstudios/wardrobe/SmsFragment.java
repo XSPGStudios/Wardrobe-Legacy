@@ -13,12 +13,14 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -86,13 +88,12 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment, menu);
+            return;
     }
 
     @Override
@@ -129,6 +130,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter1);
+        setHasOptionsMenu(true);
 
 
         populateButtons();

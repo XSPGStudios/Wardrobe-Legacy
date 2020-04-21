@@ -3,6 +3,8 @@ package com.ucstudios.wardrobe;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
@@ -13,6 +15,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
@@ -258,6 +261,16 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             .addAction(R.drawable.ic_wm24, "CANCEL", actionIntent);
 
                                     notificationManager.notify(2, notification.build());
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                    {
+                                        String channelId = "Your_channel_id";
+                                        NotificationChannel channel = new NotificationChannel(
+                                                channelId,
+                                                "Channel human readable title",
+                                                NotificationManager.IMPORTANCE_HIGH);
+                                        notificationManager.createNotificationChannel(channel);
+                                        notification.setChannelId(channelId);
+                                    }
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -266,7 +279,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                 notification.setProgress(progressMax, progress, false);
                                                 notificationManager.notify(2, notification.build());
                                                 SystemClock.sleep(1000);
-
                                             }
                                             notification.setContentText("Lavatrice pronta!")
                                                     .setProgress(0, 0, false)
