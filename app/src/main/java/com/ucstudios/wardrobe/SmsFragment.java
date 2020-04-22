@@ -1,6 +1,7 @@
 package com.ucstudios.wardrobe;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.VoiceInteractor;
 import android.content.ClipData;
@@ -10,6 +11,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -32,6 +35,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -45,6 +50,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -88,14 +94,12 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_fragment, menu);
-            return;
-    }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,6 +112,49 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();
         controllodivider=0;
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_fragment);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1 :
+
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("XSPG")
+                                .setMessage("Info page here!")
+
+                                // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+
+                                .show();
+                        break;
+                    case R.id.item2 :
+
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("http://www.github.com"));
+                        startActivity(intent);
+                        break;
+                    case R.id.subitem1 :
+
+                    case R.id.subitem2 :
+                    default:
+
+
+
+
+                }
+                return SmsFragment.super.onOptionsItemSelected(item);
+            }
+        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
         Spinner spinner = view.findViewById(R.id.spinner_nav);
@@ -140,6 +187,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
+
 
     public void AddData(String newEntry, int icon) {
         boolean insertData = mDatabaseHelper.addData(newEntry,icon);

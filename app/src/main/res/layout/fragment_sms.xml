@@ -21,6 +21,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#141414"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:visibility="visible"
+
+
         app:titleTextColor="@android:color/white">
 
         <LinearLayout
@@ -42,7 +45,7 @@
                     android:gravity="center|center_horizontal"
                     android:scrollbarStyle="insideOverlay"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintHorizontal_bias="0.587"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
