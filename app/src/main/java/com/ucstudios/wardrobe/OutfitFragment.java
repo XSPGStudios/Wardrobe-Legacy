@@ -231,7 +231,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                     Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
                     while(c.moveToNext()){
-                        Cursor GetPOS = mDatabaseHelper.getData1(categories2.get(i));
+                        Cursor GetPOS = mDatabaseHelper.getData1(categories2.get(i)); //Ottenere pos per item
 
                         while(GetPOS.moveToNext()){
                             OutfitPOS.add(GetPOS.getInt(2));
