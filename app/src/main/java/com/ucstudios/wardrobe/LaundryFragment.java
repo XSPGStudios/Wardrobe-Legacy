@@ -237,17 +237,21 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                     updateTimeText(c);
                                     flagLaundry = true;
                                     String message = "Lavaggio interrotto";
-                                    Intent resultIntent = new Intent(getContext(), MainActivity.class);
+
+                                    //progress bar
+                                    Intent resultIntent = new Intent(getContext(), LaundryFragment.class);
                                         PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    Intent cancelIntent = new Intent (getContext(), LaundryFragment.class);
-                                        PendingIntent cancelPendingItent = PendingIntent.getActivity(getContext(), 0, resultIntent, 0);
-                                            Intent broadcastIntent = new Intent (getContext(), NotificationReceiver.class);
-                                                broadcastIntent.putExtra("toastMessage", message);
-                                                    PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                    //cancel button
+                                        Intent cancelIntent = new Intent (getContext(), LaundryFragment.class);
+                                            PendingIntent cancelPendingItent = PendingIntent.getActivity(getContext(), 0, resultIntent, 0);
+                                    Intent broadcastIntent = new Intent (getContext(), NotificationReceiver.class);
+                                                        broadcastIntent.putExtra("cancel", message);
+                                                            PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                     long tempoInMillis = 10000 / 100;
                                     final int progressMax = (int) tempoInMillis;
                                     final NotificationCompat.Builder notification = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), CHANNEL_1_ID)
+                                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                                             .setSmallIcon(R.drawable.ic_wm24)
                                             .setContentTitle("Laundry status")
                                             .setContentText("Lavaggio in corso...")
@@ -271,21 +275,33 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                         notificationManager.createNotificationChannel(channel);
                                         notification.setChannelId(channelId);
                                     }
+                                    //inserire un boolean che "picca" il valore" dell'onReceive
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             SystemClock.sleep(2000);
-                                            for (int progress = 0; progress <= progressMax; progress += 10) {
-                                                notification.setProgress(progressMax, progress, false);
-                                                notificationManager.notify(2, notification.build());
-                                                SystemClock.sleep(1000);
+
+                                            for (int progress = 0; progress <= progressMax && NotificationReceiver.cancelProgressBar(); progress += 10) {
+                                                if (NotificationReceiver.cancelProgressBar()) {
+                                                    notification.setProgress(progressMax, progress, false);
+                                                    notificationManager.notify(2, notification.build());
+                                                    SystemClock.sleep(1000);
+                                                }
                                             }
-                                            notification.setContentText("Lavatrice pronta!")
-                                                    .setProgress(0, 0, false)
-                                                    .setOngoing(false);
-                                            notificationManager.notify(2, notification.build());
+                                            if (!NotificationReceiver.cancelProgressBar()) {
+                                                notification.setContentText("Process cancelled")
+                                                        .setProgress(0, 0, false)
+                                                        .setOngoing(false);
+                                                notificationManager.notify(2, notification.build());
+                                            }
+                                            else {
+                                                notification.setContentText("Lavatrice pronta!")
+                                                        .setProgress(0, 0, false)
+                                                        .setOngoing(false);
+                                                notificationManager.notify(2, notification.build());
+                                            }
                                             flagLaundry = false;
-                                        }
+                                            }
                                     }).start();
 
                                     dialog.dismiss();
