@@ -160,6 +160,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     public void populateOutfits() {
         Cursor data = mDatabaseHelper.getData2();
         final ArrayList<String> listData = new ArrayList<>();
+
         while (data.moveToNext()) {
             listData.add(data.getString(0));
             dro.add("0");
@@ -169,22 +170,25 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         while (categories.moveToNext()){
             categories2.add(categories.getString(0));
         }
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        final RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData);
         mDatabaseHelper.GetNullOutfitName();
-        mListview.setLayoutManager(layoutManager);
-        mListview.setAdapter(adapter);
         if(controllodivider==0) {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             mListview.addItemDecoration(dividerItemDecoration);
-            controllodivider=1;
+            controllodivider = 1;
         }
+        final int[] WearabilityControl = new int[listData.size()];
         for(int u=0;u<listData.size();u++){
             int controllomatto=0;
+            WearabilityControl[u]=0;
             for(int i=0;i<categories2.size();i++){
                 Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(u));
-
                 while(c.moveToNext()){
+                    Cursor WearabilityCursor = mDatabaseHelper.getData1(categories2.get(i));
+                    while(WearabilityCursor.moveToNext()){
+                      if(WearabilityCursor.getInt(2)==1||WearabilityCursor.getInt(2)==2||WearabilityCursor.getInt(2)==3){
+                          WearabilityControl[u]=1;
+                      }
+                   }
                     if(c.getString(0)!=null){
                         controllomatto++;
                     }
@@ -196,6 +200,12 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
             }
         }
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        final RecyclerAdapterOutfitList adapter = new RecyclerAdapterOutfitList(getContext(), listData, WearabilityControl);
+        mListview.setLayoutManager(layoutManager);
+        mListview.setAdapter(adapter);
+
         boolean risultato = longClickListener.onLongClick(mListview);
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(adapter);
@@ -205,12 +215,30 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 int position = mListview.indexOfChild(v);
+                if(WearabilityControl[position]!=0){
+                    Toast.makeText(getContext(),"Not Wearable!",Toast.LENGTH_SHORT).show();
+                }
                 final ArrayList<String> OutfitComponents = new ArrayList<>();
+                final ArrayList<String> OutfitCategories = new ArrayList<>();
+                final ArrayList<Integer> OutfitPOS = new ArrayList<>();
+                final ArrayList<String> AllComponents = new ArrayList<>();
+                Cursor GetCatIcon = mDatabaseHelper.getData();
+                while (GetCatIcon.moveToNext()){
+                    AllComponents.add(GetCatIcon.getString(1));
+                }
+
                 for(int i = 0; i<categories2.size();i++){
+
                     Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
                     while(c.moveToNext()){
+                        Cursor GetPOS = mDatabaseHelper.getData1(categories2.get(i));
+
+                        while(GetPOS.moveToNext()){
+                            OutfitPOS.add(GetPOS.getInt(2));
+                        }
                         if(c.getString(0)!=null){
                         OutfitComponents.add(c.getString(0));
+                        OutfitCategories.add(AllComponents.get(i));
                         drog.add("1");
                     }
                         else{
@@ -233,7 +261,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
 
                 Log.i("Componenti outfit ","Ecco "+OutfitComponents);
-               VisualDialogOutfit dialog = new VisualDialogOutfit(getContext(),fumo,OutfitComponents);
+               VisualDialogOutfit dialog = new VisualDialogOutfit(getContext(),fumo,OutfitComponents,OutfitCategories,OutfitPOS);
                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                dialog.show();
 

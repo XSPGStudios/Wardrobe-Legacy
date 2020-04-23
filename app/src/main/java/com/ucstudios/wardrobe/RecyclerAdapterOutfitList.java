@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +25,14 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
     Context mContext;
     View.OnClickListener mClickListener;
     DatabaseHelper mDatabaseHelper;
+    int[] wearabilitycontrol;
 
 
 
-    public RecyclerAdapterOutfitList(Context context,List <String> items) {
+    public RecyclerAdapterOutfitList(Context context,List <String> items,int[] wearability) {
         this.mContext=context;
         this.items = items.toArray(new String[0]);
+        this.wearabilitycontrol=wearability;
 
     }
 
@@ -61,7 +64,10 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
 
         holder.textView.setText(items[position]);
         holder.imageView.setImageResource(R.drawable.ic_outfit);
-
+        if(wearabilitycontrol[position]==1){
+        holder.iconView.setVisibility(View.VISIBLE);           //If outfit has at least one item not available, it won't be available overall;
+        holder.iconView.setImageResource(R.drawable.ic_wm);
+        }
     }
 
     @Override
@@ -101,6 +107,7 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
 
         ImageView imageView;
         TextView textView;
+        ImageView iconView;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -109,6 +116,7 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
 
         imageView = itemView.findViewById(R.id.imageView231);
         textView = itemView.findViewById(R.id.textView4);
+        iconView = itemView.findViewById(R.id.imageView5);
 
 
 
