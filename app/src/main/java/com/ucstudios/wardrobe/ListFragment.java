@@ -327,17 +327,24 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
                         @Override
                         public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
-                           Cursor c = mDatabaseHelper1.getData1(mMainActivity.Name);
-                           final ArrayList<String> UniquenessControl = new ArrayList<>();
-                           int control=0;
-                           while(c.moveToNext()){
-                               UniquenessControl.add(c.getString(0));
-                           }
-                           for(int i=0;i<UniquenessControl.size();i++){
-                               if(name.equals(UniquenessControl.get(i))){
-                                   control++;
-                               }
-                           }
+                            Cursor totaleCateg = mDatabaseHelper1.getData();
+                            int control = 0;
+                            final ArrayList<String> totalecateg = new ArrayList<>();
+                            while (totaleCateg.moveToNext()){
+                                totalecateg.add(totaleCateg.getString(0));
+                            }
+                            for(int is=0;is<totalecateg.size();is++){
+                                Cursor c = mDatabaseHelper1.getData1(totalecateg.get(is));
+                                final ArrayList<String> UniquenessControl = new ArrayList<>();
+
+                                while (c.moveToNext()) {
+                                    UniquenessControl.add(c.getString(0));
+                                }
+                                for (int i = 0; i < UniquenessControl.size(); i++) {
+                                    if (name.equals(UniquenessControl.get(i))) {
+                                        control++;
+                                    }
+                                }}
 
                            if(control==0){
 
@@ -438,9 +445,16 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void finish(String name, String size, String brand, Integer value, Integer currency, Integer icon, String olditemname) {
                             if (magianera == 1) {
-                                Cursor c = mDatabaseHelper1.getData1(mMainActivity.Name);
-                                final ArrayList<String> UniquenessControl = new ArrayList<>();
+                                Cursor totaleCateg = mDatabaseHelper1.getData();
                                 int control = 0;
+                                final ArrayList<String> totalecateg = new ArrayList<>();
+                                while (totaleCateg.moveToNext()){
+                                    totalecateg.add(totaleCateg.getString(0));
+                                }
+                               for(int is=0;is<totalecateg.size();is++){
+                                Cursor c = mDatabaseHelper1.getData1(totalecateg.get(is));
+                                final ArrayList<String> UniquenessControl = new ArrayList<>();
+
                                 while (c.moveToNext()) {
                                     UniquenessControl.add(c.getString(0));
                                 }
@@ -448,7 +462,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                     if (name.equals(UniquenessControl.get(i))) {
                                         control++;
                                     }
-                                }
+                                }}
                                 if (control == 0) {
                                     AddData1(name, size, brand, value, currency, icon, alien2o);
                                     mDatabaseHelper1.AddPictureItem(mMainActivity.Name, alien2o, tac);
