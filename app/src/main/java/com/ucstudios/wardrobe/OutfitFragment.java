@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -307,7 +308,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         }
     };
 
-   ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+   ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -321,7 +322,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
         switch (direction) {
 
-            case ItemTouchHelper.LEFT:
+            case ItemTouchHelper.LEFT : {
                 Cursor data = mDatabaseHelper.getData2();
                 final ArrayList<String> listData = new ArrayList<>();
                 final ArrayList<String> spinnarcontrol = new ArrayList<>();
@@ -331,20 +332,19 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 }
                 Cursor categories = mDatabaseHelper.getData();
                 final ArrayList<String> categories2 = new ArrayList<>();
-                while (categories.moveToNext()){
+                while (categories.moveToNext()) {
                     categories2.add(categories.getString(0));
                 }
                 final ArrayList<String> OutfitComponents = new ArrayList<>();
-                for(int i = 0; i<categories2.size();i++){
-                    Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
+                for (int i = 0; i < categories2.size(); i++) {
+                    Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i), listData.get(position));
 
-                    while(c.moveToNext()){
-                        if(c.getString(0)!=null){
+                    while (c.moveToNext()) {
+                        if (c.getString(0) != null) {
                             OutfitComponents.add(c.getString(0));
                             spinnarcontrol.add("1");
 
-                        }
-                        else{
+                        } else {
                             spinnarcontrol.add("0");
                         }
 
@@ -354,61 +354,60 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                 }
                 final ArrayList<Integer> SpinnerValue = new ArrayList<>();
-                for(int i=0;i<categories2.size();i++){
-                    if(spinnarcontrol.get(i).equals("0")){
+                for (int i = 0; i < categories2.size(); i++) {
+                    if (spinnarcontrol.get(i).equals("0")) {
                         SpinnerValue.add(-1);
                     }
-                    for(int u=0;u<OutfitComponents.size();u++){
-                        Cursor c = mDatabaseHelper.GetSpecificIdItem(categories2.get(i),OutfitComponents.get(u));
-                        while(c.moveToNext()){
-                        if(!spinnarcontrol.get(i).equals("0")){
-                            SpinnerValue.add(c.getInt(0));
-                        }
+                    for (int u = 0; u < OutfitComponents.size(); u++) {
+                        Cursor c = mDatabaseHelper.GetSpecificIdItem(categories2.get(i), OutfitComponents.get(u));
+                        while (c.moveToNext()) {
+                            if (!spinnarcontrol.get(i).equals("0")) {
+                                SpinnerValue.add(c.getInt(0));
+                            }
 
-                    }
+                        }
 
                     }
 
 
                 }
-                Log.i("Ecco componenti","Ecco"+SpinnerValue);
-                Log.i("Ecco Valori","Ecco"+drog);
-                final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue,position);
+                Log.i("Ecco componenti", "Ecco" + SpinnerValue);
+                Log.i("Ecco Valori", "Ecco" + drog);
+                final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue, position);
                 customDialogClass.show();
                 customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
                     @Override
                     public void finish(String result) {
 
-                        if(!result.equals("")&&!result.equals("ELIMINAZIONETOTALE")){
+                        if (!result.equals("") && !result.equals("ELIMINAZIONETOTALE")) {
                             Cursor c = mDatabaseHelper.getData2();
                             final ArrayList<String> UniquenessControl = new ArrayList<>();
-                            int control =0;
-                            while(c.moveToNext()){
+                            int control = 0;
+                            while (c.moveToNext()) {
                                 UniquenessControl.add(c.getString(0));
                             }
-                            for(int i=0;i<UniquenessControl.size();i++){
-                                if(!result.equals(listData.get(position))){
-                                if(result.equals(UniquenessControl.get(i))){
-                                    control++;
-                                }
+                            for (int i = 0; i < UniquenessControl.size(); i++) {
+                                if (!result.equals(listData.get(position))) {
+                                    if (result.equals(UniquenessControl.get(i))) {
+                                        control++;
+                                    }
                                 }
                             }
-                            if(control==0){
-                            mDatabaseHelper.ReplaceOutfit(result,position+1);
-                            mDatabaseHelper.GetNullOutfitName();
-                            deleteEmptyOutfit();
-                            populateOutfits();}
-                            else{
-                                Toast.makeText(getContext(),"An Outfit with that name already exists! Change name", Toast.LENGTH_SHORT).show();
+                            if (control == 0) {
+                                mDatabaseHelper.ReplaceOutfit(result, position + 1);
+                                mDatabaseHelper.GetNullOutfitName();
+                                deleteEmptyOutfit();
+                                populateOutfits();
+                            } else {
+                                Toast.makeText(getContext(), "An Outfit with that name already exists! Change name", Toast.LENGTH_SHORT).show();
                             }
 
 
-                        }
-                        else if(result.equals("ELIMINAZIONETOTALE")){
-                            mDatabaseHelper.delete3("Outfit_Table",listData.get(position));
+                        } else if (result.equals("ELIMINAZIONETOTALE")) {
+                            mDatabaseHelper.delete3("Outfit_Table", listData.get(position));
                             deleteEmptyOutfit();
                             populateOutfits();
-                            Log.i("msg","Eliminazione completata!");
+                            Log.i("msg", "Eliminazione completata!");
                         }
 
                     }
@@ -423,9 +422,116 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                     }
                 });
-
+            }
 
                 break;
+
+                case ItemTouchHelper.RIGHT:{Cursor data = mDatabaseHelper.getData2();
+                    final ArrayList<String> listData = new ArrayList<>();
+                    final ArrayList<String> spinnarcontrol = new ArrayList<>();
+                    while (data.moveToNext()) {
+                        listData.add(data.getString(0));
+                        dro.add("0");
+                    }
+                    Cursor categories = mDatabaseHelper.getData();
+                    final ArrayList<String> categories2 = new ArrayList<>();
+                    while (categories.moveToNext()){
+                        categories2.add(categories.getString(0));
+                    }
+                    final ArrayList<String> OutfitComponents = new ArrayList<>();
+                    for(int i = 0; i<categories2.size();i++){
+                        Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
+
+                        while(c.moveToNext()){
+                            if(c.getString(0)!=null){
+                                OutfitComponents.add(c.getString(0));
+                                spinnarcontrol.add("1");
+
+                            }
+                            else{
+                                spinnarcontrol.add("0");
+                            }
+
+
+                        }
+
+
+                    }
+                    final ArrayList<Integer> SpinnerValue = new ArrayList<>();
+                    for(int i=0;i<categories2.size();i++){
+                        if(spinnarcontrol.get(i).equals("0")){
+                            SpinnerValue.add(-1);
+                        }
+                        for(int u=0;u<OutfitComponents.size();u++){
+                            Cursor c = mDatabaseHelper.GetSpecificIdItem(categories2.get(i),OutfitComponents.get(u));
+                            while(c.moveToNext()){
+                                if(!spinnarcontrol.get(i).equals("0")){
+                                    SpinnerValue.add(c.getInt(0));
+                                }
+
+                            }
+
+                        }
+
+
+                    }
+                    Log.i("Ecco componenti","Ecco"+SpinnerValue);
+                    Log.i("Ecco Valori","Ecco"+drog);
+                    final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue,position);
+                    customDialogClass.show();
+                    customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
+                        @Override
+                        public void finish(String result) {
+
+                            if(!result.equals("")&&!result.equals("ELIMINAZIONETOTALE")){
+                                Cursor c = mDatabaseHelper.getData2();
+                                final ArrayList<String> UniquenessControl = new ArrayList<>();
+                                int control =0;
+                                while(c.moveToNext()){
+                                    UniquenessControl.add(c.getString(0));
+                                }
+                                for(int i=0;i<UniquenessControl.size();i++){
+                                    if(!result.equals(listData.get(position))){
+                                        if(result.equals(UniquenessControl.get(i))){
+                                            control++;
+                                        }
+                                    }
+                                }
+                                if(control==0){
+                                    mDatabaseHelper.ReplaceOutfit(result,position+1);
+                                    mDatabaseHelper.GetNullOutfitName();
+                                    deleteEmptyOutfit();
+                                    populateOutfits();}
+                                else{
+                                    Toast.makeText(getContext(),"An Outfit with that name already exists! Change name", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                            else if(result.equals("ELIMINAZIONETOTALE")){
+                                mDatabaseHelper.delete3("Outfit_Table",listData.get(position));
+                                deleteEmptyOutfit();
+                                populateOutfits();
+                                Log.i("msg","Eliminazione completata!");
+                            }
+
+                        }
+                    });
+
+                    customDialogClass.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            mDatabaseHelper.GetNullOutfitName();
+                            deleteEmptyOutfit();
+                            populateOutfits();
+
+                        }
+                    });
+
+
+                    break;
+
+                }
 
 
         }
@@ -437,7 +543,9 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                .addSwipeLeftActionIcon(R.drawable.ic_edit24)
+                .addSwipeLeftActionIcon(R.drawable.ic_editimsto)
+                .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                .addSwipeRightActionIcon(R.drawable.ic_editimsto)
                 .create()
                 .decorate();
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -451,6 +559,24 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.floating_action_button:
+                mDatabaseHelper = new DatabaseHelper(getContext());
+                Cursor C = mDatabaseHelper.getData();
+                int controlloiniziale=0;
+                while (C.moveToNext()){
+                    controlloiniziale++;
+                }
+                if(controlloiniziale==0){
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Whoops!")
+                            .setMessage("You must first create a category")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                }
+                else{
                 ArrayList<Integer> cocco = new ArrayList<>();
                 CustomDialogClass cdd = new CustomDialogClass(getActivity(),dro,0,cocco,0);
                 cdd.show();
@@ -488,6 +614,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                     }
                 });
+               }
                 break;
 
             case R.id.gridbutton1:

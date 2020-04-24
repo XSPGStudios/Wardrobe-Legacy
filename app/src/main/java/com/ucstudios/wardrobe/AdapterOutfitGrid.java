@@ -54,20 +54,20 @@ public class AdapterOutfitGrid extends BaseAdapter {
         imageView3 = convertView.findViewById(R.id.imageViewGridNumber3);
         imageView4 = convertView.findViewById(R.id.imageViewGridNumber4);
 
-        switch(imagedata.size()){
-            case 0:
-                break;
-            case 1:
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(Utils.getImage(imagedata.get(position).get(0)));
 
-            case 2:
+
+
+            if(imagedata.size()==1){
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageBitmap(Utils.getImage(imagedata.get(position).get(0)));}
+
+            else if(imagedata.size()==2){
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(Utils.getImage(imagedata.get(position).get(0)));
                 imageView2.setVisibility(View.VISIBLE);
-                imageView2.setImageBitmap(Utils.getImage(imagedata.get(position).get(1)));
+                imageView2.setImageBitmap(Utils.getImage(imagedata.get(position).get(1)));}
 
-            case 3:
+            else if(imagedata.size()==3) {
                 imageView.setVisibility(View.VISIBLE);
                 imageView2.setVisibility(View.VISIBLE);
                 imageView3.setVisibility(View.VISIBLE);

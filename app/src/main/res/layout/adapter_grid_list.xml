@@ -11,7 +11,7 @@
         android:layout_width="66dp"
         android:layout_height="23dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
@@ -23,20 +23,20 @@
 
     <ImageView
         android:id="@+id/imageView2312"
-        android:layout_width="152dp"
-        android:layout_height="177dp"
+        android:layout_width="160dp"
+        android:layout_height="198dp"
         android:background="@drawable/layout_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.654"
+        app:layout_constraintVertical_bias="0.657"
         app:srcCompat="@drawable/ic_calendar_big" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="180dp"
-        android:layout_height="258dp"
+        android:layout_width="204dp"
+        android:layout_height="271dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

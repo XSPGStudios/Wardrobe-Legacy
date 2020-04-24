@@ -64,7 +64,6 @@ public class AdapterGridList extends BaseAdapter {
         convertView = thisInflater.inflate(R.layout.adapter_grid_list,parent,false);
         image = convertView.findViewById(R.id.imageView2312);
         text = convertView.findViewById(R.id.textView666);
-
         image.setClipToOutline(true);
         image.setImageBitmap(Utils.getImage(drugs.get(position)));
         text.setText(tattico.get(position));
