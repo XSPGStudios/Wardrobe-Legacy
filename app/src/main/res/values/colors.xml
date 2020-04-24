@@ -8,4 +8,6 @@
     <color name="buttonfalse">#666256</color>
     <color name="buttontrue">#FF9800</color>
     <color name="timepicker">#555555</color>
+    <color name="bluetattico">#3777c4</color>
+    <color name="verdetattico">#37dba7</color>
 </resources>

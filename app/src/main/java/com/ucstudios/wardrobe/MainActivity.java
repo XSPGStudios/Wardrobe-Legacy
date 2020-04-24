@@ -45,13 +45,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor C = mDatabaseHelper.getData();
+        int controlloiniziale=0;
+        while (C.moveToNext()){
+            controlloiniziale++;
+        }
+        if(controlloiniziale==0){
+            FirstOpenDialog dialog = new FirstOpenDialog(this);
+            dialog.show();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(SmsFragment.newInstance("", ""));
+        bottomNavigation.setSelectedItemId(R.id.navigation_sms);
     }
 
     @Override
@@ -75,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
+
                     switch (item.getItemId()) {
                         case R.id.navigation_home:
                             openFragment(HomeFragment.newInstance("", ""));

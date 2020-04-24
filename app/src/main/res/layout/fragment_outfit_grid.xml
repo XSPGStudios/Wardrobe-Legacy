@@ -59,15 +59,15 @@
                         android:id="@+id/buttonlistOutfit"
                         android:layout_width="22dp"
                         android:layout_height="23dp"
-                        android:layout_marginStart="109dp"
                         android:background="@drawable/ic_list"
                         android:clickable="true"
                         android:focusable="auto"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.51"
-                        app:layout_constraintStart_toEndOf="@+id/spinner_navs"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintHorizontal_bias="0.957"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.515" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

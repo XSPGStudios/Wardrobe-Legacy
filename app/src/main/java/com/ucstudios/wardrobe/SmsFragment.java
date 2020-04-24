@@ -29,9 +29,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,6 +69,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     int controllodivider;
     private String mParam1;
     private String mParam2;
+    ImageView imageViewempty;
+    TextView textViewempty;
     RecyclerAdapterCategories recyclerAdapterCategories;
 
 
@@ -108,10 +112,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
         FloatingActionButton ActionButton = view.findViewById(R.id.floating_action_button);
         mRecyclerView = view.findViewById(R.id.spezzaossa4);
+
         ActionButton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();
         controllodivider=0;
+        imageViewempty = view.findViewById(R.id.imageView6);
+        textViewempty = view.findViewById(R.id.textView5);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_fragment);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -227,12 +234,22 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
 
     private void populateButtons() {
+        int controlloperempty=0;
         Cursor data = mDatabaseHelper.getData();
         final ArrayList<String> listData = new ArrayList<>();
         final ArrayList<Integer> iconsdata = new ArrayList<>();
         while (data.moveToNext()) {
             listData.add(data.getString(0));
             iconsdata.add(data.getInt(1));
+            controlloperempty++;
+        }
+        if(controlloperempty==0){
+            imageViewempty.setVisibility(View.VISIBLE);
+            textViewempty.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageViewempty.setVisibility(View.GONE);
+            textViewempty.setVisibility(View.GONE);
         }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerAdapterCategories= new RecyclerAdapterCategories(getContext(),listData,iconsdata);
@@ -262,7 +279,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                 Log.v("asd", mMainActivity.Name+" selected");
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new ListFragment());
+                transaction.replace(R.id.container, new ListFragment()).addToBackStack("List");
                 transaction.commit();
             }
         });
@@ -303,7 +320,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         }
     };
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
@@ -326,7 +343,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
 
                 case ItemTouchHelper.LEFT:
-                    final ArrayList<String> listData = new ArrayList<>();
+                {final ArrayList<String> listData = new ArrayList<>();
                     final Cursor c = mDatabaseHelper.getData();
                     while (c.moveToNext()){
                         listData.add(c.getString(0));
@@ -421,7 +438,111 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                             }
                         }
                     });
-                    break;
+                    break;}
+
+                    case ItemTouchHelper.RIGHT:
+                        final ArrayList<String> listData = new ArrayList<>();
+                        final Cursor c = mDatabaseHelper.getData();
+                        while (c.moveToNext()){
+                            listData.add(c.getString(0));
+                        }
+
+                        final EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1);
+                        dialog.show();
+                        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                populateButtons();
+                            }
+                        });
+                        dialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
+                            @Override
+                            public void finish(String result1, int icon) {
+                                Cursor c = mDatabaseHelper.getData();
+                                ArrayList<String> UniquenessControl = new ArrayList<>();
+                                int control = 0;
+                                while (c.moveToNext()) {
+                                    UniquenessControl.add(c.getString(1));
+                                }
+                                for (int i = 0; i < UniquenessControl.size(); i++) {
+                                    if (result1.equals(UniquenessControl.get(i))) {
+                                        control++;
+                                    }
+                                }
+                                if (control == 0) {
+                                    String cocco = String.valueOf(result1);
+                                    String ketamina = "name  TEXT";
+                                    String sugone = "name";
+                                    if (cocco.equals("CANE")) {
+                                        pennsylvania = listData.get(position);
+
+                                        for (int i = 0; i < listData.size(); i++) { //MAGIC FIRST FOR LOOP
+                                            String minipera = listData.get(i);
+                                            if (!minipera.equals(pennsylvania)) {
+
+                                                ketamina = ketamina + "," + listData.get(i) + " TEXT";
+                                                sugone = sugone + "," + listData.get(i) + "";
+
+                                            }
+                                        }
+
+                                        OutfitColumnRemover(ketamina, sugone);
+
+
+                                        Toast.makeText(mMainActivity, listData.get(position) + " Deleted!", Toast.LENGTH_SHORT).show();
+                                        Delete("categories_table", listData.get(position));
+                                        TableRemover(listData.get(position));
+                                        Log.i("msg", "Table " + listData.get(position) + " removed");
+                                        populateButtons();
+                                        dialog.dismiss();
+
+                                    } else if (cocco.equals("culocane")) {
+                                        mDatabaseHelper.ReplaceIcon(icon,position+1);
+                                        dialog.dismiss();
+                                        populateButtons();
+                                        Log.i("msg", "pic changed!");
+                                    } else if (!cocco.equals("") & !cocco.equals("CANE") & !cocco.equals("culocane")) {
+
+                                        String ketamina2 = "name  TEXT";
+                                        String sugone2 = "name";
+                                        int peso = position;
+
+
+                                        for (int i = 0; i < listData.size(); i++) {
+
+                                            sugone2 = sugone2 + "," + listData.get(i) + "";
+                                            if (i != peso) {
+
+                                                ketamina2 = ketamina2 + "," + listData.get(i) + " TEXT";
+
+
+                                            } else {
+                                                ketamina2 = ketamina2 + ", " + result1 + " TEXT";
+
+                                            }
+                                        }
+
+
+                                        OutfitColumnNameChaneger(ketamina2, sugone2);
+                                        Replace("categories_table", result1, position + 1);
+                                        TableRenamer(listData.get(position), result1);
+                                        Log.i("msg", "Modified " + listData.get(position) + " to " + result1);
+                                        dialog.dismiss();
+                                        populateButtons();
+
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), "A Category with that name already exists!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        break;
+
+
+
+
+
+
             }
         }
 
@@ -432,7 +553,9 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.buttontrue))
-                    .addSwipeLeftActionIcon(R.drawable.ic_edit24)
+                    .addSwipeLeftActionIcon(R.drawable.ic_editimsto)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.buttontrue))
+                    .addSwipeRightActionIcon(R.drawable.ic_editimsto)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

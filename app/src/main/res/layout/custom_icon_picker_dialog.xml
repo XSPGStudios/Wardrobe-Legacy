@@ -5,17 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg"
     tools:context=".HomeFragment">
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="310dp"
+        android:layout_height="406dp"
         android:layout_margin="15dp"
         android:layout_marginLeft="15dp"
-        android:background="@color/cardview_shadow_end_color"
+        android:background="#433E3E"
         android:columnWidth="400dp"
+        android:drawSelectorOnTop="false"
         android:gravity="center_horizontal"
+        android:horizontalSpacing="2dp"
         android:minHeight="100dp"
-        android:numColumns="3" />
+
+        android:numColumns="3"
+        android:verticalSpacing="10dp" />
 </FrameLayout>

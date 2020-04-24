@@ -3,6 +3,8 @@ package com.ucstudios.wardrobe;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -15,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 public class EditCategoriesDialog extends Dialog implements View.OnClickListener{
 
@@ -58,6 +62,8 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.custom_edit_dialog);
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
+
         button = findViewById(R.id.button);
         buttonCancel = findViewById(R.id.textView3);
         iconset = findViewById(R.id.imageButton);
@@ -71,7 +77,7 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
         }
         mDatabasehelper1 = new DatabaseHelper(getContext());
         if(stato==1){
-            imageView.setVisibility(View.GONE);
+
         }
 
     }

@@ -2,6 +2,8 @@ package com.ucstudios.wardrobe;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ItemVisualDialog extends Dialog implements View.OnClickListener {
@@ -65,6 +68,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.item_visual_dialog);
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
         name = findViewById(R.id.name);
         size = findViewById(R.id.size);
         brand = findViewById(R.id.brand);
@@ -131,6 +135,7 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
             break;
             case R.id.image:
                 mCameraActivation.activation(1);
+                image.setImageResource(R.drawable.ic_tick_orange);
                 break;
 
 

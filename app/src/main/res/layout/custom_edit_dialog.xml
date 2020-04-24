@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg"
     tools:context=".HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +35,7 @@
             android:clickable="true"
             android:hapticFeedbackEnabled="true"
             android:text="DELETE ITEM"
-            android:textColor="#BCAEAE"
+            android:textColor="#BC1D1D"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +80,7 @@
             android:backgroundTint="@color/buttontrue"
             android:ems="10"
             android:gravity="center_horizontal"
-            android:hint="Edit Item Name"
+            android:hint="Category Name"
             android:inputType="textPersonName"
             android:shadowColor="#FFFFFF"
             android:textColorHighlight="#FF9800"

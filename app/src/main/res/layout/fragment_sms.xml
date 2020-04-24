@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -45,7 +46,7 @@
                     android:gravity="center|center_horizontal"
                     android:scrollbarStyle="insideOverlay"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.587"
+                    app:layout_constraintHorizontal_bias="0.63"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,10 +83,10 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="213dp"
-            android:layout_height="253dp"
+            android:layout_width="227dp"
+            android:layout_height="214dp"
             android:src="@drawable/ic_empty_categ"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,18 +95,18 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="219dp"
-            android:layout_height="40dp"
+            android:layout_width="220dp"
+            android:layout_height="55dp"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
-            android:text="Yo, your wardrobe is empty!"
+            android:text="Yo, your wardrobe is empty! Start by creating a category."
             android:textSize="18sp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.626" />
+            app:layout_constraintVertical_bias="0.607" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

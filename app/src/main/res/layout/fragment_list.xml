@@ -5,6 +5,7 @@
     android:id="@+id/frameLayouts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".HomeFragment">
 
 
@@ -39,11 +40,11 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="66dp"
-            android:layout_height="23dp"
-            android:gravity="center"
+            android:layout_width="86dp"
+            android:layout_height="24dp"
+            android:gravity="center_horizontal"
             android:text="Wardrobe"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:typeface="normal"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +76,6 @@
             android:id="@+id/buttongrid"
             android:layout_width="24dp"
             android:layout_height="25dp"
-            android:layout_marginTop="13dp"
             android:background="@drawable/ic_gridview"
             android:clickable="true"
             android:focusable="auto"
@@ -84,7 +84,7 @@
             app:layout_constraintHorizontal_bias="0.958"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.021" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

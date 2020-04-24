@@ -378,11 +378,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                    .addSwipeLeftActionIcon(R.drawable.ic_edit24)
+                    .addSwipeLeftActionIcon(R.drawable.ic_editimsto)
                     .create()
                     .decorate();
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(),R.color.bluetattico))
                     .addSwipeRightActionIcon(R.drawable.ic_basket24)
                     .create()
                     .decorate();

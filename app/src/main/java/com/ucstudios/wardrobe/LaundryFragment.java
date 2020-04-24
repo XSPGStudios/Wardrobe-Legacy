@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -80,6 +81,9 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private NotificationManagerCompat notificationManager;
     private boolean flagLaundry = false;
 
+    ImageView imageViewempty;
+    TextView textViewempty;
+
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> TotalCategories = new ArrayList<>();
     ArrayList<String> ItemsInBasket = new ArrayList<>();
@@ -117,9 +121,10 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         floatingActionButton.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gThunbergView3);
         mDatabaseHelper = new DatabaseHelper(getActivity());
-        populateWM();
         notificationManager = NotificationManagerCompat.from(getContext());
-
+        imageViewempty = view.findViewById(R.id.imageViewlavatricevuota);
+        textViewempty = view.findViewById(R.id.textViewlavavuota);
+        populateWM();
 
 
 
@@ -139,15 +144,19 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
 
     public void populateWM(){
+
+
+
         final Cursor data1 = mDatabaseHelper.getData();
         final ArrayList<String> categories = new ArrayList<>();
 
-
+        int controlloempty =0 ;
         while(data1.moveToNext()){
             categories.add(data1.getString(0));
             TotalCategories.add(data1.getString(0));
 
         }
+
 
 
         final ArrayList<String> listData = new ArrayList<>();
@@ -157,8 +166,18 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             while(data.moveToNext()){
                 listData.add(data.getString(0));
                 ItemsInBasket.add(data.getString(0));
+                controlloempty++;
             }
 
+        }
+
+        if(controlloempty==0){
+            imageViewempty.setVisibility(View.VISIBLE);
+            textViewempty.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageViewempty.setVisibility(View.GONE);
+            textViewempty.setVisibility(View.GONE);
         }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
     recyclerAdapter = new RecyclerAdapter(listData);
@@ -385,12 +404,12 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                    .addSwipeRightActionIcon(R.drawable.closet24)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.verdetattico))
+                    .addSwipeRightActionIcon(R.drawable.ic_hanger)
                     .create()
                     .decorate();
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.bluetattico))
                     .addSwipeLeftActionIcon(R.drawable.ic_basket24)
                     .create()
                     .decorate();

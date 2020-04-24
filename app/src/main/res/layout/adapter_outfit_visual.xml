@@ -37,15 +37,15 @@
 
     <ImageView
         android:id="@+id/imageViewPOS"
-        android:layout_width="42dp"
-        android:layout_height="45dp"
+        android:layout_width="38dp"
+        android:layout_height="43dp"
         android:layout_marginEnd="2dp"
         android:tint="#FAEFEF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView23a"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_list" />
+        app:srcCompat="@drawable/ic_regular_tick" />
 
     <ImageView
         android:id="@+id/imageViewCAT"

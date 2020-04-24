@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotificationFragment"
-    >
+    android:background="#000000"
+    tools:context=".NotificationFragment">
 
     <androidx.appcompat.widget.Toolbar
 
@@ -75,7 +75,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.022" />
-        />
+
+        <ImageView
+            android:id="@+id/imageViewlavatricevuota"
+            android:layout_width="227dp"
+            android:layout_height="214dp"
+            android:src="@drawable/ic_wm_empty"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.342"
+            app:srcCompat="@drawable/ic_wm_empty" />
+
+        <TextView
+            android:id="@+id/textViewlavavuota"
+            android:layout_width="333dp"
+            android:layout_height="60dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="Your washing machine is currently empty!"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.582" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

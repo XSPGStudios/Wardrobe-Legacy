@@ -234,13 +234,13 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.bluetattico))
                     .addSwipeRightActionIcon(R.drawable.ic_wm24)
                     .create()
                     .decorate();
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
-                    .addSwipeLeftActionIcon(R.drawable.closet24)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.verdetattico))
+                    .addSwipeLeftActionIcon(R.drawable.ic_hanger)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

@@ -2,12 +2,18 @@ package com.ucstudios.wardrobe;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
+
+import java.util.Objects;
 
 
 public class CustomIconPickerDialogItems extends Dialog {
@@ -27,6 +33,7 @@ public class CustomIconPickerDialogItems extends Dialog {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
         setContentView(R.layout.custom_icon_picker_dialog);
         duca = findViewById(R.id.gridView);
         duca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -46,6 +53,7 @@ public class CustomIconPickerDialogItems extends Dialog {
     private void populateImages(){
         CustomIconAdapterItems adapter = new CustomIconAdapterItems(duca.getContext(), labels);
         duca.setAdapter(adapter);
+
     }
 
     public void setIconResult(OnIconSelected onIconSelected){
