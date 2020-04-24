@@ -80,6 +80,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private long mEndTime;
     private NotificationManagerCompat notificationManager;
     private boolean flagLaundry = false;
+    private boolean flagCancel = false;
+    FloatingActionButton floatingActionButtonCancelButton;
 
     ImageView imageViewempty;
     TextView textViewempty;
@@ -118,6 +120,15 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lavatrice, container, false);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
+        floatingActionButtonCancelButton = view.findViewById(R.id.floatingActionButtonCancel);
+        floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
+        floatingActionButtonCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flagCancel = true;
+            }
+        });
+
         floatingActionButton.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gThunbergView3);
         mDatabaseHelper = new DatabaseHelper(getActivity());
@@ -140,8 +151,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             return true;
         }
     };
-
-
 
     public void populateWM(){
 
@@ -244,6 +253,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                floatingActionButtonCancelButton.setVisibility(View.VISIBLE);
                                 c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 c.set(Calendar.MINUTE, minute);
                                 c.set(Calendar.SECOND, 0);
@@ -260,12 +270,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                     //progress bar
                                     Intent resultIntent = new Intent(getContext(), LaundryFragment.class);
                                         PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                    //cancel button
-                                        Intent cancelIntent = new Intent (getContext(), LaundryFragment.class);
-                                            PendingIntent cancelPendingItent = PendingIntent.getActivity(getContext(), 0, resultIntent, 0);
-                                    Intent broadcastIntent = new Intent (getContext(), NotificationReceiver.class);
-                                                        broadcastIntent.putExtra("cancel", message);
-                                                            PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                     long tempoInMillis = 10000 / 100;
                                     final int progressMax = (int) tempoInMillis;
@@ -280,9 +284,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             .setOnlyAlertOnce(true)
                                             .setProgress(progressMax, 0, false)
                                             .setAutoCancel(true)
-                                            .setContentIntent(resultPendingIntent)
-                                            .addAction(R.drawable.ic_wm24, "CANCEL", actionIntent);
-
+                                            .setContentIntent(resultPendingIntent);
                                     notificationManager.notify(2, notification.build());
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                                     {
@@ -294,32 +296,33 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                         notificationManager.createNotificationChannel(channel);
                                         notification.setChannelId(channelId);
                                     }
-                                    //inserire un boolean che "picca" il valore" dell'onReceive
+
+
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             SystemClock.sleep(2000);
 
-                                            for (int progress = 0; progress <= progressMax && NotificationReceiver.cancelProgressBar(); progress += 10) {
-                                                if (NotificationReceiver.cancelProgressBar()) {
+                                            for (int progress = 0; progress <= progressMax && !flagCancel; progress += 10) {
                                                     notification.setProgress(progressMax, progress, false);
                                                     notificationManager.notify(2, notification.build());
                                                     SystemClock.sleep(1000);
                                                 }
-                                            }
-                                            if (!NotificationReceiver.cancelProgressBar()) {
-                                                notification.setContentText("Process cancelled")
-                                                        .setProgress(0, 0, false)
-                                                        .setOngoing(false);
-                                                notificationManager.notify(2, notification.build());
-                                            }
-                                            else {
-                                                notification.setContentText("Lavatrice pronta!")
-                                                        .setProgress(0, 0, false)
-                                                        .setOngoing(false);
-                                                notificationManager.notify(2, notification.build());
-                                            }
+                                                if (flagCancel) {
+                                                    notification.setContentText("Process cancelled")
+                                                            .setProgress(0, 0, false)
+                                                            .setOngoing(false);
+                                                    notificationManager.notify(2, notification.build());
+                                                }
+                                                else {
+                                                    notification.setContentText("Lavatrice pronta!")
+                                                            .setProgress(0, 0, false)
+                                                            .setOngoing(false);
+                                                    notificationManager.notify(2, notification.build());
+                                                }
                                             flagLaundry = false;
+                                                flagCancel = false;
+                                                    floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
                                             }
                                     }).start();
 

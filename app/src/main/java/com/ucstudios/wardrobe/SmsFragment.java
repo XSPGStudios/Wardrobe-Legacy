@@ -578,7 +578,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                         Cursor c = mDatabaseHelper.getData();
                         final ArrayList<String> UniquenessControl = new ArrayList<>();
                         int control=0;
-                        while(c.moveToNext()){
+                        while(c.moveToNext()) {
                             UniquenessControl.add(c.getString(0));
                         }
                         for(int i=0;i<UniquenessControl.size();i++){
