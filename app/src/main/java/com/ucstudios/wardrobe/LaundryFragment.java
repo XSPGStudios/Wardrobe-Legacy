@@ -81,6 +81,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private NotificationManagerCompat notificationManager;
     private boolean flagLaundry = false;
     private boolean flagCancel = false;
+    private boolean flagLaundryElementi = true;
     FloatingActionButton floatingActionButtonCancelButton;
 
     ImageView imageViewempty;
@@ -125,7 +126,34 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         floatingActionButtonCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flagCancel = true;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+
+                    }
+                });
+                builder.setTitle("Are you sure?");
+                final TextView sex = new TextView(getActivity());
+                sex.setText("Cancelling the process, are you sure?");
+                sex.setGravity(Gravity.CENTER);
+
+                builder.setView(sex);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        flagCancel = true;
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+
             }
         });
 
@@ -163,7 +191,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         while(data1.moveToNext()){
             categories.add(data1.getString(0));
             TotalCategories.add(data1.getString(0));
-
         }
 
 
@@ -183,10 +210,12 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         if(controlloempty==0){
             imageViewempty.setVisibility(View.VISIBLE);
             textViewempty.setVisibility(View.VISIBLE);
+            flagLaundryElementi = false;
         }
         else{
             imageViewempty.setVisibility(View.GONE);
             textViewempty.setVisibility(View.GONE);
+            flagLaundryElementi = true;
         }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
     recyclerAdapter = new RecyclerAdapter(listData);
@@ -236,7 +265,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
                     if ((hourOfDay == c.get(Calendar.HOUR_OF_DAY) && minute <= c.get(Calendar.MINUTE)) || hourOfDay < c.get(Calendar.HOUR_OF_DAY)) {
                         Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }
+                    else if (!flagLaundryElementi) {
+                        Toast.makeText(getContext(), "The laundry is empty! Try to add some clothes", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
@@ -287,8 +320,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             .setContentIntent(resultPendingIntent);
                                     notificationManager.notify(2, notification.build());
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                                    {
-                                        String channelId = "Your_channel_id";
+                                    { String channelId = "Your_channel_id";
                                         NotificationChannel channel = new NotificationChannel(
                                                 channelId,
                                                 "Channel human readable title",
@@ -313,6 +345,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                             .setProgress(0, 0, false)
                                                             .setOngoing(false);
                                                     notificationManager.notify(2, notification.build());
+                                                    floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
                                                 }
                                                 else {
                                                     notification.setContentText("Lavatrice pronta!")
@@ -322,10 +355,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                 }
                                             flagLaundry = false;
                                                 flagCancel = false;
-                                                    floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
                                             }
                                     }).start();
-
                                     dialog.dismiss();
                                 }
                                 else {
