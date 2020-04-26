@@ -138,7 +138,6 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
         }
         notifyItemMoved(fromPosition, toPosition);
         mDatabaseHelper.SwapRowsCategories(fromPosition+1,toPosition+1);
-
         return true;
     }
 

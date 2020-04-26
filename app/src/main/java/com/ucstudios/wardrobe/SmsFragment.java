@@ -128,18 +128,14 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                     case R.id.item1 :
 
                         new AlertDialog.Builder(getContext())
-                                .setTitle("XSPG")
-                                .setMessage("Info page here!")
-
-                                // Specifying a listener allows you to take an action before dismissing the dialog.
-                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setTitle("Wardrobe")
+                                .setMessage("With wardrobe you can manage your closet from distance, and have it all in your pocket" +
+                                        " You can create categories to divide your items, and with the laundry function you can set a time for your clothes, and know when " +
+                                        "they are ready for use, enjoy!" )
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
                                 })
-
-                                // A null listener allows the button to dismiss the dialog and take no further action.
-
                                 .show();
                         break;
                     case R.id.item2 :
@@ -150,12 +146,11 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                         intent.setData(Uri.parse("http://www.github.com"));
                         startActivity(intent);
                         break;
-                    case R.id.subitem1 :
-
+                    case R.id.subitem1:
+                        Toast.makeText(getContext(), "For now we are in beta, stay tuned for future updates!", Toast.LENGTH_SHORT).show();
                     case R.id.subitem2 :
-                    default:
-
-
+                        Toast.makeText(getContext(), "For now we are in beta, stay tuned for future updates!", Toast.LENGTH_SHORT).show();
+                    break;
 
 
                 }
@@ -295,7 +290,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             ClipData merda = ClipData.newPlainText("", "");
             View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
             v.startDrag(merda, myShadowBuilder, v, 0);
-
+            v.setOnDragListener(new View.OnDragListener() {
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    Log.i("msg","PICCHIASPORHI");
+                    return false;
+                }
+            });
             return true;
         }
 
@@ -304,7 +305,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     View.OnDragListener dragListener = new View.OnDragListener() {
         @Override
         public boolean onDrag(View v, DragEvent event) {
-            int dragEvent = event.getAction(); //aspetta
+            int dragEvent = event.getAction();
             switch(dragEvent) {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     Log.i("msg","PICCHIASPORHI");

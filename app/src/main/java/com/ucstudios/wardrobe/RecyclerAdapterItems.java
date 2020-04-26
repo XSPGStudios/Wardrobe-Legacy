@@ -183,7 +183,6 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(Arrays.asList(items), i, i - 1);
 
-
             }
         }
         notifyItemMoved(fromPosition, toPosition);
