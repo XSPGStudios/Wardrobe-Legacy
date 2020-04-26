@@ -1,5 +1,6 @@
 package com.ucstudios.wardrobe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ public class CustomIconAdapter extends BaseAdapter {
 
 
     private static final String TAG = "CustomIconAdapter";
+    MainActivity mainActivity;
     private Integer[] Icons = {
             R.drawable.ic_sweater,
             R.drawable.ic_jeans,
@@ -34,6 +36,52 @@ public class CustomIconAdapter extends BaseAdapter {
             R.drawable.ic_denim,
             R.drawable.ic_shirt,
             R.drawable.ic_watch,
+            R.drawable.ic_basketballjersey,
+            R.drawable.ic_bathrobe,
+            R.drawable.ic_belt,
+            R.drawable.ic_blouse,
+            R.drawable.ic_boot,
+            R.drawable.ic_boot2,
+            R.drawable.ic_bowtie,
+            R.drawable.ic_bra,
+            R.drawable.ic_cap,
+            R.drawable.ic_coat,
+            R.drawable.ic_dress,
+            R.drawable.ic_glasses,
+            R.drawable.ic_gloves,
+            R.drawable.ic_bag,
+            R.drawable.ic_hat,
+            R.drawable.ic_heels,
+            R.drawable.ic_jacket,
+            R.drawable.ic_pimuno,
+            R.drawable.ic_jacket2,
+            R.drawable.ic_necklace,
+            R.drawable.ic_salopette,
+            R.drawable.ic_mutandefemmina,
+            R.drawable.ic_cargo,
+            R.drawable.ic_polo,
+            R.drawable.ic_24h,
+            R.drawable.ic_purse,
+            R.drawable.ic_scarf,
+            R.drawable.ic_tee,
+            R.drawable.ic_top,
+            R.drawable.ic_mocasso,
+            R.drawable.ic_shorts,
+            R.drawable.ic_papere,
+            R.drawable.ic_skirt,
+            R.drawable.ic_slippers,
+            R.drawable.ic_socks,
+            R.drawable.ic_tie,
+            R.drawable.ic_trench,
+            R.drawable.ic_underwear,
+            R.drawable.ic_vest,
+            R.drawable.ic_wallet,
+            R.drawable.ic_winterhat,
+
+
+
+
+
 
 
     };
@@ -68,16 +116,17 @@ public class CustomIconAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("ViewHolder")
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView==null) {
+
 
             convertView = thisInflater.inflate(R.layout.adapter_icon_picker, parent, false);
 
             ImageView imageView = convertView.findViewById(R.id.imageView2);
             imageView.setImageResource(Icons[position]);
 
-        }
+
 
 
         return convertView;

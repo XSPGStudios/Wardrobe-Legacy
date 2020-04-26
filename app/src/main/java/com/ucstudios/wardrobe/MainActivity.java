@@ -31,16 +31,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    int i =1;
-    int itemnumber=0;
+
     public String Name;
-    public String TechShit;
+
     BottomNavigationView bottomNavigation;
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;
-    ArrayList<String> Items;
-    Bitmap imagepreview;
-    int positionaftweswapcateg;
+
+
 
 
 
