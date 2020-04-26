@@ -350,7 +350,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean WashingMachineActivacted(String tablename, String SpecificItem){
+    public boolean WashingMachineActivated(String tablename, String SpecificItem){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("POS", 3);
@@ -413,6 +413,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data1 = db.rawQuery(query1, null);
         return data1;
     }
+
+    public Cursor GetWMGIF(String tablename){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 3";
+        Cursor data1 = db.rawQuery(query1, null);
+        return data1;
+    }
+
 
     public Cursor GetItemOutfit(String columname,String outfitname){
         SQLiteDatabase db = this.getWritableDatabase();

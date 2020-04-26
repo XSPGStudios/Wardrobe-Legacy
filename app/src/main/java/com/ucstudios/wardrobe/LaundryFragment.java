@@ -84,6 +84,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private boolean flagCancel = false;
     private boolean flagLaundryElementi = true;
     FloatingActionButton floatingActionButtonCancelButton;
+    private int positionGif = 0;
 
     ImageView imageViewempty;
     TextView textViewempty;
@@ -205,7 +206,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 ItemsInBasket.add(data.getString(0));
                 controlloempty++;
             }
-
+            Cursor dataGif = mDatabaseHelper.GetWMGIF(categories.get(i));
+            while(dataGif.moveToNext()){
+                listData.add(dataGif.getString(0));
+                controlloempty++;
+            }
         }
 
         if(controlloempty==0){
@@ -213,11 +218,13 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             textViewempty.setVisibility(View.VISIBLE);
             flagLaundryElementi = false;
         }
+
         else{
             imageViewempty.setVisibility(View.GONE);
             textViewempty.setVisibility(View.GONE);
             flagLaundryElementi = true;
         }
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
     recyclerAdapter = new RecyclerAdapter(listData);
     recyclerView.setLayoutManager(layoutManager);
@@ -287,6 +294,22 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                /*final int position = positionGif;
+                                ArrayList<String> dacestoalavatrice = new ArrayList<>();
+                                for(int i=0;i<TotalCategories.size();i++) {
+                                    Cursor c = mDatabaseHelper.GetWM(TotalCategories.get(i));
+                                    while(c.moveToNext()){
+                                        dacestoalavatrice.add(c.getString(0));
+                                        Log.i("msg :","Swiped "+ dacestoalavatrice.get(i));
+                                    }
+                                }
+
+                                for(int is=0;is<TotalCategories.size();is++) {
+                                    mDatabaseHelper.WashingMachineActivated(TotalCategories.get(is),dacestoalavatrice.get(0));
+                                    Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
+                                }
+                                populateWM();*/
+
                                 floatingActionButtonCancelButton.setVisibility(View.VISIBLE);
                                 c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 c.set(Calendar.MINUTE, minute);
@@ -360,7 +383,20 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                             .setOngoing(false);
                                                     notificationManager.notify(2, notification.build());
                                                     floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
-
+                                                    /*ArrayList<String> dacestoalavatrices = new ArrayList<>();
+                                                    for(int i=0;i<TotalCategories.size();i++){
+                                                        Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
+                                                        while(c.moveToNext()) {
+                                                            dacestoalavatrices.add(c.getString(0));
+                                                            Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
+                                                        }
+                                                    }
+                                                    for(int is=0;is<TotalCategories.size();is++){
+                                                        //get the table name
+                                                        mDatabaseHelper.toBasketmodif(TotalCategories.get(is),dacestoalavatrices.get(0));
+                                                        Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
+                                                    }
+                                                    populateWM();*/
                                                 }
                                             flagLaundry = false;
                                                 flagCancel = false;
@@ -405,7 +441,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             final int position = viewHolder.getAdapterPosition();
-
+            positionGif = position;
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
                     ArrayList<String> dacestoalavatrice = new ArrayList<>();
@@ -432,7 +468,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                             Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
                         }
                     }
-
                     for(int is=0;is<TotalCategories.size();is++){
                         //get the table name
                         mDatabaseHelper.toBasketmodif(TotalCategories.get(is),dacestoalavatrices.get(0));

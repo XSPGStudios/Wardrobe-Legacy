@@ -93,6 +93,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     private Integer[] iconwm ={
             R.drawable.ic_wm,
             R.drawable.ic_basket,
+            R.drawable.ic_chevron_right_black_24dp
     };
     AdapterListResult mAdapterResult;
 
