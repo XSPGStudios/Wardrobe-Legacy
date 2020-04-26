@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -290,7 +291,9 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                 c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 c.set(Calendar.MINUTE, minute);
                                 c.set(Calendar.SECOND, 0);
-
+                                Calendar calendar = Calendar.getInstance();
+                                int oraAttuale = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minutiAttuali = calendar.get(Calendar.MINUTE);
 
 
 
@@ -301,17 +304,20 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                     String message = "Lavaggio interrotto";
 
                                     //progress bar
-                                    Intent resultIntent = new Intent(getContext(), LaundryFragment.class);
+                                    Intent resultIntent = new Intent(getContext(), MainActivity.class);
                                         PendingIntent resultPendingIntent = PendingIntent.getActivity(getContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                    long tempoInMillis = 10000 / 100;
-                                    final int progressMax = (int) tempoInMillis;
+                                    int oreDiff = (hourOfDay - oraAttuale);
+                                    int minutesDiff = (minute - minutiAttuali);
+                                    int secondsInMillis = (oreDiff * 3600) + (minutesDiff * 60);
+
+                                    final int progressMax =  secondsInMillis;
                                     final NotificationCompat.Builder notification = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), CHANNEL_1_ID)
                                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                                             .setSmallIcon(R.drawable.ic_wm24)
                                             .setContentTitle("Laundry status")
                                             .setContentText("Lavaggio in corso...")
-                                            .setColor(Color.BLUE)
+                                            .setColor(Color.BLACK)
                                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                                             .setOngoing(true)
                                             .setOnlyAlertOnce(true)
@@ -335,7 +341,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                         public void run() {
                                             SystemClock.sleep(2000);
 
-                                            for (int progress = 0; progress <= progressMax && !flagCancel; progress += 10) {
+                                            for (int progress = 0; progress <= progressMax && !flagCancel; progress += 1) {
                                                     notification.setProgress(progressMax, progress, false);
                                                     notificationManager.notify(2, notification.build());
                                                     SystemClock.sleep(1000);
@@ -417,6 +423,26 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
                     }
                     populateWM();
+                    Snackbar.make(recyclerView, (CharSequence) mDatabaseHelper, Snackbar.LENGTH_LONG).setAction("Rimetti item nel cesto", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ArrayList<String> dacestoalavatrices = new ArrayList<>();
+                            for(int i=0;i<TotalCategories.size();i++){
+                                Cursor c = mDatabaseHelper.GetWardrobeSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
+                                while(c.moveToNext()){
+                                    dacestoalavatrices.add(c.getString(0));
+                                    Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
+                                }
+                            }
+
+                            for(int is=0;is<TotalCategories.size();is++){
+                                //get the table name
+                                mDatabaseHelper.toLaundry(TotalCategories.get(is),dacestoalavatrices.get(0));
+                                Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
+                            }
+                            populateWM();
+                        }
+                    }).show();
                     break;
                 case ItemTouchHelper.LEFT:
                     ArrayList<String> dacestoalavatrices = new ArrayList<>();
@@ -434,6 +460,25 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
                     }
                     populateWM();
+                    Snackbar.make(recyclerView, (CharSequence) mDatabaseHelper, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ArrayList<String> dacestoalavatrices = new ArrayList<>();
+                            for(int i=0;i<TotalCategories.size();i++){
+                                Cursor c = mDatabaseHelper.GetBasketSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
+                                while(c.moveToNext()){
+                                    dacestoalavatrices.add(c.getString(0));
+                                    Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
+                                }
+                            }
+                            for(int is=0;is<TotalCategories.size();is++){
+                                //get the table name
+                                mDatabaseHelper.toLaundry(TotalCategories.get(is),dacestoalavatrices.get(0));
+                                Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
+                            }
+                            populateWM();
+                        }
+                    }).show();
                     break;
             }
         }
