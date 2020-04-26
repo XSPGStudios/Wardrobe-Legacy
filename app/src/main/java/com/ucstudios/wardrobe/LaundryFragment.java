@@ -463,38 +463,89 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             positionGif = position;
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
-                    ArrayList<String> dacestoalavatrice = new ArrayList<>();
-                    for(int i=0;i<TotalCategories.size();i++){
-                        Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
-                        while(c.moveToNext()){
-                            dacestoalavatrice.add(c.getString(0));
-                            Log.i("msg :","Swiped "+ dacestoalavatrice.get(0));
-                        }
-                    }
-                    for(int is=0;is<TotalCategories.size();is++){
-                        //get the table name
-                        mDatabaseHelper.toWardrobe(TotalCategories.get(is),dacestoalavatrice.get(0));
-                        Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
-                    }
-                    populateWM();
+                   if (!flagLaundry) {
+                       ArrayList<String> dacestoalavatrice = new ArrayList<>();
+                       for (int i = 0; i < TotalCategories.size(); i++) {
+                           Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i), ItemsInBasket.get(position));
+                           while (c.moveToNext()) {
+                               dacestoalavatrice.add(c.getString(0));
+                               Log.i("msg :", "Swiped " + dacestoalavatrice.get(0));
+                           }
+                       }
+                       for (int is = 0; is < TotalCategories.size(); is++) {
+                           //get the table name
+                           mDatabaseHelper.toWardrobe(TotalCategories.get(is), dacestoalavatrice.get(0));
+                           Log.i("msg", "Passaggio a Lavatrice completato per " + dacestoalavatrice.get(0));
+                       }
+                       populateWM();
+                   }
+                   else {
+                       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                       builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                           @Override
+                           public void onDismiss(DialogInterface dialog) {
+
+                           }
+                       });
+                       builder.setTitle("Error");
+                       final TextView sex = new TextView(getActivity());
+                       sex.setText("You can't change items positions while the laundry is running!");
+                       sex.setGravity(Gravity.CENTER);
+
+                       builder.setView(sex);
+                       builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               dialog.cancel();
+                               populateWM();
+                           }
+                       });
+                       builder.show();
+                   }
                     break;
                 case ItemTouchHelper.LEFT:
-                    ArrayList<String> dacestoalavatrices = new ArrayList<>();
-                    for(int i=0;i<TotalCategories.size();i++){
-                        Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
-                        while(c.moveToNext()){
-                            dacestoalavatrices.add(c.getString(0));
-                            Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
+                    if (!flagLaundry) {
+                        ArrayList<String> dacestoalavatrices = new ArrayList<>();
+                        for (int i = 0; i < TotalCategories.size(); i++) {
+                            Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i), ItemsInBasket.get(position));
+                            while (c.moveToNext()) {
+                                dacestoalavatrices.add(c.getString(0));
+                                Log.i("msg :", "Swiped " + dacestoalavatrices.get(0));
+                            }
+                        }
+                        for (int is = 0; is < TotalCategories.size(); is++) {
+                            //get the table name
+                            mDatabaseHelper.toBasketmodif(TotalCategories.get(is), dacestoalavatrices.get(0));
+                            Log.i("msg", "Passaggio a Lavatrice completato per " + dacestoalavatrices.get(0));
+                        }
+                        populateWM();
+                        break;
+                        }
+                    else {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+
+                            }
+                        });
+                        builder.setTitle("Error");
+                        final TextView sex = new TextView(getActivity());
+                        sex.setText("You can't change items positions while the laundry is running!");
+                        sex.setGravity(Gravity.CENTER);
+//checko un attimo
+                        builder.setView(sex);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                populateWM();
+                            }
+                        });
+                        builder.show();
                         }
                     }
-                    for(int is=0;is<TotalCategories.size();is++){
-                        //get the table name
-                        mDatabaseHelper.toBasketmodif(TotalCategories.get(is),dacestoalavatrices.get(0));
-                        Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
-                    }
-                    populateWM();
-                    break;
-            }
         }
 
         @Override
