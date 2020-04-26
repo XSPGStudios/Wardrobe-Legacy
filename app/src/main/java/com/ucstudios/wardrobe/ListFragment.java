@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     Button gridbutton;
     ArrayList<String> ItemsInBasket = new ArrayList<>();
     int controllodivider;
+    ImageView emptylist;
+    TextView emptylisttext;
 
 
     int PERMISSION_ALL = 1;
@@ -126,6 +129,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
         mDatabaseHelper1.getData();
         controllodivider=0;
+        emptylist = view.findViewById(R.id.imageViewListavuota);
+        emptylisttext = view.findViewById(R.id.textViewlistavuota);
 
         populateItems();
 
@@ -170,13 +175,22 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         final ArrayList<String> listData = new ArrayList<>();
         final ArrayList<Integer> position = new ArrayList<>();
         final ArrayList<Integer> icons = new ArrayList<>();
-
+        int controlloperempty=0;
         while (data.moveToNext()) {
             listData.add(data.getString(0));
+            controlloperempty++;
             canecazzo.add(data.getString(0));
             position.add(data.getInt(2));
             icons.add(data.getInt(1));
             tech.add(data.getBlob(7));
+        }
+        if(controlloperempty==0){
+            emptylist.setVisibility(View.VISIBLE);
+            emptylisttext.setVisibility(View.VISIBLE);
+        }
+        else{
+            emptylist.setVisibility(View.GONE);
+            emptylisttext.setVisibility(View.GONE);
         }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

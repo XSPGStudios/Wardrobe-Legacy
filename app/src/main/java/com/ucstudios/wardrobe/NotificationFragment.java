@@ -51,7 +51,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     DatabaseHelper mDatabaseHelper2;
     private String mParam1;
     private String mParam2;
-    MainActivity mMainActivity;
     ArrayList<String> TotalCategories = new ArrayList<>();
     ArrayList<String> ItemsInBasket = new ArrayList<>();
 
@@ -93,9 +92,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                 floatingActionButton.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gThunbergView2);
         mDatabaseHelper2 = new DatabaseHelper(getActivity());
-        mMainActivity = (MainActivity) getActivity();
-
-        populateBasket();
+                populateBasket();
 
                     return view;
     }
@@ -213,29 +210,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
                     }
                     populateBasket();
-
-                    Snackbar.make(recyclerView, (CharSequence) mDatabaseHelper2, Snackbar.LENGTH_LONG).setAction("Rimetti item nel cesto", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ArrayList<String> dacestoalavatrices = new ArrayList<>();
-                            for(int i=0;i<TotalCategories.size();i++){
-                                Cursor c = mDatabaseHelper2.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
-                                while(c.moveToNext()){
-                                    dacestoalavatrices.add(c.getString(0));
-                                    Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
-                                }
-                            }
-
-                            for(int is=0;is<TotalCategories.size();is++){
-                                //get the table name
-                                mDatabaseHelper2.toBasketmodif(TotalCategories.get(is),dacestoalavatrices.get(0));
-                                Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
-                            }
-                            populateBasket();
-                        }
-                    }).show();
                     break;
-
                 case ItemTouchHelper.LEFT:
                     ArrayList<String> dacestoalavatrices = new ArrayList<>();
                     for(int i=0;i<TotalCategories.size();i++){
@@ -252,26 +227,6 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
                     }
                     populateBasket();
-                    Snackbar.make(recyclerView, (CharSequence) mDatabaseHelper2, Snackbar.LENGTH_LONG).setAction("Rimetti item nel cesto", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ArrayList<String> dacestoalavatrices = new ArrayList<>();
-                            for(int i=0;i<TotalCategories.size();i++){
-                                Cursor c = mDatabaseHelper2.GetWardrobeSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
-                                while(c.moveToNext()){
-                                    dacestoalavatrices.add(c.getString(0));
-                                    Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
-                                }
-                            }
-
-                            for(int is=0;is<TotalCategories.size();is++){
-                                //get the table name
-                                mDatabaseHelper2.toBasketmodif(TotalCategories.get(is),dacestoalavatrices.get(0));
-                                Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
-                            }
-                            populateBasket();
-                        }
-                    }).show();
                     break;
             }
         }

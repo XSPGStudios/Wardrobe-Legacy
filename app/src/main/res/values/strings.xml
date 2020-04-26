@@ -8,5 +8,7 @@
     <string name="brand">brand</string>
     <string name="value">value</string>
     <string name="M">size</string>
-
+    <string name="basketvuoto">Your laundry basket is empty. Dirty clothes will be shown here.</string>
+    <string name="listavuota">There are no items in this category. Add one now!</string>
+    <string name="Outfitvuoti">You have no outfits. Create one now!</string>
 </resources>

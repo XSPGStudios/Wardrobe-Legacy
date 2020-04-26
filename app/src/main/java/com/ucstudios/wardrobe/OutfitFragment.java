@@ -20,9 +20,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,6 +63,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     ArrayList<String> dro = new ArrayList<>();
     ArrayList<String> drog = new ArrayList<>();
     int controllodivider;
+    ImageView imageViewempty;
+    TextView textViewempty;
 
 
     public OutfitFragment() {
@@ -89,6 +93,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
         Button gridbutton = view.findViewById(R.id.gridbutton1);
         gridbutton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
+        imageViewempty = view.findViewById(R.id.imageViewoutfitvuoto);
+        textViewempty = view.findViewById(R.id.textViewoutfitvuoto);
         mListview = view.findViewById(R.id.spezzaossa4);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mListview);
@@ -161,10 +167,20 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     public void populateOutfits() {
         Cursor data = mDatabaseHelper.getData2();
         final ArrayList<String> listData = new ArrayList<>();
-
+        int controlloperempty=0;
         while (data.moveToNext()) {
             listData.add(data.getString(0));
             dro.add("0");
+            controlloperempty++;
+        }
+
+        if(controlloperempty==0){
+            imageViewempty.setVisibility(View.VISIBLE);
+            textViewempty.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageViewempty.setVisibility(View.GONE);
+            textViewempty.setVisibility(View.GONE);
         }
         Cursor categories = mDatabaseHelper.getData();
         final ArrayList<String> categories2 = new ArrayList<>();

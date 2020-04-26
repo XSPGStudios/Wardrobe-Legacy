@@ -86,6 +86,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.021" />
 
+
+
+        <ImageView
+            android:id="@+id/imageViewListavuota"
+            android:layout_width="227dp"
+            android:layout_height="214dp"
+            android:src="@drawable/ic_list_empty"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.376" />
+
+        <TextView
+            android:id="@+id/textViewlistavuota"
+            android:layout_width="304dp"
+            android:layout_height="71dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="@string/listavuota"
+            android:textSize="18sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.616" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
