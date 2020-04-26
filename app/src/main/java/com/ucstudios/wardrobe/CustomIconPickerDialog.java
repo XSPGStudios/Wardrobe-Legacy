@@ -14,7 +14,8 @@ import android.widget.GridView;
 import java.util.Objects;
 
 
-public class CustomIconPickerDialog extends Dialog {
+public class
+CustomIconPickerDialog extends Dialog {
 
     public GridView duca;
     int labels;

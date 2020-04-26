@@ -356,7 +356,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                 }
                                 for (int i = 0; i < UniquenessControl.size(); i++) {
                                     if (name.equals(UniquenessControl.get(i))) {
-                                        control++;
+                                        if(name.equals(itemdata.get(0))){}
+                                        else{
+                                        control++;}
                                     }
                                 }}
 
@@ -364,9 +366,12 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
                             if(alien2o!=null){
-                                Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);}
+                                Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);
+
+                            }
                             else{
                                 mDatabaseHelper1.ReplaceItemnoPic(mMainActivity.Name,name,size,brand,value,currency,icon,position+1);
+
                             }
                             mDatabaseHelper1.ReplaceIteminOutfitTable(name,mMainActivity.Name,olditemname);
                             dialog.dismiss();

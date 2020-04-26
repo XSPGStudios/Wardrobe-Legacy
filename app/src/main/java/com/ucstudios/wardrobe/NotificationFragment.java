@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,6 +54,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     private String mParam2;
     ArrayList<String> TotalCategories = new ArrayList<>();
     ArrayList<String> ItemsInBasket = new ArrayList<>();
+    ImageView imageView;
+    TextView textView;
+
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -92,7 +96,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                 floatingActionButton.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gThunbergView2);
         mDatabaseHelper2 = new DatabaseHelper(getActivity());
-                populateBasket();
+        imageView = view.findViewById(R.id.imageViewbasketvuoto);
+        textView = view.findViewById(R.id.textViewbasketvuoto);
+        populateBasket();
 
                     return view;
     }
@@ -102,20 +108,24 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             ClipData merda = ClipData.newPlainText("", "");
             View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
             v.startDrag(merda, myShadowBuilder, v, 0);
+
+
             return true;
         }
     };
 
     private void populateBasket(){
-
+        int controlloperempty=0;
         final Cursor data1 = mDatabaseHelper2.getData();
         final ArrayList<String> categories = new ArrayList<>();
-
 
         while(data1.moveToNext()){
             categories.add(data1.getString(0));
             TotalCategories.add(data1.getString(0));
+
         }
+
+
 
 
         final ArrayList<String> listData = new ArrayList<>();
@@ -125,7 +135,17 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
             while(data.moveToNext()){
                 listData.add(data.getString(0));
                ItemsInBasket.add(data.getString(0));
+                controlloperempty++;
             }
+        }
+
+        if(controlloperempty==0){
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageView.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE);
         }
 
 
