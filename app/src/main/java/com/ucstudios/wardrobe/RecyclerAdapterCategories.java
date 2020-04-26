@@ -131,11 +131,9 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(Arrays.asList(items), i, i + 1);
             }
-        } else {
+        } else { //committo almeno così salvo tutto
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(Arrays.asList(items), i, i - 1);
-
-
             }
         }
         notifyItemMoved(fromPosition, toPosition);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ucstudios.wardrobe">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,6 +11,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
 
     <application
         android:allowBackup="true"
@@ -31,6 +33,7 @@
         <activity android:name=".HomeFragment"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
+        <service android:name=".KillNotificationsService"/>
         <activity android:name=".SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">

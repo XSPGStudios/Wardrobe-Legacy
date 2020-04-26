@@ -81,7 +81,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private long mEndTime;
     private NotificationManagerCompat notificationManager;
     private boolean flagLaundry = false;
-    private boolean flagCancel = false;
+    private static boolean flagCancel = false;
     private boolean flagLaundryElementi = true;
     FloatingActionButton floatingActionButtonCancelButton;
     private int positionGif = 0;
@@ -262,7 +262,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
 
 
-
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
@@ -275,13 +274,21 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                       final int hourOfDay, final int minute) {
                     final Calendar c = Calendar.getInstance();
 
-                    if ((hourOfDay == c.get(Calendar.HOUR_OF_DAY) && minute <= c.get(Calendar.MINUTE)) || hourOfDay < c.get(Calendar.HOUR_OF_DAY)) {
-                        Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
+                    if ((hourOfDay == c.get(Calendar.HOUR_OF_DAY))) {
+                        if (minute <= c.get(Calendar.MINUTE)) {
+                            Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    else if (!flagLaundryElementi) {
-                        Toast.makeText(getContext(), "The laundry is empty! Try to add some clothes", Toast.LENGTH_SHORT).show();
+
+                    if (minute <= c.get(Calendar.MINUTE)) {
+                        if (hourOfDay <= c.get(Calendar.HOUR_OF_DAY)) {
+                            if (c.get(Calendar.HOUR_OF_DAY) <= 22) {
+                                Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                    else {
+
+                    if (flagLaundryElementi){
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
@@ -342,7 +349,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                                             .setSmallIcon(R.drawable.ic_wm24)
                                             .setContentTitle("Laundry status")
-                                            .setContentText("Lavaggio in corso...")
+                                            .setContentText("Washing your clothes...")
                                             .setColor(Color.BLACK)
                                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                                             .setOngoing(true)
@@ -380,19 +387,18 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                     floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
 
                                                     ArrayList<String> Finitodilavare = new ArrayList<>();
-                                                    for(int i=0;i<TotalCategories.size();i++){
+                                                    for(int i=0;i<TotalCategories.size();i++) {
                                                         Cursor c = mDatabaseHelper.GetWashed(TotalCategories.get(i));
                                                         while(c.moveToNext()) {
                                                             Finitodilavare.add(c.getString(0));
-
                                                         }
                                                     }
-                                                    for(int is=0;is<TotalCategories.size();is++){
-
+                                                    for(int is=0;is<TotalCategories.size();is++) {
                                                         for(int check=0;check<Finitodilavare.size();check++){
                                                             //get the table name
                                                             mDatabaseHelper.toLaundry(TotalCategories.get(is),Finitodilavare.get(check));
-                                                        }}
+                                                        }
+                                                    }
                                                 }
 
                                                 else {
@@ -414,8 +420,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                         for(int check=0;check<Finitodilavare.size();check++){
                                                         //get the table name
                                                         mDatabaseHelper.toWardrobe(TotalCategories.get(is),Finitodilavare.get(check));
-                                                    }}
-
+                                                        }
+                                                    }
                                                 }
                                             flagLaundry = false;
                                                 flagCancel = false;
@@ -437,12 +443,20 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         });
                         builder.show();
                     }
+
+                    else {
+                        Toast.makeText(getContext(), "The laundry is empty! Try to add some clothes", Toast.LENGTH_SHORT).show();
+                    }
                 }
             };
 //push failed
     private void updateTimeText (Calendar c) {
         Toast.makeText(getContext(), "Laundry started, check the notification for the progress!", Toast.LENGTH_SHORT).show();
     }
+
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -534,7 +548,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         final TextView sex = new TextView(getActivity());
                         sex.setText("You can't change items positions while the laundry is running!");
                         sex.setGravity(Gravity.CENTER);
-//checko un attimo
                         builder.setView(sex);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override

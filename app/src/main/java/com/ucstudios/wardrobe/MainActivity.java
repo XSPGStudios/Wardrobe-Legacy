@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -74,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        if(InterrupedLaundry){
-            Toast.makeText(this,"You interrupted a process by closing the app!",Toast.LENGTH_SHORT).show();
-        }
+            if(InterrupedLaundry){
+                Toast.makeText(this,"You interrupted a process by closing the app!",Toast.LENGTH_SHORT).show();
+            }
 
 
 
@@ -97,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(SmsFragment.newInstance("", ""));
         bottomNavigation.setSelectedItemId(R.id.navigation_sms);
+
+        startService(new Intent(this, KillNotificationsService.class));
+
     }
 
     @Override
