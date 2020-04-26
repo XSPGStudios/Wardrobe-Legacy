@@ -59,6 +59,7 @@ public class HomeFragment extends Fragment {
         }
 
     }
+    //lmao
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
