@@ -416,33 +416,12 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                             Log.i("msg :","Swiped "+ dacestoalavatrice.get(0));
                         }
                     }
-
                     for(int is=0;is<TotalCategories.size();is++){
                         //get the table name
                         mDatabaseHelper.toWardrobe(TotalCategories.get(is),dacestoalavatrice.get(0));
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
                     }
                     populateWM();
-                    Snackbar.make(recyclerView, (CharSequence) mDatabaseHelper, Snackbar.LENGTH_LONG).setAction("Rimetti item nel cesto", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ArrayList<String> dacestoalavatrices = new ArrayList<>();
-                            for(int i=0;i<TotalCategories.size();i++){
-                                Cursor c = mDatabaseHelper.GetWardrobeSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
-                                while(c.moveToNext()){
-                                    dacestoalavatrices.add(c.getString(0));
-                                    Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
-                                }
-                            }
-
-                            for(int is=0;is<TotalCategories.size();is++){
-                                //get the table name
-                                mDatabaseHelper.toLaundry(TotalCategories.get(is),dacestoalavatrices.get(0));
-                                Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
-                            }
-                            populateWM();
-                        }
-                    }).show();
                     break;
                 case ItemTouchHelper.LEFT:
                     ArrayList<String> dacestoalavatrices = new ArrayList<>();
@@ -460,25 +439,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
                     }
                     populateWM();
-                    Snackbar.make(recyclerView, (CharSequence) mDatabaseHelper, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ArrayList<String> dacestoalavatrices = new ArrayList<>();
-                            for(int i=0;i<TotalCategories.size();i++){
-                                Cursor c = mDatabaseHelper.GetBasketSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
-                                while(c.moveToNext()){
-                                    dacestoalavatrices.add(c.getString(0));
-                                    Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
-                                }
-                            }
-                            for(int is=0;is<TotalCategories.size();is++){
-                                //get the table name
-                                mDatabaseHelper.toLaundry(TotalCategories.get(is),dacestoalavatrices.get(0));
-                                Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
-                            }
-                            populateWM();
-                        }
-                    }).show();
                     break;
             }
         }
