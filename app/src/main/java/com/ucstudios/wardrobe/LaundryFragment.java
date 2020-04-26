@@ -347,11 +347,14 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                     notificationManager.notify(2, notification.build());
                                                     floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
                                                 }
+
                                                 else {
                                                     notification.setContentText("Lavatrice pronta!")
                                                             .setProgress(0, 0, false)
                                                             .setOngoing(false);
                                                     notificationManager.notify(2, notification.build());
+                                                    floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
+
                                                 }
                                             flagLaundry = false;
                                                 flagCancel = false;
