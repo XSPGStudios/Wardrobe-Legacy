@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -47,6 +48,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDatabaseHelper = new DatabaseHelper(this);
+        boolean InterrupedLaundry=false;
+
+        final Cursor data1 = mDatabaseHelper.getData();
+        final ArrayList<String> TotalCategories = new ArrayList<>();
+
+        while(data1.moveToNext()){
+
+            TotalCategories.add(data1.getString(0));
+        }
+
+        ArrayList<String> Finitodilavare = new ArrayList<>();
+        for(int i=0;i<TotalCategories.size();i++){
+            Cursor c = mDatabaseHelper.GetWashed(TotalCategories.get(i));
+            while(c.moveToNext()) {
+                Finitodilavare.add(c.getString(0));
+
+            }
+        }
+        for(int is=0;is<TotalCategories.size();is++){
+
+            for(int check=0;check<Finitodilavare.size();check++){
+                //get the table name
+                mDatabaseHelper.toLaundry(TotalCategories.get(is),Finitodilavare.get(check));
+                InterrupedLaundry=true;
+
+            }
+        }
+
+        if(InterrupedLaundry){
+            Toast.makeText(this,"You interrupted a process by closing the app!",Toast.LENGTH_SHORT).show();
+        }
+
+
+
         Cursor C = mDatabaseHelper.getData();
         int controlloiniziale=0;
         while (C.moveToNext()){
@@ -56,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FirstOpenDialog dialog = new FirstOpenDialog(this);
             dialog.show();
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
