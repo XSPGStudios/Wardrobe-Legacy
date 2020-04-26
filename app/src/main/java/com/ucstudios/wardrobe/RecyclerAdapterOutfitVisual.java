@@ -50,6 +50,7 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
             R.drawable.ic_boot2,
             R.drawable.ic_bowtie,
             R.drawable.ic_bra,
+            R.drawable.ic_cap,
             R.drawable.ic_coat,
             R.drawable.ic_dress,
             R.drawable.ic_glasses,
