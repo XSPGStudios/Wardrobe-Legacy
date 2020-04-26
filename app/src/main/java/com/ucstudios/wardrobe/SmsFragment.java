@@ -575,6 +575,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                 editCategoriesDialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
                     @Override
                     public void finish(String result1, int icon) {
+                        boolean space=false;
+                        for(int i=0;i<result1.length();i++){
+                            if (result1.charAt(i)==' '){
+                                   space=true;
+                            }
+                        }
+                        if(!space){
                         Cursor c = mDatabaseHelper.getData();
                         final ArrayList<String> UniquenessControl = new ArrayList<>();
                         int control=0;
@@ -595,6 +602,13 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                         else {
                             Toast.makeText(getContext(), "A category with this name already exists!", Toast.LENGTH_SHORT).show();
                         }
+                    }
+
+                        else{
+                            Toast.makeText(getContext(),"Space is not allowed in category name!",Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                 });
 

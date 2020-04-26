@@ -2,6 +2,7 @@ package com.ucstudios.wardrobe;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,8 @@ public class AdapterOutfitGrid extends BaseAdapter {
         imageView4 = convertView.findViewById(R.id.imageViewGridNumber4);
 
 
-
-
+/*
+        Log.i("mgs","ecco"+imagedata.size());
             if(imagedata.size()==1){
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(Utils.getImage(imagedata.get(position).get(0)));}
@@ -86,9 +87,9 @@ public class AdapterOutfitGrid extends BaseAdapter {
             imageView2.setImageBitmap(Utils.getImage(imagedata.get(position).get(1)));
             imageView3.setImageBitmap(Utils.getImage(imagedata.get(position).get(2)));
             imageView4.setImageBitmap(Utils.getImage(imagedata.get(position).get(3)));
-        }
+        }*/
        
-       //Build if to check imagedata actual presence
+       //Create custom adapter with gridview for outfitgrid
 
         return convertView;
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/layout_bg">
+    android:background="@drawable/layout_bgextra">
 
     <ImageView
         android:id="@+id/imageViewGridOu"
@@ -23,6 +23,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/layout_bg"
+        android:fontFamily="sans-serif-thin"
         android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
         android:textColor="#FFFFFF"
