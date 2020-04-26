@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
@@ -350,13 +351,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean WashingMachineActivated(String tablename, String SpecificItem){
+    public boolean WashingMachineActivated(String tablename){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("POS", 3);
-        db.update(tablename, cv,"names='"+SpecificItem+"'",null);
+        db.update(tablename, cv,"POS=2",null);
         return true;
     }
+
 
 
 
@@ -414,12 +416,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data1;
     }
 
-    public Cursor GetWMGIF(String tablename){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query1 = "SELECT * FROM "+tablename+" WHERE POS = 3";
-        Cursor data1 = db.rawQuery(query1, null);
-        return data1;
-    }
 
 
     public Cursor GetItemOutfit(String columname,String outfitname){
@@ -442,6 +438,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT ROWID FROM "+tablename+" WHERE names=+'"+Itemname+"'";
         Cursor data = db.rawQuery(query,null);
         return data;
+    }
+
+    public Cursor GetWashed(String tablename){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM "+tablename+" WHERE POS = 3";
+        Cursor data = db.rawQuery(query,null);
+        return data;
+
     }
 
     public void GetNullOutfitName(){

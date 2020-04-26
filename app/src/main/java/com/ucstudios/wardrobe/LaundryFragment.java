@@ -145,6 +145,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         flagCancel = true;
+
+
                     }
                 });
 
@@ -206,7 +208,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 ItemsInBasket.add(data.getString(0));
                 controlloempty++;
             }
-            Cursor dataGif = mDatabaseHelper.GetWMGIF(categories.get(i));
+            Cursor dataGif = mDatabaseHelper.GetWashed(categories.get(i));
             while(dataGif.moveToNext()){
                 listData.add(dataGif.getString(0));
                 controlloempty++;
@@ -294,7 +296,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /*final int position = positionGif;
+
                                 ArrayList<String> dacestoalavatrice = new ArrayList<>();
                                 for(int i=0;i<TotalCategories.size();i++) {
                                     Cursor c = mDatabaseHelper.GetWM(TotalCategories.get(i));
@@ -305,10 +307,9 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                 }
 
                                 for(int is=0;is<TotalCategories.size();is++) {
-                                    mDatabaseHelper.WashingMachineActivated(TotalCategories.get(is),dacestoalavatrice.get(0));
-                                    Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrice.get(0));
+                                    mDatabaseHelper.WashingMachineActivated(TotalCategories.get(is));
                                 }
-                                populateWM();*/
+                                populateWM();
 
                                 floatingActionButtonCancelButton.setVisibility(View.VISIBLE);
                                 c.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -375,6 +376,21 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                             .setOngoing(false);
                                                     notificationManager.notify(2, notification.build());
                                                     floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
+
+                                                    ArrayList<String> Finitodilavare = new ArrayList<>();
+                                                    for(int i=0;i<TotalCategories.size();i++){
+                                                        Cursor c = mDatabaseHelper.GetWashed(TotalCategories.get(i));
+                                                        while(c.moveToNext()) {
+                                                            Finitodilavare.add(c.getString(0));
+
+                                                        }
+                                                    }
+                                                    for(int is=0;is<TotalCategories.size();is++){
+
+                                                        for(int check=0;check<Finitodilavare.size();check++){
+                                                            //get the table name
+                                                            mDatabaseHelper.toLaundry(TotalCategories.get(is),Finitodilavare.get(check));
+                                                        }}
                                                 }
 
                                                 else {
@@ -383,20 +399,21 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                             .setOngoing(false);
                                                     notificationManager.notify(2, notification.build());
                                                     floatingActionButtonCancelButton.setVisibility(View.INVISIBLE);
-                                                    /*ArrayList<String> dacestoalavatrices = new ArrayList<>();
+                                                    ArrayList<String> Finitodilavare = new ArrayList<>();
                                                     for(int i=0;i<TotalCategories.size();i++){
-                                                        Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i),ItemsInBasket.get(position));
+                                                        Cursor c = mDatabaseHelper.GetWashed(TotalCategories.get(i));
                                                         while(c.moveToNext()) {
-                                                            dacestoalavatrices.add(c.getString(0));
-                                                            Log.i("msg :","Swiped "+ dacestoalavatrices.get(0));
+                                                            Finitodilavare.add(c.getString(0));
+
                                                         }
                                                     }
                                                     for(int is=0;is<TotalCategories.size();is++){
+
+                                                        for(int check=0;check<Finitodilavare.size();check++){
                                                         //get the table name
-                                                        mDatabaseHelper.toBasketmodif(TotalCategories.get(is),dacestoalavatrices.get(0));
-                                                        Log.i("msg","Passaggio a Lavatrice completato per "+dacestoalavatrices.get(0));
-                                                    }
-                                                    populateWM();*/
+                                                        mDatabaseHelper.toWardrobe(TotalCategories.get(is),Finitodilavare.get(check));
+                                                    }}
+
                                                 }
                                             flagLaundry = false;
                                                 flagCancel = false;
