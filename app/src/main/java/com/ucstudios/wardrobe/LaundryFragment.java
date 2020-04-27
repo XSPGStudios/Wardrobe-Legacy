@@ -71,7 +71,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private String mParam1;
     private String mParam2;
 
-
+    int controllodivider;
     private int pickedHour = 0;
     private int pickedMin = 0;
     private CountDownTimer mCountDownTimer;
@@ -169,6 +169,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         notificationManager = NotificationManagerCompat.from(getContext());
         imageViewempty = view.findViewById(R.id.imageViewlavatricevuota);
         textViewempty = view.findViewById(R.id.textViewlavavuota);
+        controllodivider=0;
         populateWM();
 
 
@@ -216,7 +217,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             Cursor dataGif = mDatabaseHelper.GetWashed(categories.get(i));
             while(dataGif.moveToNext()){
                 listData.add(dataGif.getString(0));
-                icondata.add(data.getInt(1));
+                icondata.add(dataGif.getInt(1));
 
                 controlloempty++;
             }
@@ -238,8 +239,12 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     recyclerAdapter = new RecyclerAdapter(listData,icondata);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(recyclerAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+    if(controllodivider==0){
+    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+    controllodivider=1;
+
+    }
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         boolean risultato = longClickListener.onLongClick(recyclerView);

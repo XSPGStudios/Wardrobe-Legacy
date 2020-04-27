@@ -312,7 +312,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         populateItems();
                     }
                     else if(itemdata.get(0)==3){
-                        Toast.makeText(getContext(),"Item is washing right now!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Item is getting washed right now!",Toast.LENGTH_SHORT).show();
                         populateItems();
                     }
                     else{
