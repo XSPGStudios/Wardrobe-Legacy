@@ -323,6 +323,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                         dacestoalavatrice.add(c.getString(0));
                                         Log.i("msg :","Swiped "+ dacestoalavatrice.get(i));
                                     }
+
                                 }
 
                                 for(int is=0;is<TotalCategories.size();is++) {

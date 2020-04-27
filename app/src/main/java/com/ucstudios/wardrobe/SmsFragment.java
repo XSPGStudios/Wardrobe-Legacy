@@ -111,7 +111,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
         FloatingActionButton ActionButton = view.findViewById(R.id.floating_action_button);
-        mRecyclerView = view.findViewById(R.id.spezzaossa4);
+
 
         ActionButton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
@@ -146,6 +146,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                 return SmsFragment.super.onOptionsItemSelected(item);
             }
         });
+        mRecyclerView = view.findViewById(R.id.spezzaossa4);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
         Spinner spinner = view.findViewById(R.id.spinner_nav);
@@ -246,8 +247,10 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             controllodivider=1;
+
+
         }
-        boolean risultato = longClickListener.onLongClick(mRecyclerView);
+       // boolean risultato = longClickListener.onLongClick(mRecyclerView);
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(recyclerAdapterCategories);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -270,7 +273,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+   /* private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -278,7 +281,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
             ClipData merda = ClipData.newPlainText("", "");
             View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
-            v.startDrag(merda, myShadowBuilder, v, 0);
+          //  v.startDrag(merda, myShadowBuilder, v, 0);
             v.setOnDragListener(new View.OnDragListener() {
                 @Override
                 public boolean onDrag(View v, DragEvent event) {
@@ -289,7 +292,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             return true;
         }
 
-    };
+    };*/
 
     View.OnDragListener dragListener = new View.OnDragListener() {
         @Override
@@ -310,7 +313,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         }
     };
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 

@@ -136,6 +136,7 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
                  holder.positionView.setImageResource(R.drawable.ic_wm);
                  break;
              case 3:
+                 holder.positionView.setImageResource(R.drawable.ic_wmtimer);
                  break;
 
 
