@@ -443,6 +443,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                             flagLaundry = false;
                                                 flagCancel = false;
                                                     flagorario[0] = true; //se passa la "trincea" di if allora va avanti con il timer
+
                                     }
                                     }).start();
                                     dialog.dismiss();
@@ -513,6 +514,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
+                               try{
                        ArrayList<String> dacestoalavatrice = new ArrayList<>();
                        for (int i = 0; i < TotalCategories.size(); i++) {
                            Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i), ItemsInBasket.get(position));
@@ -525,8 +527,10 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                            //get the table name
                            mDatabaseHelper.toWardrobe(TotalCategories.get(is), dacestoalavatrice.get(0));
                            Log.i("msg", "Passaggio a Lavatrice completato per " + dacestoalavatrice.get(0));
-                       }
-                       populateWM();
+                       }} catch (Exception e) {
+                                   populateWM();
+                               }
+
                            }
                        });
                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

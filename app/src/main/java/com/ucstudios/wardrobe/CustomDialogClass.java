@@ -133,7 +133,7 @@ public class CustomDialogClass extends Dialog implements View.OnClickListener {
 
 
                     if(String.valueOf(editText.getText()).equals("")){
-                        Toast.makeText(getContext(),"POLIZIA NOME!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"You must insert a name first!",Toast.LENGTH_SHORT).show();
                     }
                     else{
                         mAdapterResult.finish(String.valueOf(editText.getText()));
