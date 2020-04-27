@@ -283,10 +283,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 public void onTimeSet(android.widget.TimePicker view,
                                       final int hourOfDay, final int minute) {
                     final Calendar c = Calendar.getInstance();
-
+                    boolean flagorario = true;
                     if ((hourOfDay == c.get(Calendar.HOUR_OF_DAY))) {
                         if (minute <= c.get(Calendar.MINUTE)) {
                             Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
+                            flagorario = false;
                         }
                     }
 
@@ -294,11 +295,17 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         if (hourOfDay <= c.get(Calendar.HOUR_OF_DAY)) {
                             if (c.get(Calendar.HOUR_OF_DAY) <= 22) {
                                 Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
+                                flagorario = false;
                             }
                         }
                     }
 
-                    if (flagLaundryElementi){
+                    if (hourOfDay < c.get(Calendar.MINUTE)) {
+                        Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
+                        flagorario = false;
+                    }
+
+                    if (flagLaundryElementi && flagorario){
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
@@ -379,7 +386,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                         notification.setChannelId(channelId);
                                     }
 
-
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -456,7 +462,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                     }
 
                     else {
-                        Toast.makeText(getContext(), "The laundry is empty! Try to add some clothes", Toast.LENGTH_SHORT).show();
+                        if (!flagLaundryElementi)
+                            Toast.makeText(getContext(), "The laundry is empty! Try to add some clothes", Toast.LENGTH_SHORT).show();
                     }
                 }
             };

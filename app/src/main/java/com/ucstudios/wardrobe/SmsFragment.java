@@ -132,6 +132,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                                 .setMessage("Manage your clothes easily and stay on top of your laundry!" )
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+
                                     }
                                 })
                                 .show();
