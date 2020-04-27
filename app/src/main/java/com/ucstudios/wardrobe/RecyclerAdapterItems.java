@@ -146,10 +146,10 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         }
         /*Crea varibile GifImageView che contiene appunto la gif,
         dopodichè passala all'holder gif, se è uguale a 3, allora starta la gif*/
-        /*if(ppos[position]==3){
-            holder.imageView2.setImageResource();
+        if(ppos[position]==3){
+            holder.imageView2.setImageResource(R.drawable.ic_wmtimer);
             holder.imageView2.setVisibility(View.VISIBLE);
-        }*/
+        }
     }
 
 
