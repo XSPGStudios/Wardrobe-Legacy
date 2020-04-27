@@ -488,6 +488,22 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
             switch (direction) {
                 case ItemTouchHelper.RIGHT:
                    if (!flagLaundry) {
+                       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                       builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                           @Override
+                           public void onDismiss(DialogInterface dialog) {
+
+                           }
+                       });
+                       builder.setTitle("Are you sure?");
+                       final TextView sex = new TextView(getActivity());
+                       sex.setText("Are you sure you want to pass the item in the wardrobe?");
+                       sex.setGravity(Gravity.CENTER);
+
+                       builder.setView(sex);
+                       builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
                        ArrayList<String> dacestoalavatrice = new ArrayList<>();
                        for (int i = 0; i < TotalCategories.size(); i++) {
                            Cursor c = mDatabaseHelper.GetWMSpecific(TotalCategories.get(i), ItemsInBasket.get(position));
@@ -502,6 +518,16 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                            Log.i("msg", "Passaggio a Lavatrice completato per " + dacestoalavatrice.get(0));
                        }
                        populateWM();
+                           }
+                       });
+                       builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               dialog.cancel();
+                               populateWM();
+                           }
+                       });
+                       builder.show();
                    }
                    else {
                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

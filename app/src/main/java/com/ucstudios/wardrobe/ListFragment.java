@@ -239,8 +239,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
         @Override
         public boolean onLongClick(View v) {
-
-
             ClipData merda = ClipData.newPlainText("", "");
             View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
             v.startDrag(merda, myShadowBuilder, v, 0);
@@ -319,7 +317,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
                             mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
                             populateItems();
-                            Snackbar.make(mRecyclerView, mMainActivity.Name, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
+                            Snackbar.make(mRecyclerView, mMainActivity.Name, 2000).setAction("\n" +
+                                    "Put item back in the wardrobe", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position+1);
@@ -477,7 +476,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void activation(int a) {
                             if (a == 1) {
-
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
@@ -524,9 +522,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         }
                     });
                 }
-
                 else {
-                    Toast.makeText(getContext(), "Permissions were denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "The permissions were requested", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
