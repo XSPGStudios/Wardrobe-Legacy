@@ -283,11 +283,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                 public void onTimeSet(android.widget.TimePicker view,
                                       final int hourOfDay, final int minute) {
                     final Calendar c = Calendar.getInstance();
-                    boolean flagorario = true;
+                    final boolean[] flagorario = {true}; //non è corretta come roba
                     if ((hourOfDay == c.get(Calendar.HOUR_OF_DAY))) {
                         if (minute <= c.get(Calendar.MINUTE)) {
                             Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
-                            flagorario = false;
+                            flagorario[0]= false;
                         }
                     }
 
@@ -295,17 +295,17 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         if (hourOfDay <= c.get(Calendar.HOUR_OF_DAY)) {
                             if (c.get(Calendar.HOUR_OF_DAY) <= 22) {
                                 Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
-                                flagorario = false;
+                                flagorario[0] = false;
                             }
                         }
                     }
 
-                    if (hourOfDay < c.get(Calendar.MINUTE)) {
+                    if (hourOfDay < c.get(Calendar.HOUR_OF_DAY)) { //che flauto
                         Toast.makeText(getContext(), "Incorrect time! ", Toast.LENGTH_SHORT).show();
-                        flagorario = false;
+                        flagorario[0] = false;
                     }
 
-                    if (flagLaundryElementi && flagorario){
+                    if (flagLaundryElementi && flagorario[0]){
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
@@ -442,7 +442,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                                 }
                                             flagLaundry = false;
                                                 flagCancel = false;
-                                            }
+                                                    flagorario[0] = true; //se passa la "trincea" di if allora va avanti con il timer
+                                    }
                                     }).start();
                                     dialog.dismiss();
                                 }
