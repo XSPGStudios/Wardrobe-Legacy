@@ -26,21 +26,33 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.383" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="45dp"
+            android:layout_height="34dp"
+            android:tint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.573"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.426"
+            app:srcCompat="@drawable/ic_calendariofuturo" />
+
         <TextView
             android:id="@+id/textViewTwitter"
-            android:layout_width="220dp"
-            android:layout_height="100dp"
+            android:layout_width="307dp"
+            android:layout_height="78dp"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
-            android:text="As we said, this is a beta, we are working on the future updates for the alpha."
+            android:text="A calendar to plan your outfits will be available soon, we are developing it right now as you're reading this."
             android:textSize="18sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.541" />
+            app:layout_constraintVertical_bias="0.523" />
 
         <TextView
             android:id="@+id/textViewTwitterLink"
@@ -59,7 +71,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.611" />
+            app:layout_constraintVertical_bias="0.603" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
