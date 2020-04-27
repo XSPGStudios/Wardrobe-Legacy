@@ -243,7 +243,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                     });
                     builder.setTitle("Are you sure?");
                     final TextView sex = new TextView(getActivity());
-                    sex.setText("Are you sure you want to pass the item in the wardrobe?");
+                    sex.setText("Are you sure you want to put this in the closet?");
                     sex.setGravity(Gravity.CENTER);
 
                     builder.setView(sex);

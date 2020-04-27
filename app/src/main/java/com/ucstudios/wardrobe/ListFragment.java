@@ -317,8 +317,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
                             mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
                             populateItems();
-                            Snackbar.make(mRecyclerView, mMainActivity.Name, 2000).setAction("\n" +
-                                    "Put item back in the wardrobe", new View.OnClickListener() {
+                            Snackbar.make(mRecyclerView, mMainActivity.Name, 2000).setAction(
+                                    "Put item back", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position+1);

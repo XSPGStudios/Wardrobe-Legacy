@@ -1,10 +1,13 @@
 package com.ucstudios.wardrobe;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -223,9 +227,32 @@ public class ItemVisualDialog extends Dialog implements View.OnClickListener {
                     break;
 
                 case R.id.button4:
-                    mDatabaseHelper.delete4(table,itemdatas[0]);
-                    mDatabaseHelper.DeleteIteminOutfitafteredit(table,olditem);
-                    dismiss();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+
+                        }
+                    });
+                    builder.setTitle("Are you sure?");
+                    final TextView sex = new TextView(getContext());
+                    sex.setText("Sure about deleting this?");
+                    sex.setGravity(Gravity.CENTER);
+
+
+                    builder.setView(sex);
+                    builder.setPositiveButton("OK", new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mDatabaseHelper.delete4(table,itemdatas[0]);
+                            mDatabaseHelper.DeleteIteminOutfitafteredit(table,olditem);
+                            dismiss();
+                        }
+                    });
+                    builder.show();
+
+
                     break;
 
 
