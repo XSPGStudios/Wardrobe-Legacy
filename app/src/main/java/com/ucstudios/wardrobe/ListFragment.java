@@ -523,7 +523,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     });
                 }
                 else {
-                    Toast.makeText(getContext(), "The permissions were requested", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "The permissions were requested", Toast.LENGTH_LONG).show();
                 }
 
                 break;
