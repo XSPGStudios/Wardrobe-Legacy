@@ -129,12 +129,14 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
 
         final ArrayList<String> listData = new ArrayList<>();
+        final ArrayList<Integer> imagedata = new ArrayList<>();
 
         for(int i=0; i<categories.size();i++) {
             Cursor data = mDatabaseHelper2.GetBasket(categories.get(i));
             while(data.moveToNext()){
                 listData.add(data.getString(0));
                ItemsInBasket.add(data.getString(0));
+               imagedata.add(data.getInt(1));
                 controlloperempty++;
             }
         }
@@ -151,7 +153,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
-        recyclerAdapter = new RecyclerAdapter(listData);
+        recyclerAdapter = new RecyclerAdapter(listData,imagedata);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);

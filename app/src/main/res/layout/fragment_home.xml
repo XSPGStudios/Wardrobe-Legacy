@@ -18,14 +18,13 @@
             android:id="@+id/twitter"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:src="@drawable/twitter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.494"
-            android:src="@drawable/twitter"
-            />
+            app:layout_constraintVertical_bias="0.383" />
 
         <TextView
             android:id="@+id/textViewTwitter"
@@ -41,26 +40,26 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.652" />
+            app:layout_constraintVertical_bias="0.541" />
 
         <TextView
             android:id="@+id/textViewTwitterLink"
             android:layout_width="220dp"
             android:layout_height="100dp"
+            android:clickable="true"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
+            android:onClick="onClick"
             android:text="follow us on twitter!"
             android:textColor="@color/bluetattico"
             android:textSize="18sp"
-            android:onClick="onClick"
-            android:clickable="true"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.727" />
+            app:layout_constraintVertical_bias="0.611" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

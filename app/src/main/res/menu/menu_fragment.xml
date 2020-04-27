@@ -7,27 +7,15 @@
         android:title="Info"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/item2"
-        android:title="Feedback"
-        app:showAsAction="never"/>
+
 
     <item
-        android:id="@+id/item3"
+        android:id="@+id/item2"
         android:title="Settings"
         app:showAsAction="never">
 
-    <menu>
 
-            <item
-                android:id="@+id/subitem1"
-                android:title="Themes" />
 
-            <item
-                android:id="@+id/subitem2"
-                android:title="Preferences" />
-
-        </menu>
 
     </item>
 

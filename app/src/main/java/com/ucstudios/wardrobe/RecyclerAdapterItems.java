@@ -82,12 +82,6 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
             R.drawable.ic_zara,
 
 
-
-
-
-
-
-
     };
 
     private Integer[] iconwm ={

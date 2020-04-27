@@ -202,17 +202,22 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
 
         final ArrayList<String> listData = new ArrayList<>();
+        final  ArrayList<Integer> icondata = new ArrayList<>();
+
 
         for(int i=0; i<categories.size();i++) {
             Cursor data = mDatabaseHelper.GetWM(categories.get(i));
             while(data.moveToNext()){
                 listData.add(data.getString(0));
                 ItemsInBasket.add(data.getString(0));
+                icondata.add(data.getInt(1));
                 controlloempty++;
             }
             Cursor dataGif = mDatabaseHelper.GetWashed(categories.get(i));
             while(dataGif.moveToNext()){
                 listData.add(dataGif.getString(0));
+                icondata.add(data.getInt(1));
+
                 controlloempty++;
             }
         }
@@ -230,7 +235,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-    recyclerAdapter = new RecyclerAdapter(listData);
+    recyclerAdapter = new RecyclerAdapter(listData,icondata);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);

@@ -100,7 +100,7 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
         dialog = new EditCategoriesDialog(mContext,1);
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
-        RecyclerAdapterCategories.ViewHolder viewHolder = new RecyclerAdapterCategories.ViewHolder(view);
+        RecyclerAdapterCategories.ViewHolder viewHolder = new ViewHolder(view);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +124,12 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
     }
 
     @Override
+    public void onItemDismiss(int position) {
+        notifyItemRemoved(position);
+
+    }
+
+    @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Log.i("position1","ecco"+fromPosition);
         Log.i("position2","ecco"+toPosition);
@@ -141,15 +147,11 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
         return true;
     }
 
-    @Override
-    public void onItemDismiss(int position) {
-        notifyItemRemoved(position);
 
-    }
 
     public void setClickListener(View.OnClickListener callback){mClickListener = callback;}
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
         ImageView imageView2;  //chiama gli hodler
@@ -162,7 +164,6 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
             textView = itemView.findViewById(R.id.textView4);
 
 
-            //inizializza gli holder
 
 
 

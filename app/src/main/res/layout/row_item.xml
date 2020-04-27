@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#00E2E2E2"
+            android:tint="#FFFFFF"
             app:srcCompat="@drawable/ic_nike" />
 
     </LinearLayout>

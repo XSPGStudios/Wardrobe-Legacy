@@ -103,11 +103,11 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        controllodivider=0;
 
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
         FloatingActionButton ActionButton = view.findViewById(R.id.floating_action_button);
@@ -116,7 +116,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         ActionButton.setOnClickListener(this);
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();
-        controllodivider=0;
+
         imageViewempty = view.findViewById(R.id.imageView6);
         textViewempty = view.findViewById(R.id.textView5);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
@@ -129,9 +129,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
                         new AlertDialog.Builder(getContext())
                                 .setTitle("Wardrobe")
-                                .setMessage("With wardrobe you can manage your closet from distance, and have it all in your pocket" +
-                                        " You can create categories to divide your items, and with the laundry function you can set a time for your clothes, and know when " +
-                                        "they are ready for use, enjoy!" )
+                                .setMessage("Manage your clothes easily and stay on top of your laundry!" )
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -139,17 +137,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
                                 .show();
                         break;
                     case R.id.item2 :
-
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                        intent.setData(Uri.parse("http://www.github.com"));
-                        startActivity(intent);
-                        break;
-                    case R.id.subitem1:
-                        Toast.makeText(getContext(), "For now we are in beta, stay tuned for future updates!", Toast.LENGTH_SHORT).show();
-                    case R.id.subitem2 :
-                        Toast.makeText(getContext(), "For now we are in beta, stay tuned for future updates!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "We are developing right now! Stay tuned for updates.", Toast.LENGTH_SHORT).show();
+                    ;
                     break;
 
 
@@ -258,12 +247,12 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             controllodivider=1;
         }
-
+        boolean risultato = longClickListener.onLongClick(mRecyclerView);
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(recyclerAdapterCategories);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mRecyclerView);
-        boolean risultato = longClickListener.onLongClick(mRecyclerView);
+
 
         recyclerAdapterCategories.setClickListener(new View.OnClickListener() {
             @Override
@@ -281,7 +270,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {

@@ -47,7 +47,7 @@
         android:layout_width="61dp"
         android:layout_height="24dp"
         android:layout_marginTop="308dp"
-        android:background="@drawable/layoutbg2orange"
+        android:background="@drawable/layout_bgextra"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center_horizontal|center_vertical"
         android:text="TextView"

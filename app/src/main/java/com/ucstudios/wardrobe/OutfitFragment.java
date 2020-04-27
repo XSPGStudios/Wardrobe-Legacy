@@ -633,13 +633,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                }
                 break;
 
-            case R.id.gridbutton1:
 
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.container,new OutfitGridFragment());
-                transaction.commit();
-
-break;
         }
 
 

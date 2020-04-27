@@ -235,7 +235,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
 
-    View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -290,17 +290,44 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             tac = position;
 
             switch (direction) {
-                case ItemTouchHelper.RIGHT:
-                    mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
-                    populateItems();
-                    Snackbar.make(mRecyclerView, mMainActivity.Name, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
+
+
+                case ItemTouchHelper.RIGHT:{
+                    final Cursor C = mDatabaseHelper1.GetItemData(position+1,mMainActivity.Name);
+                    final ArrayList<Integer> itemdata = new ArrayList<>();
+
+
+                    while (C.moveToNext()){
+                        itemdata.add(C.getInt(2));
+
+
+                    }
+
+                    if(itemdata.get(0)==1){
+                        Toast.makeText(getContext(),"Item is already in the basket!",Toast.LENGTH_SHORT).show();
+                        populateItems();
+                    }
+                    else if(itemdata.get(0)==2){
+                        Toast.makeText(getContext(),"Item is in the laundry!",Toast.LENGTH_SHORT).show();
+                        populateItems();
+                    }
+                    else if(itemdata.get(0)==3){
+                        Toast.makeText(getContext(),"Item is washing right now!",Toast.LENGTH_SHORT).show();
+                        populateItems();
+                    }
+                    else{
+
+                            mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
+                            populateItems();
+                            Snackbar.make(mRecyclerView, mMainActivity.Name, Snackbar.LENGTH_LONG).setAction("Rimetti item nel wardrobe", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position+1);
                                     populateItems();
                                 }
                             }).show();
-            break;
+                    }
+            break;}
 
 
 
@@ -315,6 +342,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         itemdata.add(C.getString(3));
                         itemdata.add(C.getString(4));
                         itemdata.add(String.valueOf(C.getInt(5)));
+                        itemdata.add(String.valueOf(C.getInt(2)));
                         tecca.add(C.getBlob(7));
 
                     }
