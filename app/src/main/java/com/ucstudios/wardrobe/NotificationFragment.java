@@ -56,6 +56,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     ArrayList<String> ItemsInBasket = new ArrayList<>();
     ImageView imageView;
     TextView textView;
+    int controllodivider;
 
 
     public NotificationFragment() {
@@ -91,6 +92,8 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        controllodivider=0;
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
             FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton8);
                 floatingActionButton.setOnClickListener(this);
@@ -156,8 +159,11 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
         recyclerAdapter = new RecyclerAdapter(listData,imagedata);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerAdapter);
+        if(controllodivider==0){
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        controllodivider=1;
+        }
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         boolean risultato = longClickListener.onLongClick(recyclerView);
@@ -238,7 +244,7 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-
+                        populateBasket();
                         }
                     });
                     builder.setTitle("Are you sure?");

@@ -527,7 +527,9 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                            //get the table name
                            mDatabaseHelper.toWardrobe(TotalCategories.get(is), dacestoalavatrice.get(0));
                            Log.i("msg", "Passaggio a Lavatrice completato per " + dacestoalavatrice.get(0));
-                       }} catch (Exception e) {
+                       }
+                               populateWM();
+                               } catch (Exception e) {
                                    populateWM();
                                }
 
@@ -565,6 +567,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                        });
                        builder.show();
                    }
+                   populateWM();
                     break;
                 case ItemTouchHelper.LEFT:
                     if (!flagLaundry) {
