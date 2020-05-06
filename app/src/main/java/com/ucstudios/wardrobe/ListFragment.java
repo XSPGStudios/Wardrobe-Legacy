@@ -264,9 +264,15 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             emptylist.setVisibility(View.GONE);
             emptylisttext.setVisibility(View.GONE);
         }
+        int tecnicissimo=0;
+        final Cursor iconanecessaria = mDatabaseHelper1.getCategoryIcon(mMainActivity.Name);
+        while (iconanecessaria.moveToNext()){
+            tecnicissimo=iconanecessaria.getInt(0);
+
+        }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech,mMainActivity.Name);
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech,mMainActivity.Name,tecnicissimo);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         if(controllodivider==0){

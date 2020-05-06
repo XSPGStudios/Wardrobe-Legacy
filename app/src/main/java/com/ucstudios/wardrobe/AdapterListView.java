@@ -20,16 +20,7 @@ public class AdapterListView extends ArrayAdapter<String> {
     private Context mContext;
     int mResource;
 
-    CustomEditDialog dialog = new CustomEditDialog(getContext());
-    MainActivity mainActivity;
 
-    private Integer[] Icons = {
-            R.drawable.ic_nike,
-            R.drawable.ic_adidas,
-            R.drawable.ic_alexmc,
-
-
-    };
 
 
 

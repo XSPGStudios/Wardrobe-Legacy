@@ -27,6 +27,7 @@ public class CustomIconAdapterItems extends BaseAdapter {
 
     private static final String TAG = "CustomIconAdapterItems";
     private Integer[] Icons = {
+            R.drawable.nobrand,
             R.drawable.ic_nike,
             R.drawable.ic_adidas,
             R.drawable.ic_aber,

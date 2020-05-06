@@ -25,6 +25,7 @@ import java.util.Objects;
 public class ItemVisualDialog extends Dialog implements View.OnClickListener {
 
     private Integer[] Icons = {
+            R.drawable.nobrand,
             R.drawable.ic_nike,
             R.drawable.ic_adidas,
             R.drawable.ic_aber,
