@@ -97,7 +97,7 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mDatabaseHelper=new DatabaseHelper(mContext);
-        dialog = new EditCategoriesDialog(mContext,1);
+
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
         RecyclerAdapterCategories.ViewHolder viewHolder = new ViewHolder(view);

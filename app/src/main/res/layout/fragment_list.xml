@@ -38,9 +38,21 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <ImageView
+            android:id="@+id/iconattop"
+            android:layout_width="32dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_backpack"
+            android:tint="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/textView"
-            android:layout_width="86dp"
+            android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:gravity="center_horizontal"
             android:text="Wardrobe"

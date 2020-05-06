@@ -128,6 +128,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return  data;
 
     }
+
+    public Cursor getCategoryIcon(String category){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT IC FROM " + TABLE_NAME + " WHERE name='"+category+"'";
+        Cursor data = db.rawQuery(query,null);
+        return data;
+
+
+    }
     public Cursor getData1(String sat){
         SQLiteDatabase db =this.getWritableDatabase();
         String query1 = "SELECT * FROM " + sat;

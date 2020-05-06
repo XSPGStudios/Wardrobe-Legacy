@@ -317,8 +317,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-
-            return false;
+            populateButtons();
+            return true;
 
         }
 
@@ -338,12 +338,18 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
                 case ItemTouchHelper.LEFT:
                 {final ArrayList<String> listData = new ArrayList<>();
+                int iconasporca=0;
                     final Cursor c = mDatabaseHelper.getData();
                     while (c.moveToNext()){
                         listData.add(c.getString(0));
                     }
+                    final  Cursor cs= mDatabaseHelper.getCategoryIcon(listData.get(position));
+                        while(cs.moveToNext()){
+                            iconasporca=cs.getInt(0);
+                        }
 
-                    final EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1);
+
+                    final EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1,listData.get(position),iconasporca);
                     dialog.show();
                     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
@@ -421,7 +427,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
                                     OutfitColumnNameChaneger(ketamina2, sugone2);
                                     Replace("categories_table", result1, position + 1);
-                                    TableRenamer(listData.get(position), result1);
+                                    if(!listData.get(position).equals(result1)){
+                                    TableRenamer(listData.get(position), result1);}
                                     Log.i("msg", "Modified " + listData.get(position) + " to " + result1);
                                     dialog.dismiss();
                                     populateButtons();
@@ -436,12 +443,17 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
                     case ItemTouchHelper.RIGHT:
                         final ArrayList<String> listData = new ArrayList<>();
+                        int iconatecnica = 0;
                         final Cursor c = mDatabaseHelper.getData();
                         while (c.moveToNext()){
                             listData.add(c.getString(0));
                         }
+                        final Cursor ca = mDatabaseHelper.getCategoryIcon(listData.get(position));
+                        while(ca.moveToNext()){
+                            iconatecnica=ca.getInt(0);
+                        }
 
-                        final EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1);
+                        final EditCategoriesDialog dialog = new EditCategoriesDialog(getContext(),1,listData.get(position),iconatecnica);
                         dialog.show();
                         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
@@ -519,7 +531,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
                                         OutfitColumnNameChaneger(ketamina2, sugone2);
                                         Replace("categories_table", result1, position + 1);
-                                        TableRenamer(listData.get(position), result1);
+                                        if(!listData.get(position).equals(result1)){
+                                        TableRenamer(listData.get(position), result1);}
                                         Log.i("msg", "Modified " + listData.get(position) + " to " + result1);
                                         dialog.dismiss();
                                         populateButtons();
@@ -564,7 +577,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.floating_action_button:
 
-                final EditCategoriesDialog editCategoriesDialog = new EditCategoriesDialog(getContext(),0);
+                final EditCategoriesDialog editCategoriesDialog = new EditCategoriesDialog(getContext(),0,"",0);
                 editCategoriesDialog.show();
                 editCategoriesDialog.setDialogResult(new EditCategoriesDialog.OnMyDialogResult4() {
                     @Override
