@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         globaladMob = ((GlobalBoolean)this.getApplicationContext());
-
         if(!globaladMob.getTimerAdMob()){
 
         new CountDownTimer(180000, 1000) {

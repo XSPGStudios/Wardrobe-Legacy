@@ -131,21 +131,28 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Log.i("position1","ecco"+fromPosition);
-        Log.i("position2","ecco"+toPosition);
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(Arrays.asList(items), i, i + 1);
+        try {
+            Log.i("position1", "ecco" + fromPosition);
+            Log.i("position2", "ecco" + toPosition);
+
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(Arrays.asList(items), i, i + 1);
+                }
+            } else { //committo almeno così salvo tutto
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(Arrays.asList(items), i, i - 1);
+                }
             }
-        } else { //committo almeno così salvo tutto
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(Arrays.asList(items), i, i - 1);
-            }
+            notifyItemMoved(fromPosition, toPosition);
+            mDatabaseHelper.SwapRowsCategories(fromPosition + 1, toPosition + 1);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        notifyItemMoved(fromPosition, toPosition);
-        mDatabaseHelper.SwapRowsCategories(fromPosition+1,toPosition+1);
-        return true;
     }
+
+
 
 
 

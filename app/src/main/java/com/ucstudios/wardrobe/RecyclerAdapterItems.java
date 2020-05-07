@@ -236,6 +236,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        try{
         Log.i("position1","ecco"+fromPosition);
         Log.i("position2","ecco"+toPosition);
         if (fromPosition < toPosition) {
@@ -252,7 +253,14 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         mDatabaseHelper.SwapRows(fromPosition+1,toPosition+1,table);
 
         return true;
+    }catch (Exception e){
+            return false;
+        }
+
     }
+
+
+
 
 
 
