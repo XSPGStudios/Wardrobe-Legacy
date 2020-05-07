@@ -45,6 +45,9 @@
 
         </activity>
         <receiver android:name=".NotificationReceiver"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5285115076303860~1400005831"/>
     </application>
 
 </manifest>

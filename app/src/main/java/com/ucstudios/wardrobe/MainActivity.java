@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BottomNavigationView bottomNavigation;
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;
+    private InterstitialAd mInterstitialAd;
 
 
 
@@ -48,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         mDatabaseHelper = new DatabaseHelper(this);
         boolean InterrupedLaundry=false;
+
+
 
         final Cursor data1 = mDatabaseHelper.getData();
         final ArrayList<String> TotalCategories = new ArrayList<>();
@@ -100,7 +109,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bottomNavigation.setSelectedItemId(R.id.navigation_sms);
 
         startService(new Intent(this, KillNotificationsService.class));
-
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            } //master?
+        });
+        mInterstitialAd = new InterstitialAd(this); //vediamo se qualche bugggi l'ha già fatto
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
@@ -108,6 +124,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return onOptionsItemSelected(item);
     }
 
+    public void adClock ()  {
+        int progress = 0;
+        while (progress <= 5 ) {
+            SystemClock.sleep(1000);
+            Log.i("", " " + progress); //thx
+            progress++;
+        }
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
 
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -117,8 +144,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
-
 
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -131,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     switch (item.getItemId()) {
                         case R.id.navigation_home:
                             openFragment(HomeFragment.newInstance("", ""));
+
                             return true;
                         case R.id.navigation_sms:
                             openFragment(SmsFragment.newInstance("", ""));

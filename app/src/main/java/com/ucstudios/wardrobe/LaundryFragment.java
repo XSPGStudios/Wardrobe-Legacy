@@ -43,6 +43,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -70,7 +73,6 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
 
     private String mParam1;
     private String mParam2;
-
     int controllodivider;
     private int pickedHour = 0;
     private int pickedMin = 0;
@@ -85,6 +87,8 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
     private boolean flagLaundryElementi = true;
     FloatingActionButton floatingActionButtonCancelButton;
     private int positionGif = 0;
+    private InterstitialAd mInterstitialAd;
+
 
     ImageView imageViewempty;
     TextView textViewempty;
@@ -171,8 +175,9 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         textViewempty = view.findViewById(R.id.textViewlavavuota);
         controllodivider=0;
         populateWM();
-
-
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         return view;
     }
@@ -322,7 +327,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                if (mInterstitialAd.isLoaded()) {
+                                    mInterstitialAd.show();
+                                } else {
+                                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                                }
                                 ArrayList<String> dacestoalavatrice = new ArrayList<>();
                                 for(int i=0;i<TotalCategories.size();i++) {
                                     Cursor c = mDatabaseHelper.GetWM(TotalCategories.get(i));
