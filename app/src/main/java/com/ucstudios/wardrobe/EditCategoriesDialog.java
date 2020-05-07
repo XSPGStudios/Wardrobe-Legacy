@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -86,13 +88,17 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
             R.drawable.ic_winterhat,
     };
     ImageView imageView;
+    String categoryname;
+    int iconatecnica;
 
 
     CustomIconPickerDialog dialog = new CustomIconPickerDialog(getContext());
 
-    public EditCategoriesDialog(Context context,int stato){
+    public EditCategoriesDialog(Context context,int stato,String categoryname,int iconatecnica){
         super(context);
         this.stato=stato;
+        this.categoryname=categoryname;
+        this.iconatecnica=iconatecnica;
 
 
     }
@@ -108,6 +114,9 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
 
         button = findViewById(R.id.button);
         buttonCancel = findViewById(R.id.textView3);
+        SpannableString content = new SpannableString("DELETE CATEGORY");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        buttonCancel.setText(content);
         iconset = findViewById(R.id.imageButton);
         iconset.setOnClickListener(this);
         editText = findViewById(R.id.editText);
@@ -119,7 +128,8 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
         }
         mDatabasehelper1 = new DatabaseHelper(getContext());
         if(stato==1){
-
+            editText.setText(categoryname);
+            imageView.setImageResource(Icons[iconatecnica]);
         }
 
     }

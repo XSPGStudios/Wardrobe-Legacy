@@ -1,6 +1,7 @@
 package com.ucstudios.wardrobe;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,10 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     Integer[] ppos;
     Integer[] icons;
     List<byte[]>tech;
+    public int sex;
+    MainActivity mainActivity;
     private Integer[] Icons = {
+            R.drawable.nobrand,
             R.drawable.ic_nike,
             R.drawable.ic_adidas,
             R.drawable.ic_aber,
@@ -84,6 +88,62 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
     };
 
+    private Integer[] IconsNobrand = {
+            R.drawable.ic_sweater,
+            R.drawable.ic_jeans,
+            R.drawable.ic_hoodie,
+            R.drawable.ic_shoes,
+            R.drawable.ic_backpack,
+            R.drawable.ic_denim,
+            R.drawable.ic_shirt,
+            R.drawable.ic_watch,
+            R.drawable.ic_basketballjersey,
+            R.drawable.ic_bathrobe,
+            R.drawable.ic_belt,
+            R.drawable.ic_blouse,
+            R.drawable.ic_boot,
+            R.drawable.ic_boot2,
+            R.drawable.ic_bowtie,
+            R.drawable.ic_bra,
+            R.drawable.ic_cap,
+            R.drawable.ic_coat,
+            R.drawable.ic_dress,
+            R.drawable.ic_glasses,
+            R.drawable.ic_gloves,
+            R.drawable.ic_bag,
+            R.drawable.ic_hat,
+            R.drawable.ic_heels,
+            R.drawable.ic_jacket,
+            R.drawable.ic_pimuno,
+            R.drawable.ic_jacket2,
+            R.drawable.ic_necklace,
+            R.drawable.ic_salopette,
+            R.drawable.ic_mutandefemmina,
+            R.drawable.ic_cargo,
+            R.drawable.ic_polo,
+            R.drawable.ic_24h,
+            R.drawable.ic_purse,
+            R.drawable.ic_scarf,
+            R.drawable.ic_tee,
+            R.drawable.ic_top,
+            R.drawable.ic_mocasso,
+            R.drawable.ic_shorts,
+            R.drawable.ic_papere,
+            R.drawable.ic_skirt,
+            R.drawable.ic_slippers,
+            R.drawable.ic_socks,
+            R.drawable.ic_tie,
+            R.drawable.ic_trench,
+            R.drawable.ic_underwear,
+            R.drawable.ic_vest,
+            R.drawable.ic_wallet,
+            R.drawable.ic_winterhat,
+
+
+
+
+    };
+
     private Integer[] iconwm ={
             R.drawable.ic_wm,
             R.drawable.ic_basket,
@@ -96,13 +156,14 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
 
 
-    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons,List<byte[]> tech,String table) {
+    public RecyclerAdapterItems(Context context,List<Integer> position2, List<String> items,List<Integer> icons,List<byte[]> tech,String table,int sex) {
         this.mContext=context;
         this.items = items.toArray(new String[0]);
         this.ppos = position2.toArray(new Integer[0]);
         this.icons = icons.toArray(new Integer[0]);
         this.tech= tech;
         this.table=table;
+        this.sex=sex;
     }
 
     @NonNull
@@ -113,6 +174,7 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_list, parent, false);
         RecyclerAdapterItems.ViewHolder viewHolder = new RecyclerAdapterItems.ViewHolder(view);
+        mainActivity = new MainActivity();
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +188,8 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
 
 
 
+
+
         return viewHolder;
     }
 
@@ -133,7 +197,12 @@ public class RecyclerAdapterItems extends RecyclerView.Adapter<RecyclerAdapterIt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(items[position]);
 
-        holder.imageView.setImageResource(Icons[icons[position]]);
+        if(icons[position]==0){
+            holder.imageView.setImageResource(IconsNobrand[sex]);
+        }
+        else{
+            holder.imageView.setImageResource(Icons[icons[position]]);
+        }
         //holder.imageView.setImageBitmap(Utils.getImage(tech.get(position))); Mostra immagine vera
         if(ppos[position]==1){
             holder.imageView2.setImageResource(iconwm[1]);

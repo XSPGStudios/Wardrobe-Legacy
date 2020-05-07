@@ -67,7 +67,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginTop="56dp"
             android:layout_marginEnd="1dp"
-            android:layout_marginBottom="97dp"
+            android:layout_marginBottom="56dp"
             android:clickable="true"
             android:longClickable="true"
             android:scrollbars="vertical"

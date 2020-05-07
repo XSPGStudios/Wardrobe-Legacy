@@ -25,6 +25,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public ArrayList<Integer> position2;
     ArrayList<Integer> icons;
     private Integer[] Icons = {
+            R.drawable.nobrand,
             R.drawable.ic_nike,
             R.drawable.ic_adidas,
             R.drawable.ic_aber,
