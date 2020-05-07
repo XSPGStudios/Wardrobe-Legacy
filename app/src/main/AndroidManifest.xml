@@ -19,6 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_finale_pic"
         android:supportsRtl="true"
+        android:name=".GlobalBoolean"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
             android:configChanges="orientation"
@@ -49,5 +50,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5285115076303860~1400005831"/>
     </application>
+
+
 
 </manifest>

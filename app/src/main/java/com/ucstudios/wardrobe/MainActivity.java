@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;
     private InterstitialAd mInterstitialAd;
+    public boolean flagLaundry;
 
 
 
