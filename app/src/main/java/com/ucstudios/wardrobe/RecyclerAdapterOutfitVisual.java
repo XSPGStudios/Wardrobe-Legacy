@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAdapterOutfitVisual.ViewHolder>{
+public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAdapterOutfitVisual.ViewHolder> {
 
     private static final String TAG = "RecyclerAdapterOutfit";
     int count = 0;
@@ -87,29 +87,35 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
 
     };
 
+    Integer[] iconutili={
+
+            R.drawable.ic_basket,
+            R.drawable.ic_wm,
+            R.drawable.ic_wmtimer,
+    };
 
 
-    public RecyclerAdapterOutfitVisual(Context context, ArrayList<byte[]> imagedata, List<String> ecco,ArrayList<String> Categories,ArrayList<Integer> Positions) {
-        this.mContext=context;
-        this.imagedatas=imagedata;
-        this.ecco=ecco.toArray(new String[0]);
-        this.categories=Categories;
-        this.positions=Positions;
+
+    public RecyclerAdapterOutfitVisual(Context context, ArrayList<byte[]> imagedata, List<String> ecco, ArrayList<String> Categories, ArrayList<Integer> Positions) {
+        this.mContext = context;
+        this.imagedatas = imagedata;
+        this.ecco = ecco.toArray(new String[0]);
+        this.categories = Categories;
+        this.positions = Positions;
 
 
     }
-
-
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        Log.i(TAG,"onCreateViewHolder: " + count++ );
+        Log.i("ecco","cco"+positions);
+        Log.i(TAG, "onCreateViewHolder: " + count++);
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_outfit_visual, parent, false);
-        RecyclerAdapterOutfitVisual.ViewHolder viewHolder = new RecyclerAdapterOutfitVisual.ViewHolder(view);
+        RecyclerAdapterOutfitVisual.ViewHolder viewHolder = new ViewHolder(view);
      /*   viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,26 +132,21 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.imageView.setClipToOutline(true);
-         holder.imageView.setImageBitmap(Utils.getImage(imagedatas.get(position)));
-        int positionprecise = positions.get(position);
-         switch(positionprecise){
-             case 1:
-                 holder.positionView.setImageResource(R.drawable.ic_basket);
-                 break;
-             case 2:
-                 holder.positionView.setImageResource(R.drawable.ic_wm);
-                 break;
-             case 3:
-                 holder.positionView.setImageResource(R.drawable.ic_wmtimer);
-                 break;
+        holder.imageView.setImageBitmap(Utils.getImage(imagedatas.get(position)));
+
+            if(positions.get(position)==1|positions.get(position)==2|positions.get(position)==3) {
+                holder.positionView.setImageResource(iconutili[positions.get(position) - 1]);
+            }
 
 
-        }
-        String category = categories.get(position);
+
+
+
+    String category = categories.get(position);
          holder.categoryView.setImageResource(Icons[Integer.parseInt(category)]);
 
+}
 
-    }
 
     @Override
     public int getItemCount() {
@@ -177,7 +178,7 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
         mClickListener = callback;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
         ImageView categoryView;

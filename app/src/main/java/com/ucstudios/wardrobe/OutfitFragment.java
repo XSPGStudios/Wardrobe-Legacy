@@ -248,12 +248,11 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
 
                     Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(position));
                     while(c.moveToNext()){
-                        Cursor GetPOS = mDatabaseHelper.getData1(categories2.get(i)); //Ottenere pos per item
 
-                        while(GetPOS.moveToNext()){
-                            OutfitPOS.add(GetPOS.getInt(2));
-                        }
+
+
                         if(c.getString(0)!=null){
+
                         OutfitComponents.add(c.getString(0));
                         OutfitCategories.add(AllComponents.get(i));
                         drog.add("1");
@@ -268,6 +267,12 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 for(int u=0;u<categories2.size();u++){
                     for(int i =0;i<OutfitComponents.size();i++) {
                       Cursor cursor =  mDatabaseHelper.GetByteOutfit(categories2.get(u),OutfitComponents.get(i));
+                      Cursor cursorpos = mDatabaseHelper.getPrecisePos(categories2.get(u),OutfitComponents.get(i));
+                        while(cursorpos.moveToNext()){
+                            if(OutfitComponents.get(i)!="null"){
+                                OutfitPOS.add(cursorpos.getInt(0));
+                            }
+                        }
                         while(cursor.moveToNext()){
                             if(OutfitComponents.get(i)!="null") {
                                 fumo.add(cursor.getBlob(0));

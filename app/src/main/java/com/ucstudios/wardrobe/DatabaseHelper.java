@@ -145,6 +145,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data1;
     }
 
+    public Cursor getPrecisePos(String sat,String pus){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query1 = "SELECT POS FROM " + sat +" WHERE names ='"+pus+"'";
+        Cursor data1 = db.rawQuery(query1,null);
+        return data1;
+    }
+
     public Cursor getData2(){
         SQLiteDatabase db =this.getWritableDatabase();
         String query1 = "SELECT name FROM " + TABLE_NAME1;
