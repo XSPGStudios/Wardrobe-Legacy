@@ -17,7 +17,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)
             .withFullScreen()
                 .withTargetActivity(MainActivity.class)
-                    .withSplashTimeOut(500)
+                    .withSplashTimeOut(1000)
                         .withBackgroundColor(Color.parseColor("#000000"))
                             .withLogo(R.drawable.ic_finale_round)
                                 .withFooterText("Brought to you by XSPG©");

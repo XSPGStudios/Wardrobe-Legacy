@@ -83,6 +83,7 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        try{
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(Arrays.asList(items), i, i + 1);
@@ -97,6 +98,10 @@ public class RecyclerAdapterOutfitList extends RecyclerView.Adapter<RecyclerAdap
         mDatabaseHelper.SwapRowsOutfit(fromPosition+1,toPosition+1);
 
         return true;
+    }catch (Exception e){
+            return false;
+        }
+
     }
 
     public void setClickListener(View.OnClickListener callback){
