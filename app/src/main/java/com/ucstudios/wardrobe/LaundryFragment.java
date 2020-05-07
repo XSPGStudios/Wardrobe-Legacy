@@ -358,14 +358,11 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                         dacestoalavatrice.add(c.getString(0));
                                         Log.i("msg :","Swiped "+ dacestoalavatrice.get(i));
                                     }
-
                                 }
-
                                 for(int is=0;is<TotalCategories.size();is++) {
                                     mDatabaseHelper.WashingMachineActivated(TotalCategories.get(is));
                                 }
                                 populateWM();
-
                                 floatingActionButtonCancelButton.setVisibility(View.VISIBLE);
                                 c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 c.set(Calendar.MINUTE, minute);
@@ -373,14 +370,10 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
                                 Calendar calendar = Calendar.getInstance();
                                 int oraAttuale = calendar.get(Calendar.HOUR_OF_DAY);
                                 int minutiAttuali = calendar.get(Calendar.MINUTE);
-
-
-
                                 if (!globalBoolean.getTimerBoolean()) {
                                     //mando notifica con progresso, e cambio stato flag
                                     updateTimeText(c);
                                     globalBoolean.setmGlobalBoolean(true);
-
                                     String message = "Lavaggio interrotto";
 
                                     //progress bar

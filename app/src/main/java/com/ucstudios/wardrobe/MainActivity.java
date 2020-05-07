@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;
     private InterstitialAd mInterstitialAd;
+
     public boolean flagLaundry;
 
 
@@ -56,6 +58,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         mDatabaseHelper = new DatabaseHelper(this);
         boolean InterrupedLaundry=false;
+        mInterstitialAd = new InterstitialAd(MainActivity.this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
+        new CountDownTimer(180000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                Log.i("msg",""+millisUntilFinished/1000);
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+            public void onFinish() {
+
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+
+                }
+                this.start();
+
+            }
+        }.start();
+
+
 
 
 
