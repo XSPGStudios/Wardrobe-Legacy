@@ -111,7 +111,7 @@ public class RecyclerAdapterOutfitVisual extends RecyclerView.Adapter<RecyclerAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        Log.i("ecco","cco"+positions);
+        Log.i("ecco","ecco"+positions);
         Log.i(TAG, "onCreateViewHolder: " + count++);
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final View view = layoutInflater.inflate(R.layout.adapter_outfit_visual, parent, false);
