@@ -119,9 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-            if(InterrupedLaundry){
-                Toast.makeText(this,"You have interrupted the process by closing the app!",Toast.LENGTH_LONG).show();
-            }
+
 
 
 

@@ -191,7 +191,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         if(globalBoolean.getTimerBoolean()){
-            Toast.makeText(getContext(),"Washing Machine is on ! ",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"Washing machine is on!",Toast.LENGTH_SHORT).show();
         }
 
 
