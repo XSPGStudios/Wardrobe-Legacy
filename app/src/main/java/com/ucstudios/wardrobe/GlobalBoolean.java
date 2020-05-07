@@ -14,4 +14,19 @@ public class GlobalBoolean extends Application {
 
     public void setmGlobalBoolean(boolean timerflag){
         mGlobalBoolean = timerflag;
-    }}
+    }
+
+    private  boolean mGlobalAdMob;
+
+    public boolean getTimerAdMob(){
+        return mGlobalAdMob;
+    }
+
+    public void setmGlobalAdMob(boolean stimerflag){
+        mGlobalAdMob=stimerflag;
+    }
+
+
+
+
+}

@@ -37,6 +37,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseHelper mDatabaseHelper;
     ArrayList<String> Categories ;
     private InterstitialAd mInterstitialAd;
+    GlobalBoolean globaladMob;
 
     public boolean flagLaundry;
 
@@ -58,16 +60,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         mDatabaseHelper = new DatabaseHelper(this);
         boolean InterrupedLaundry=false;
+
         mInterstitialAd = new InterstitialAd(MainActivity.this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        globaladMob = ((GlobalBoolean)this.getApplicationContext());
 
+        if(!globaladMob.getTimerAdMob()){
 
         new CountDownTimer(180000, 1000) {
+
+
 
             public void onTick(long millisUntilFinished) {
                 Log.i("msg",""+millisUntilFinished/1000);
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                globaladMob.setmGlobalAdMob(true);
             }
 
             public void onFinish() {
@@ -76,10 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mInterstitialAd.show();
 
                 }
+                globaladMob.setmGlobalAdMob(false);
                 this.start();
 
             }
-        }.start();
+        }.start();}
 
 
 
