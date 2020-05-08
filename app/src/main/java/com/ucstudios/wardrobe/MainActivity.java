@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         globaladMob = ((GlobalBoolean)this.getApplicationContext());
         if(!globaladMob.getTimerAdMob()){
 
-        new CountDownTimer(15000, 1000) {
+        new CountDownTimer(150000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 Log.i("msg",""+millisUntilFinished/1000);
