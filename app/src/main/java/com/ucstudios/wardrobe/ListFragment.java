@@ -441,7 +441,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-
+                            populateItems();
                         }
                     });
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
