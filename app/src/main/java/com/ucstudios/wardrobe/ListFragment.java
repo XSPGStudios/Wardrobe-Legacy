@@ -43,6 +43,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 //RISOLVERE PROBLEMA POSITION SWAPS
 import java.util.ArrayList;
+import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -431,7 +432,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                             if (a==2){
 
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if(intent.resolveActivity(getActivity().getPackageManager())!=null) {
+                                if(intent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager())!=null) {
                                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                                 }
                             }
@@ -440,7 +441,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                            populateItems();
+
                         }
                     });
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
@@ -501,7 +502,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorAccent))
                     .addSwipeLeftActionIcon(R.drawable.ic_editimsto)
                     .create()
                     .decorate();
@@ -545,7 +546,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon,mMainActivity.Name);
 
                 if (!hasPermissions(getContext(), PERMISSIONS)) {
-                    ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
+                    ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), PERMISSIONS, PERMISSION_ALL);
                 }
 
                 if (hasPermissions(getContext(), PERMISSIONS)) {
@@ -555,7 +556,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         public void activation(int a) {
                             if (a == 1) {
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                if (intent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
 
                                     startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                                 }
@@ -628,7 +629,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             super.onActivityResult(requestCode,resultCode,data);
             if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode==-1) {
                 Bundle extras = data.getExtras();
+                assert extras != null;
                 Bitmap photo = (Bitmap) extras.get("data");
+                assert photo != null;
                 alien2o = Utils.getBytes(photo);
                 magianera = 1;
 

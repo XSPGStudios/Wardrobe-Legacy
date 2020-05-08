@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean InterrupedLaundry=false;
 
         mInterstitialAd = new InterstitialAd(MainActivity.this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-5285115076303860/3189043309");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         globaladMob = ((GlobalBoolean)this.getApplicationContext());
         if(!globaladMob.getTimerAdMob()){
 
-        new CountDownTimer(180000, 1000) {
+        new CountDownTimer(15000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 Log.i("msg",""+millisUntilFinished/1000);
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } //master?
         });
         mInterstitialAd = new InterstitialAd(this); //vediamo se qualche bugggi l'ha già fatto
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-5285115076303860/3189043309");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
