@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         new CountDownTimer(180000, 1000) {
 
-
-
             public void onTick(long millisUntilFinished) {
                 Log.i("msg",""+millisUntilFinished/1000);
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -79,11 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             public void onFinish() {
 
+
+                if(GlobalBoolean.isActivityVisible()){
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
+                    globaladMob.setmGlobalAdMob(false);
+                }}
 
-                }
-                globaladMob.setmGlobalAdMob(false);
                 this.start();
 
             }
@@ -208,7 +208,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GlobalBoolean.activityResumed();
+        Log.i("msg","Ripartito");
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        GlobalBoolean.activityPaused();
+        Log.i("msg","bloccato");
+    }
 
 
 

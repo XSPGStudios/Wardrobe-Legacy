@@ -20,6 +20,7 @@
         android:roundIcon="@drawable/ic_finale_pic"
         android:supportsRtl="true"
         android:name=".GlobalBoolean"
+
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
             android:configChanges="orientation"
