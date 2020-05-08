@@ -382,26 +382,49 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
                     if(itemdata.get(0)==1){
                         Toast.makeText(getContext(),"Item is already in the basket!",Toast.LENGTH_SHORT).show();
-                        populateItems();
+                        try {
+                            populateItems();
+                        }catch (Exception ignored){
+
+                        }
                     }
                     else if(itemdata.get(0)==2){
                         Toast.makeText(getContext(),"Item is in the laundry!",Toast.LENGTH_SHORT).show();
-                        populateItems();
-                    }
+                        try {
+                            populateItems();
+                        }catch (Exception ignored){
+
+                        }
+                        }
+
                     else if(itemdata.get(0)==3){
                         Toast.makeText(getContext(),"Item is getting washed right now!",Toast.LENGTH_SHORT).show();
-                        populateItems();
+                        try {
+                            populateItems();
+                        }catch (Exception ignored){
+
+                        }
                     }
                     else{
 
                             mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
-                            populateItems();
+                            try{
+                                populateItems();
+                            }
+                            catch(Exception ignored){
+
+                            }
                             Snackbar.make(mRecyclerView, mMainActivity.Name, 2000).setAction(
                                     "Put item back", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position+1);
-                                    populateItems();
+                                    try {
+                                        populateItems();
+                                    }
+                                    catch (Exception ignored){
+
+                                    }
                                 }
                             }).show();
                     }
@@ -441,7 +464,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                            populateItems();
+                            try{
+                            populateItems();}
+                            catch (Exception ignored){
+
+                            }
                         }
                     });
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
@@ -481,8 +508,15 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                             }
                             mDatabaseHelper1.ReplaceIteminOutfitTable(name,mMainActivity.Name,olditemname);
                             dialog.dismiss();
-                            populateItems();
-                        }
+                            try {
+                                populateItems();
+                            }catch (Exception e){
+
+                            }
+
+                            }
+
+
                         else {
                             Toast.makeText(getContext(),"An item with this name already exists!",Toast.LENGTH_SHORT).show();
                            }}
@@ -591,7 +625,12 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                     AddData1(name, size, brand, value, currency, icon, alien2o);
                                     mDatabaseHelper1.AddPictureItem(mMainActivity.Name, alien2o, tac);
                                     dialog.dismiss();
-                                    populateItems();
+                                    try {
+                                        populateItems();
+                                    }
+                                    catch (Exception ignored){
+
+                                    }
                                 } else {
                                     Toast.makeText(getContext(), "Item doppio!", Toast.LENGTH_SHORT).show();
                                 }
