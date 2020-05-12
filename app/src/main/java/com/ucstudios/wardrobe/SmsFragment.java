@@ -71,6 +71,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     private String mParam2;
     ImageView imageViewempty;
     TextView textViewempty;
+    GlobalBoolean clickedcategory;
     RecyclerAdapterCategories recyclerAdapterCategories;
 
 
@@ -108,7 +109,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         controllodivider=0;
-
+        clickedcategory = ((GlobalBoolean) Objects.requireNonNull(this.getActivity()).getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_sms, container, false);
         FloatingActionButton ActionButton = view.findViewById(R.id.floating_action_button);
 
@@ -173,6 +174,8 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
 
 
+
+
         populateButtons();
 
 
@@ -217,6 +220,14 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper.TableRenamer(tablename, coto);
     }
 
+    private ArrayList<String> popolazioneemergenze(){
+        Cursor data = mDatabaseHelper.getData();
+        final ArrayList<String> listData = new ArrayList<>();
+        while (data.moveToNext()){
+            listData.add(data.getString(0));
+        }
+        return listData;
+    }
 
 
     private void populateButtons() {
@@ -251,7 +262,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
 
         }
-       // boolean risultato = longClickListener.onLongClick(mRecyclerView);
+
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(recyclerAdapterCategories);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -262,10 +273,11 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
             int pos = mRecyclerView.indexOfChild(v);
-                mMainActivity.Name = listData.get(pos);
+                clickedcategory.setmClickedCategory(popolazioneemergenze().get(pos));
                 Log.v("message", "List Item " + pos + " Click");
-                Log.v("asd", mMainActivity.Name+" selected");
+                Log.v("asd", clickedcategory.getClickedCategory() +" selected");
 
+                assert getFragmentManager() != null;
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new ListFragment()).addToBackStack("List");
                 transaction.commit();
@@ -274,7 +286,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
     }
 
-   /* private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -282,7 +294,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
 
             ClipData merda = ClipData.newPlainText("", "");
             View.DragShadowBuilder myShadowBuilder = new View.DragShadowBuilder(v);
-          //  v.startDrag(merda, myShadowBuilder, v, 0);
+            v.startDrag(merda, myShadowBuilder, v, 0);
             v.setOnDragListener(new View.OnDragListener() {
                 @Override
                 public boolean onDrag(View v, DragEvent event) {
@@ -293,7 +305,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             return true;
         }
 
-    };*/
+    };
 
     View.OnDragListener dragListener = new View.OnDragListener() {
         @Override

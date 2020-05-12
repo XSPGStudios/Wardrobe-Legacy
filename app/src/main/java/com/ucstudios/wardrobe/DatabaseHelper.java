@@ -23,7 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "categories_table";
     private static final String TABLE_NAME1 = "outfit_table";
-    private static final String COL0 = "ROWID";
     private static final String COL1 = "name";
     public String PINZA;
 

@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        />
+
+
 
 
     <uses-feature
@@ -22,6 +22,7 @@
         android:roundIcon="@drawable/ic_finale_pic"
         android:supportsRtl="true"
         android:name=".GlobalBoolean"
+
 
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"

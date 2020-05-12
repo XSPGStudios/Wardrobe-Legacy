@@ -144,8 +144,9 @@ public class RecyclerAdapterCategories extends RecyclerView.Adapter<RecyclerAdap
                     Collections.swap(Arrays.asList(items), i, i - 1);
                 }
             }
-            notifyItemMoved(fromPosition, toPosition);
             mDatabaseHelper.SwapRowsCategories(fromPosition + 1, toPosition + 1);
+            notifyItemMoved(fromPosition, toPosition);
+
             return true;
         } catch (Exception e) {
             return false;

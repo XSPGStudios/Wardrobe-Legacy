@@ -5,10 +5,10 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.ucstudios.wardrobe"
-        minSdkVersion 19
+        minSdkVersion 22
         targetSdkVersion 29
-        versionCode 6
-        versionName '1.023'
+        versionCode 8
+        versionName '1.025'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
