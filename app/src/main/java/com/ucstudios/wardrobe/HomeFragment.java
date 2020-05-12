@@ -3,6 +3,7 @@ package com.ucstudios.wardrobe;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -10,11 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -25,10 +37,9 @@ public class  HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    java.util.Calendar calendar;
+    CalendarView calendarView;
 
-    private String mParam1;
-    private String mParam2;
-    ImageView imageViewTwitter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -54,32 +65,55 @@ public class  HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
 
     }
     //lmao
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-            imageViewTwitter = view.findViewById(R.id.twitter);
-                TextView tv = view.findViewById(R.id.textViewTwitterLink);
-        SpannableString content = new SpannableString("Follow us on twitter!");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        tv.setText(content);
-        tv.setOnClickListener(new View.OnClickListener() {
+        List<EventDay> events = new ArrayList<>();
+        calendar = Calendar.getInstance();
+
+        events.add(new EventDay(calendar, R.drawable.ic_outfit));
+        calendarView = view.findViewById(R.id.calendarView);
+        calendarView.setEvents(events);
+        try {
+            calendarView.setDate(calendar);
+        } catch (OutOfDateRangeException e) {
+            e.printStackTrace();
+        }
+
+
+        calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("http://www.twitter.com/XSPGStudios"));
-                startActivity(intent);
+            public void onDayClick(EventDay eventDay) {
+                Calendar clickedDayCalendar = eventDay.getCalendar();
             }
         });
+
+        calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+
+            }
+        });
+        calendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+
+            }
+        });
+
+
+
+
+
+
         return view;
 
     }

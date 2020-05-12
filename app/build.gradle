@@ -19,6 +19,12 @@ android {
     }
 }
 
+
+repositories {
+        jcenter()
+    }
+
+
 dependencies {
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -39,6 +45,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
     implementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation 'com.applandeo:material-calendar-view:1.4.0'
 
 
 }
