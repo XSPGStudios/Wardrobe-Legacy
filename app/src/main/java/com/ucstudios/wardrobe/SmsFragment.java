@@ -157,7 +157,9 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                if(position==1){ FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, new OutfitFragment());
-                transaction.commit();}
+                transaction.commit();
+
+               }
             }
 
             @Override

@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new CountDownTimer(150000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                Log.i("msg",""+millisUntilFinished/1000);
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
                 globaladMob.setmGlobalAdMob(true);
             }

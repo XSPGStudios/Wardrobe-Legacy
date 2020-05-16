@@ -1,17 +1,13 @@
 package com.ucstudios.wardrobe;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
-
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -44,17 +40,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE "+ TABLE_NAME + " ("+ COL1 +" TEXT,IC INTEGER "+")";
         String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(name TEXT)";
+        String createTableEvents = "CREATE TABLE events (date INTEGER, Outfit TEXT)";
 
 
 
         db.execSQL(createTableOutfit);
         db.execSQL(createTable);
+        db.execSQL(createTableEvents);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PINZA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME1);
         onCreate(db);
     }
@@ -117,6 +114,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG,"addData : Adding " + item1 + " to " + negrone);
         if(result1!=1)return true;
         else return true;
+    }
+
+    public void addEvent(Integer datecode, String Outfit){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date",datecode);
+        contentValues.put("outfit",Outfit);
+        db.insert("events",null,contentValues);
+        db.close();
+
+    }
+
+    public Cursor getEvents(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM events";
+        Cursor data = db.rawQuery(query,null);
+        return data;
     }
 
 
