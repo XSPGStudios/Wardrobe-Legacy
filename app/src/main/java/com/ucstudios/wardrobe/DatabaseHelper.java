@@ -242,6 +242,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean ReplaceOutfitEvent(Integer Datecode,String Outfit){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("Outfit",Outfit);
+        db.update("Events",cv,"date="+Datecode,null);
+
+
+        return true;
+    }
+
+    public boolean ReplaceEventOutfit(String Outfit,String old){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("Outfit",Outfit);
+        db.update("Events",cv,"Outfit="+"'"+old+"'",null);
+        return true;
+    }
+
     public boolean DeleteIteminOutfitafteredit(String column,String itemvecchio){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -259,11 +277,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean delete2(String table, String item){
+    public boolean deleteevent(Integer datecode){
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d(TAG, "addData : Deleting "+item+" from column names in table "+ table);
-        return db.delete(table,"names=?", new String[]{item}) > 0;
-
+        db.delete("Events","date=?", new String[]{String.valueOf(datecode)});
+        db.execSQL("VACUUM");
+        return true;
 
     }
 
@@ -280,6 +298,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
         db.delete(table,"names=?", new String[]{item});
+        db.execSQL("VACUUM");
+        return true;
+
+    }
+
+    public boolean deleteeventswhenoutfitdeleted(String Outfit){
+        SQLiteDatabase db= this.getWritableDatabase();
+        db.delete("Events","Outfit=?",new String[]{Outfit});
         db.execSQL("VACUUM");
         return true;
 

@@ -130,6 +130,7 @@ public class  HomeFragment extends Fragment {
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
+                ArrayList<Integer> clickedate = GetSelectedDate(eventDay);
                 String SelectedOutfit = null;
                 boolean Eventonthisday = false;
                 int intutile =0;
@@ -146,7 +147,7 @@ public class  HomeFragment extends Fragment {
                 if(!Eventonthisday){
 
 
-                mCalendarAddEvent = new CalendarAddEvent(getContext(),GetSelectedDate(eventDay));
+                mCalendarAddEvent = new CalendarAddEvent(getContext(),GetSelectedDate(eventDay),false);
                 mCalendarAddEvent.show();
                 mCalendarAddEvent.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -165,7 +166,14 @@ public class  HomeFragment extends Fragment {
                         i++;
                     }
                     
-                    Log.i("asd","ecco outfit " + SelectedOutfit);
+                    EventVisualDialog dialog = new EventVisualDialog(getContext(),SelectedOutfit,clickedate);
+                    dialog.show();
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            populateEvents();
+                        }
+                    });
                 }
 
 

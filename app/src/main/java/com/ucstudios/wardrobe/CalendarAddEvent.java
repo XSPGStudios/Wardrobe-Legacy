@@ -30,9 +30,11 @@ import java.util.Objects;
 public class CalendarAddEvent extends Dialog {
     DatabaseHelper mDatabaseHelper;
     ArrayList<Integer> DateSelected;
-    public CalendarAddEvent(Context context,ArrayList<Integer> DateSelected){
+    boolean isedit;
+    public CalendarAddEvent(Context context,ArrayList<Integer> DateSelected,Boolean isedit){
         super(context);
         this.DateSelected=DateSelected;
+        this.isedit=isedit;
 
 
 
@@ -76,6 +78,7 @@ public class CalendarAddEvent extends Dialog {
         Button button = findViewById(R.id.buttonInsertEvent);
         final Spinner mSpinner = findViewById(R.id.OutfitPickerSpinner);
         TextView textView = findViewById(R.id.CurrentDateSelected);
+        Button buttondelete = findViewById(R.id.buttondelete);
         textView.setText(total);
         mDatabaseHelper = new DatabaseHelper(getContext());
         Cursor data = mDatabaseHelper.getData2();
@@ -89,11 +92,29 @@ public class CalendarAddEvent extends Dialog {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
 
+        if(isedit){
+            button.setText("Replace");
+            buttondelete.setVisibility(View.VISIBLE);
+            buttondelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDatabaseHelper.deleteevent(Datecode);
+                    dismiss();
+                    Toast.makeText(getContext(),"Event deleted!",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isedit){
                 mDatabaseHelper.addEvent(Datecode,mSpinner.getSelectedItem().toString());
-                Toast.makeText(getContext(),"Event created on "+ total,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Event created on "+ total,Toast.LENGTH_SHORT).show();}
+                else{
+                    mDatabaseHelper.ReplaceOutfitEvent(Datecode,mSpinner.getSelectedItem().toString());
+                    Toast.makeText(getContext(),"Outfit Replaced",Toast.LENGTH_SHORT).show();
+                }
                 dismiss();
             }
         });

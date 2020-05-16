@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new CountDownTimer(150000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
                 globaladMob.setmGlobalAdMob(true);
             }
 
@@ -81,7 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                     globaladMob.setmGlobalAdMob(false);
-                }}
+
+                }
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
 
                 this.start();
 

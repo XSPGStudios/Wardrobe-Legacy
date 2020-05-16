@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DiscretePathEffect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -349,105 +350,21 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                 final ArrayList<String> spinnarcontrol = new ArrayList<>();
                 while (data.moveToNext()) {
                     listData.add(data.getString(0));
-                    dro.add("0");
                 }
-                Cursor categories = mDatabaseHelper.getData();
-                final ArrayList<String> categories2 = new ArrayList<>();
-                while (categories.moveToNext()) {
-                    categories2.add(categories.getString(0));
-                }
-                final ArrayList<String> OutfitComponents = new ArrayList<>();
-                for (int i = 0; i < categories2.size(); i++) {
-                    Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i), listData.get(position));
-
-                    while (c.moveToNext()) {
-                        if (c.getString(0) != null) {
-                            OutfitComponents.add(c.getString(0));
-                            spinnarcontrol.add("1");
-
-                        } else {
-                            spinnarcontrol.add("0");
-                        }
-
-
-                    }
-
-
-                }
-                final ArrayList<Integer> SpinnerValue = new ArrayList<>();
-                for (int i = 0; i < categories2.size(); i++) {
-                    if (spinnarcontrol.get(i).equals("0")) {
-                        SpinnerValue.add(-1);
-                    }
-                    for (int u = 0; u < OutfitComponents.size(); u++) {
-                        Cursor c = mDatabaseHelper.GetSpecificIdItem(categories2.get(i), OutfitComponents.get(u));
-                        while (c.moveToNext()) {
-                            if (!spinnarcontrol.get(i).equals("0")) {
-                                SpinnerValue.add(c.getInt(0));
-                            }
-
-                        }
-
-                    }
-
-
-                }
-                Log.i("Ecco componenti", "Ecco" + SpinnerValue);
-                Log.i("Ecco Valori", "Ecco" + drog);
-                final CustomDialogClass customDialogClass = new CustomDialogClass(getActivity(), spinnarcontrol, 1, SpinnerValue, position);
-                customDialogClass.show();
-                customDialogClass.setAdapterResult(new CustomDialogClass.OnMyAdapterResult() {
-                    @Override
-                    public void finish(String result) {
-
-                        if (!result.equals("") && !result.equals("ELIMINAZIONETOTALE")) {
-                            Cursor c = mDatabaseHelper.getData2();
-                            final ArrayList<String> UniquenessControl = new ArrayList<>();
-                            int control = 0;
-                            while (c.moveToNext()) {
-                                UniquenessControl.add(c.getString(0));
-                            }
-                            for (int i = 0; i < UniquenessControl.size(); i++) {
-                                if (!result.equals(listData.get(position))) {
-                                    if (result.equals(UniquenessControl.get(i))) {
-                                        control++;
-                                    }
-                                }
-                            }
-                            if (control == 0) {
-                                mDatabaseHelper.ReplaceOutfit(result, position + 1);
-                                mDatabaseHelper.GetNullOutfitName();
-                                deleteEmptyOutfit();
-                                populateOutfits();
-                            } else {
-                                Toast.makeText(getContext(), "An Outfit with that name already exists! Change name", Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        } else if (result.equals("ELIMINAZIONETOTALE")) {
-                            mDatabaseHelper.delete3("Outfit_Table", listData.get(position));
-                            deleteEmptyOutfit();
-                            populateOutfits();
-                            Log.i("msg", "Eliminazione completata!");
-                        }
-
-                    }
-                });
-
-                customDialogClass.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                DatePickerDialog dialog = new DatePickerDialog(getContext(),listData.get(position));
+                dialog.show();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        mDatabaseHelper.GetNullOutfitName();
-                        deleteEmptyOutfit();
                         populateOutfits();
-
                     }
                 });
             }
 
                 break;
 
-                case ItemTouchHelper.RIGHT:{Cursor data = mDatabaseHelper.getData2();
+                case ItemTouchHelper.RIGHT:{
+                    Cursor data = mDatabaseHelper.getData2();
                     final ArrayList<String> listData = new ArrayList<>();
                     final ArrayList<String> spinnarcontrol = new ArrayList<>();
                     while (data.moveToNext()) {
@@ -520,6 +437,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                                 }
                                 if(control==0){
                                     mDatabaseHelper.ReplaceOutfit(result,position+1);
+                                    mDatabaseHelper.ReplaceEventOutfit(result,listData.get(position));
                                     mDatabaseHelper.GetNullOutfitName();
                                     deleteEmptyOutfit();
                                     populateOutfits();}
@@ -531,6 +449,7 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                             }
                             else if(result.equals("ELIMINAZIONETOTALE")){
                                 mDatabaseHelper.delete3("Outfit_Table",listData.get(position));
+                                mDatabaseHelper.deleteeventswhenoutfitdeleted(listData.get(position));
                                 deleteEmptyOutfit();
                                 populateOutfits();
                                 Log.i("msg","Eliminazione completata!");
@@ -549,7 +468,6 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
                         }
                     });
 
-
                     break;
 
                 }
@@ -563,8 +481,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-                .addSwipeLeftActionIcon(R.drawable.ic_editimsto)
+                .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.verdetattico))
+                .addSwipeLeftActionIcon(R.drawable.calendariazzo)
                 .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
                 .addSwipeRightActionIcon(R.drawable.ic_editimsto)
                 .create()
