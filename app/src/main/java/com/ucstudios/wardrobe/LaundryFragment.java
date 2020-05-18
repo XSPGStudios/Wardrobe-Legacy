@@ -187,7 +187,7 @@ public class LaundryFragment extends Fragment implements TimePickerDialog.OnTime
         controllodivider=0;
         populateWM();
         mInterstitialAd = new InterstitialAd(getContext());
-        mInterstitialAd.setAdUnitId("ca-app-pub-5285115076303860/3189043309");
+        mInterstitialAd.setAdUnitId("ca-app-pub-5285115076303860/5320925198");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         if(globalBoolean.getTimerBoolean()){

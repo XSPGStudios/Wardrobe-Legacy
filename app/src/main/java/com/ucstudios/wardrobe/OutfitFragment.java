@@ -158,7 +158,8 @@ public class OutfitFragment extends Fragment implements View.OnClickListener {
             }
             if(controllomatto==0){
                 mDatabaseHelper.delete3("outfit_table",listData.get(u));
-                Toast.makeText(getContext(),"Outfit "+listData.get(u)+" automatically deleted",Toast.LENGTH_SHORT).show();
+                mDatabaseHelper.deleteeventswhenoutfitdeleted(listData.get(u));
+                Toast.makeText(getContext(),"Some events containing removed outfits were deleted!",Toast.LENGTH_SHORT).show();
 
 
             }

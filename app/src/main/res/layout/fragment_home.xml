@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
 
             android:layout_marginTop="56dp"
-            app:abbreviationsBarColor="@color/buttontrue"
+            app:abbreviationsBarColor="@color/buttonSlight"
             app:abbreviationsLabelsColor="#FFFFFF"
             app:anotherMonthsDaysLabelsColor="#454444"
             app:daysLabelsColor="#FFFFFF"

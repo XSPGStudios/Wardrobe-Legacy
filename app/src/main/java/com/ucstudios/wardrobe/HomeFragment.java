@@ -1,6 +1,7 @@
 package com.ucstudios.wardrobe;
 
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,9 +19,9 @@ import android.view.ViewGroup;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -130,6 +131,35 @@ public class  HomeFragment extends Fragment {
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
+                Cursor data = mDatabaseHelper.getData2();
+                boolean isempty = false;
+                final ArrayList<String> listData = new ArrayList<>();
+                while (data.moveToNext()) {
+                    listData.add(data.getString(0));
+                    isempty = true;
+                }
+
+                if(!isempty){
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Error!")
+                            .setMessage("You have no outfits")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                }
+                else{
+
+
+
+
+
+
+
+
                 ArrayList<Integer> clickedate = GetSelectedDate(eventDay);
                 String SelectedOutfit = null;
                 boolean Eventonthisday = false;
@@ -177,7 +207,7 @@ public class  HomeFragment extends Fragment {
                 }
 
 
-            }
+            }}
 
 
 
@@ -204,6 +234,7 @@ public class  HomeFragment extends Fragment {
     }
 
     public  void populateEvents(){
+        deleteEmptyOutfit();
         List<EventDay> eventDays = new ArrayList<>();
         List<Integer> events = new ArrayList<>();
         Cursor Data = mDatabaseHelper.getEvents();
@@ -246,6 +277,42 @@ public class  HomeFragment extends Fragment {
         calendarView.setEvents(eventDays);
 
 
+    }
+
+
+    public void deleteEmptyOutfit(){
+        Cursor data = mDatabaseHelper.getData2();
+        final ArrayList<String> listData = new ArrayList<>();
+        while (data.moveToNext()) {
+            listData.add(data.getString(0));
+        }
+        Cursor categories = mDatabaseHelper.getData();
+        final ArrayList<String> categories2 = new ArrayList<>();
+        while (categories.moveToNext()){
+            categories2.add(categories.getString(0));
+        }
+
+        for(int u=0;u<listData.size();u++){
+            int controllomatto=0;
+            for(int i=0;i<categories2.size();i++){
+                Cursor c = mDatabaseHelper.GetItemOutfit(categories2.get(i),listData.get(u));
+
+                while(c.moveToNext()){
+                    if(c.getString(0)!=null){
+                        controllomatto++;
+                    }
+                }
+
+
+            }
+            if(controllomatto==0){
+                mDatabaseHelper.delete3("outfit_table",listData.get(u));
+                mDatabaseHelper.deleteeventswhenoutfitdeleted(listData.get(u));
+                Toast.makeText(getContext(),"Outfit "+listData.get(u)+" automatically deleted",Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
     }
 
     private List<EventDay> populateControlEvents(){
