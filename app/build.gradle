@@ -7,8 +7,8 @@ android {
         applicationId "com.ucstudios.wardrobe"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 8
-        versionName '1.025'
+        versionCode 10
+        versionName '1.026.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

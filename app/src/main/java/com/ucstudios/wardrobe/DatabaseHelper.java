@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, PINZA+" column created in "+ TABLE_NAME1);
 
-        db.close();
+
         return true;
         }
 
@@ -91,7 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues1.put("image",image);
         long result1 = db.insert(table, null, contentValues1);
         Log.d("Message ", name +" saved in "+ table);
-        db.close();
+
         if(result1!=1)return true;
         else return true;
     }
@@ -103,6 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL1, item1);
         db.update("outfit_table", cv,"ROWID=(SELECT MAX(ROWID) FROM outfit_table)",null);
         Log.d(TAG, "ReplaceData : Adding "+item1+" to "+COL1);
+
         return true;
     }
 
@@ -112,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(negrone, item1);
         long result1 = db.insert(TABLE_NAME1, null, contentValues);
         Log.d(TAG,"addData : Adding " + item1 + " to " + negrone);
+
         if(result1!=1)return true;
         else return true;
     }
@@ -122,15 +124,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("date",datecode);
         contentValues.put("outfit",Outfit);
         db.insert("events",null,contentValues);
-        db.close();
+
 
     }
 
     public Cursor getEvents(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM events";
-        Cursor data = db.rawQuery(query,null);
-        return data;
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            String query = "SELECT * FROM events";
+
+            return db.rawQuery(query, null);
+
+
     }
 
 
@@ -138,23 +143,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
+
         return  data;
 
     }
 
     public Cursor getCategoryIcon(String category){
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT IC FROM " + TABLE_NAME + " WHERE name='"+category+"'";
-        Cursor data = db.rawQuery(query,null);
-        return data;
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            String query = "SELECT IC FROM " + TABLE_NAME + " WHERE name='" + category + "'";
+            Cursor data = db.rawQuery(query, null);
+
+            return data;
+
 
 
     }
     public Cursor getData1(String sat){
+
         SQLiteDatabase db =this.getWritableDatabase();
         String query1 = "SELECT * FROM " + sat;
         Cursor data1 = db.rawQuery(query1, null);
+
         return data1;
     }
 
@@ -162,6 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query1 = "SELECT POS FROM " + sat +" WHERE names ='"+pus+"'";
         Cursor data1 = db.rawQuery(query1,null);
+
         return data1;
     }
 
@@ -169,6 +181,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db =this.getWritableDatabase();
         String query1 = "SELECT name FROM " + TABLE_NAME1;
         Cursor data1 = db.rawQuery(query1, null);
+
         return data1;
     }
 
@@ -183,6 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("currency",currency);
         cv.put("image",image);
         db.update(tabletitle, cv,"ROWID="+i,null);
+
         return true;
     }
 
@@ -196,6 +210,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("value",value);
         cv.put("currency",currency);
         db.update(tabletitle,cv,"ROWID="+i,null);
+
         return true;
     }
 
@@ -204,6 +219,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("name",nome);
         db.update(TABLE_NAME1,cv,"ROWID="+pos,null);
+
         return true;
     }
 
@@ -212,6 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("name", item);
         db.update(tabletitle, cv,"ROWID="+i,null);
+
         return true;
     }
 
@@ -221,6 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(negro, item);
         db.update("outfit_table", cv,"ROWID=(SELECT MAX(ROWID) FROM outfit_table)",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro);
+
         return true;
     }
 
@@ -230,6 +248,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(negro, item);
         db.update("outfit_table", cv,"ROWID="+position,null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+negro+" at "+position);
+
         return true;
     }
 
@@ -239,6 +258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(column, item);
         db.update("outfit_table", cv,column+"='"+itemvecchio+"'",null);
         Log.d(TAG, "ReplaceData : Adding "+item+" to "+column);
+
         return true;
     }
 
@@ -257,6 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("Outfit",Outfit);
         db.update("Events",cv,"Outfit="+"'"+old+"'",null);
+
         return true;
     }
 
@@ -265,6 +286,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(column, (byte[]) null);
         db.update("outfit_table",cv,column+"='"+itemvecchio+"'",null);
+
     return true;
     }
 
@@ -272,7 +294,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean delete1(String sex, String edit){
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+ edit +" from column "+ sex +" in table "+TABLE_NAME1);
+
         return db.delete(TABLE_NAME1,sex+"=?",new String[]{edit}) > 0;
+
 
 
     }
@@ -281,6 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("Events","date=?", new String[]{String.valueOf(datecode)});
         db.execSQL("VACUUM");
+
         return true;
 
     }
@@ -290,6 +315,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
         db.delete(table,"name=?", new String[]{item});
         db.execSQL("VACUUM");
+
         return true;
 
     }

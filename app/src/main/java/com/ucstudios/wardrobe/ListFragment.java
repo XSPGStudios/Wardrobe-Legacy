@@ -15,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.CellSignalStrength;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -47,11 +49,14 @@ import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NotificationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class ListFragment extends Fragment implements View.OnClickListener{
 
     private static final String ARG_PARAM1 = "param1";
@@ -67,7 +72,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     FloatingActionButton floatingActionButton1;
     int tac;
     byte[] alien2o;
-    static final int REQUEST_IMAGE_CAPTURE=1;
+    static final int REQUEST_IMAGE_CAPTURE= 1;
     int magianera;
     final ArrayList<byte[]> tech = new ArrayList<>();
     final ArrayList<byte[]> tecca = new ArrayList<>();
@@ -141,7 +146,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
 
-            android.Manifest.permission.CAMERA
+            android.Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+
     };
 
 
@@ -196,12 +203,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         populateTopIcon();
         try {
             populateItems();
-        }catch (Exception ignored){
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-
 
 
         return view;
@@ -307,7 +311,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                 }
               final VisualDialogItemDialogTrue  dialogItemDialogTrue = new VisualDialogItemDialogTrue(getActivity(),itemdata2,negromatto);
                 dialogItemDialogTrue.show();
-                dialogItemDialogTrue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Objects.requireNonNull(dialogItemDialogTrue.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 Log.i("msg","Traffica"+itemdata2.get(1));
             }
         });
@@ -390,26 +394,29 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         Toast.makeText(getContext(),"Item is already in the basket!",Toast.LENGTH_SHORT).show();
                         try {
                             populateItems();
-                        }catch (Exception ignored){
-
+                        }catch (Exception e) {
+                            e.printStackTrace();
                         }
+
                     }
                     else if(itemdata.get(0)==2){
                         Toast.makeText(getContext(),"Item is in the laundry!",Toast.LENGTH_SHORT).show();
                         try {
                             populateItems();
-                        }catch (Exception ignored){
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-                        }
-                        }
+                    }
 
                     else if(itemdata.get(0)==3){
                         Toast.makeText(getContext(),"Item is getting washed right now!",Toast.LENGTH_SHORT).show();
                         try {
                             populateItems();
-                        }catch (Exception ignored){
-
+                        }catch (Exception e) {
+                            e.printStackTrace();
                         }
+
                     }
                     else{
 
@@ -417,10 +424,11 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                             try{
                                 populateItems();
                             }
-                            catch(Exception ignored){
-
+                            catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            Snackbar.make(mRecyclerView, CategoryClicked.getClickedCategory(), 2000).setAction(
+
+                        Snackbar.make(mRecyclerView, CategoryClicked.getClickedCategory(), 2000).setAction(
                                     "Put item back", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -428,9 +436,10 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                     try {
                                         populateItems();
                                     }
-                                    catch (Exception ignored){
-
+                                    catch (Exception e) {
+                                        e.printStackTrace();
                                     }
+
                                 }
                             }).show();
                     }
@@ -472,9 +481,10 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         public void onDismiss(DialogInterface dialog) {
                             try{
                             populateItems();}
-                            catch (Exception ignored){
-
+                            catch (Exception e) {
+                                e.printStackTrace();
                             }
+
                         }
                     });
                     dialog.ItemCreation(new ItemVisualDialog.ItemCreatedInterface() {
@@ -516,11 +526,12 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                             dialog.dismiss();
                             try {
                                 populateItems();
-                            }catch (Exception e){
-
+                            }catch (Exception e) {
+                                e.printStackTrace();
                             }
 
-                            }
+
+                           }
 
 
                         else {
@@ -634,11 +645,12 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                     try {
                                         populateItems();
                                     }
-                                    catch (Exception ignored){
-
+                                    catch (Exception e) {
+                                        e.printStackTrace();
                                     }
+
                                 } else {
-                                    Toast.makeText(getContext(), "Item doppio!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "An item with this name already exists!", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 Toast.makeText(getContext(), "Pic missing!", Toast.LENGTH_SHORT).show();
@@ -672,7 +684,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode,resultCode,data);
-            if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode==-1) {
+            if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode==RESULT_OK) {
                 Bundle extras = data.getExtras();
                 assert extras != null;
                 Bitmap photo = (Bitmap) extras.get("data");
