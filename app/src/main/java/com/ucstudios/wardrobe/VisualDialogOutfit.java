@@ -29,7 +29,7 @@ public class VisualDialogOutfit extends Dialog{
         this.positions=positions;
     }
 
-
+        //mettere sdk 22 al posto di 19
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

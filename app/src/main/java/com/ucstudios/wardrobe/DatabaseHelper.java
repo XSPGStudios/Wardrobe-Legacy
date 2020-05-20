@@ -1,17 +1,13 @@
 package com.ucstudios.wardrobe;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
-
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -23,7 +19,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "categories_table";
     private static final String TABLE_NAME1 = "outfit_table";
-    private static final String COL0 = "ROWID";
     private static final String COL1 = "name";
     public String PINZA;
 
@@ -45,17 +40,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE "+ TABLE_NAME + " ("+ COL1 +" TEXT,IC INTEGER "+")";
         String createTableOutfit = "CREATE TABLE "+ TABLE_NAME1 + "(name TEXT)";
+        String createTableEvents = "CREATE TABLE events (date INTEGER, Outfit TEXT)";
 
 
 
         db.execSQL(createTableOutfit);
         db.execSQL(createTable);
+        db.execSQL(createTableEvents);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PINZA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME1);
         onCreate(db);
     }
@@ -118,6 +114,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG,"addData : Adding " + item1 + " to " + negrone);
         if(result1!=1)return true;
         else return true;
+    }
+
+    public void addEvent(Integer datecode, String Outfit){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date",datecode);
+        contentValues.put("outfit",Outfit);
+        db.insert("events",null,contentValues);
+        db.close();
+
+    }
+
+    public Cursor getEvents(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM events";
+        Cursor data = db.rawQuery(query,null);
+        return data;
     }
 
 
@@ -229,6 +242,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean ReplaceOutfitEvent(Integer Datecode,String Outfit){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("Outfit",Outfit);
+        db.update("Events",cv,"date="+Datecode,null);
+
+
+        return true;
+    }
+
+    public boolean ReplaceEventOutfit(String Outfit,String old){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("Outfit",Outfit);
+        db.update("Events",cv,"Outfit="+"'"+old+"'",null);
+        return true;
+    }
+
     public boolean DeleteIteminOutfitafteredit(String column,String itemvecchio){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -246,11 +277,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean delete2(String table, String item){
+    public boolean deleteevent(Integer datecode){
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d(TAG, "addData : Deleting "+item+" from column names in table "+ table);
-        return db.delete(table,"names=?", new String[]{item}) > 0;
-
+        db.delete("Events","date=?", new String[]{String.valueOf(datecode)});
+        db.execSQL("VACUUM");
+        return true;
 
     }
 
@@ -267,6 +298,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "addData : Deleting "+item+" from column name in table "+ table);
         db.delete(table,"names=?", new String[]{item});
+        db.execSQL("VACUUM");
+        return true;
+
+    }
+
+    public boolean deleteeventswhenoutfitdeleted(String Outfit){
+        SQLiteDatabase db= this.getWritableDatabase();
+        db.delete("Events","Outfit=?",new String[]{Outfit});
         db.execSQL("VACUUM");
         return true;
 

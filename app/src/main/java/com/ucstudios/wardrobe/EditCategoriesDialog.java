@@ -182,8 +182,6 @@ public class EditCategoriesDialog extends Dialog implements View.OnClickListener
                     }
                 });
                 dialog.show();
-
-
                 break;
         }
 

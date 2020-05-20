@@ -58,8 +58,8 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     private static final String ARG_PARAM2 = "param2";
 
 
-    private String mParam1;
-    private String mParam2;
+
+    String secca;
     DatabaseHelper mDatabaseHelper1;
     MainActivity mMainActivity;
     private RecyclerView mRecyclerView;
@@ -77,6 +77,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     ImageView emptylist;
     TextView emptylisttext;
     ImageView IconAtTop;
+    GlobalBoolean CategoryClicked;
 
     private Integer[] Icons = {
             R.drawable.ic_sweater,
@@ -139,7 +140,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
+
             android.Manifest.permission.CAMERA
     };
 
@@ -152,10 +153,10 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    public static ListFragment newInstance(String param1) {
+    public static ListFragment newInstance(String secca) {
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM1, secca);
         fragment.setArguments(args);
         return fragment;
     }
@@ -164,7 +165,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            secca = getArguments().getString(ARG_PARAM1);
 
         }
     }
@@ -174,6 +175,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        CategoryClicked = ((GlobalBoolean) Objects.requireNonNull(this.getActivity()).getApplicationContext());
         floatingActionButton1 = view.findViewById(R.id.floating_action_button2);
         floatingActionButton1.setOnClickListener(this);
         IconAtTop = view.findViewById(R.id.iconattop);
@@ -185,14 +187,18 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
         mMainActivity = (MainActivity) getActivity();
         TextView mTextView = view.findViewById(R.id.textView);
-        mTextView.setText(mMainActivity.Name);
+        mTextView.setText(CategoryClicked.getClickedCategory());
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
         mDatabaseHelper1.getData();
         controllodivider=0;
         emptylist = view.findViewById(R.id.imageViewListavuota);
         emptylisttext = view.findViewById(R.id.textViewlistavuota);
         populateTopIcon();
-        populateItems();
+        try {
+            populateItems();
+        }catch (Exception ignored){
+
+        }
 
 
 
@@ -204,7 +210,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
     public void AddData1(String name, String size, String brand, Integer value, Integer currency, Integer icon, byte[] alien2o) {
-        boolean insertData = mDatabaseHelper1.addData1(mMainActivity.Name, name,size,icon,brand,value,currency,alien2o);
+        boolean insertData = mDatabaseHelper1.addData1(CategoryClicked.getClickedCategory(), name,size,icon,brand,value,currency,alien2o);
         toastMessage("New Item Created!");
 
     }
@@ -231,7 +237,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     private void populateTopIcon(){
         int puppaicona = 0;
-        Cursor data = mDatabaseHelper1.getCategoryIcon(mMainActivity.Name);
+        Cursor data = mDatabaseHelper1.getCategoryIcon(CategoryClicked.getClickedCategory());
         while(data.moveToNext()){
                 puppaicona = data.getInt(0);
         }
@@ -244,7 +250,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
     private void populateItems() {
 
-        final Cursor data = mDatabaseHelper1.getData1(mMainActivity.Name);
+        final Cursor data = mDatabaseHelper1.getData1(CategoryClicked.getClickedCategory());
         final ArrayList<String> listData = new ArrayList<>();
         final ArrayList<Integer> position = new ArrayList<>();
         final ArrayList<Integer> icons = new ArrayList<>();
@@ -266,14 +272,14 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             emptylisttext.setVisibility(View.GONE);
         }
         int tecnicissimo=0;
-        final Cursor iconanecessaria = mDatabaseHelper1.getCategoryIcon(mMainActivity.Name);
+        final Cursor iconanecessaria = mDatabaseHelper1.getCategoryIcon(CategoryClicked.getClickedCategory());
         while (iconanecessaria.moveToNext()){
             tecnicissimo=iconanecessaria.getInt(0);
 
         }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech,mMainActivity.Name,tecnicissimo);
+        recyclerAdapter = new RecyclerAdapterItems(getContext(),position,listData,icons,tech,CategoryClicked.getClickedCategory(),tecnicissimo);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(recyclerAdapter);
         if(controllodivider==0){
@@ -290,7 +296,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 int pos = mRecyclerView.indexOfChild(v);
-                final Cursor magiabianca = mDatabaseHelper1.GetItemData(pos+1,mMainActivity.Name);
+                final Cursor magiabianca = mDatabaseHelper1.GetItemData(pos+1,CategoryClicked.getClickedCategory());
                 final ArrayList<String> itemdata2 = new ArrayList<>();
                 final ArrayList<byte[]> negromatto = new ArrayList<>();
                 while (magiabianca.moveToNext()){
@@ -370,7 +376,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
                 case ItemTouchHelper.RIGHT:{
-                    final Cursor C = mDatabaseHelper1.GetItemData(position+1,mMainActivity.Name);
+                    final Cursor C = mDatabaseHelper1.GetItemData(position+1,CategoryClicked.getClickedCategory());
                     final ArrayList<Integer> itemdata = new ArrayList<>();
 
 
@@ -407,18 +413,18 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                     }
                     else{
 
-                            mDatabaseHelper1.toBasket(mMainActivity.Name, position+1);
+                            mDatabaseHelper1.toBasket(CategoryClicked.getClickedCategory(), position+1);
                             try{
                                 populateItems();
                             }
                             catch(Exception ignored){
 
                             }
-                            Snackbar.make(mRecyclerView, mMainActivity.Name, 2000).setAction(
+                            Snackbar.make(mRecyclerView, CategoryClicked.getClickedCategory(), 2000).setAction(
                                     "Put item back", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mDatabaseHelper1.toWardrobemodif(mMainActivity.Name, position+1);
+                                    mDatabaseHelper1.toWardrobemodif(CategoryClicked.getClickedCategory(), position+1);
                                     try {
                                         populateItems();
                                     }
@@ -434,7 +440,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
                 case ItemTouchHelper.LEFT:
-                    final Cursor C = mDatabaseHelper1.GetItemData(position+1,mMainActivity.Name);
+                    final Cursor C = mDatabaseHelper1.GetItemData(position+1,CategoryClicked.getClickedCategory());
                     final ArrayList<String> itemdata = new ArrayList<>();
 
 
@@ -447,7 +453,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                         tecca.add(C.getBlob(7));
 
                     }
-                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata,tecca,mMainActivity.Name);
+                    final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),1,itemdata,tecca,CategoryClicked.getClickedCategory());
                     dialog.show();
                     dialog.CameraActivation(new ItemVisualDialog.CameraActivation() {
                         @Override
@@ -499,14 +505,14 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
 
                             if(alien2o!=null){
-                                Replace(mMainActivity.Name,name,size,brand,value,currency,icon,alien2o,position+1);
+                                Replace(CategoryClicked.getClickedCategory(),name,size,brand,value,currency,icon,alien2o,position+1);
 
                             }
                             else{
-                                mDatabaseHelper1.ReplaceItemnoPic(mMainActivity.Name,name,size,brand,value,currency,icon,position+1);
+                                mDatabaseHelper1.ReplaceItemnoPic(CategoryClicked.getClickedCategory(),name,size,brand,value,currency,icon,position+1);
 
                             }
-                            mDatabaseHelper1.ReplaceIteminOutfitTable(name,mMainActivity.Name,olditemname);
+                            mDatabaseHelper1.ReplaceIteminOutfitTable(name,CategoryClicked.getClickedCategory(),olditemname);
                             dialog.dismiss();
                             try {
                                 populateItems();
@@ -577,7 +583,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
 
                 final ArrayList<String> crack = new ArrayList<>();
                 final ArrayList<byte[]> technon = new ArrayList<>();
-                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon,mMainActivity.Name);
+                final ItemVisualDialog dialog = new ItemVisualDialog(getActivity(),0,crack,technon,CategoryClicked.getClickedCategory());
 
                 if (!hasPermissions(getContext(), PERMISSIONS)) {
                     ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), PERMISSIONS, PERMISSION_ALL);
@@ -623,7 +629,7 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                                 }}
                                 if (control == 0) {
                                     AddData1(name, size, brand, value, currency, icon, alien2o);
-                                    mDatabaseHelper1.AddPictureItem(mMainActivity.Name, alien2o, tac);
+                                    mDatabaseHelper1.AddPictureItem(CategoryClicked.getClickedCategory(), alien2o, tac);
                                     dialog.dismiss();
                                     try {
                                         populateItems();

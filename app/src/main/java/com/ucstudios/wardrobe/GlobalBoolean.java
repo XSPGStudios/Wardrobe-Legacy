@@ -26,6 +26,16 @@ public class GlobalBoolean extends Application {
         mGlobalAdMob=stimerflag;
     }
 
+    private String mClickedCategory;
+
+    public String getClickedCategory(){
+        return mClickedCategory;
+    }
+
+    public void setmClickedCategory(String cliccata){
+        mClickedCategory = cliccata;
+    }
+
 
     private static boolean activityVisible;
 

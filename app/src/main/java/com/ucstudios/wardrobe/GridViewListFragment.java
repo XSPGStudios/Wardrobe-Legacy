@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GridViewListFragment extends Fragment implements View.OnClickListener{
 
@@ -31,6 +32,7 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
     GridView mGridView;
     MainActivity mMainActivity;
     DatabaseHelper mDatabaseHelper32;
+    GlobalBoolean mGlobalStuff;
 
     public GridViewListFragment(){
 
@@ -44,20 +46,21 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_list_gridview,container,false);
+        mGlobalStuff = (GlobalBoolean) Objects.requireNonNull(this.getActivity()).getApplicationContext();
         buttonlist = view.findViewById(R.id.buttonlist);
         mDatabaseHelper32 = new DatabaseHelper(getActivity());
         floatingActionButton = view.findViewById(R.id.floating_action_button_grid);
         mGridView = view.findViewById(R.id.gridView134);
         mMainActivity = (MainActivity) getActivity();
         TextView mTextView = view.findViewById(R.id.textViewGrid);
-        mTextView.setText(mMainActivity.Name);
+        mTextView.setText(mGlobalStuff.getClickedCategory());
         mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
         buttonlist.setOnClickListener(this);
         populateGridItems();
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Cursor magiabianca = mDatabaseHelper32.GetItemData(position+1,mMainActivity.Name);
+                final Cursor magiabianca = mDatabaseHelper32.GetItemData(position+1,mGlobalStuff.getClickedCategory());
                 final ArrayList<String> itemdata2 = new ArrayList<>();
                 final ArrayList<byte[]> negromatto = new ArrayList<>();
                 while (magiabianca.moveToNext()){
@@ -78,7 +81,7 @@ public class GridViewListFragment extends Fragment implements View.OnClickListen
     }
 
     private void populateGridItems(){
-        final Cursor C = mDatabaseHelper32.getData1(mMainActivity.Name);
+        final Cursor C = mDatabaseHelper32.getData1(mGlobalStuff.getClickedCategory());
         final ArrayList<byte[]> magic = new ArrayList<>();
         final ArrayList<String> tactic = new ArrayList<>();
         while(C.moveToNext()){
