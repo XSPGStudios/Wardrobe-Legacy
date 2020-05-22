@@ -118,7 +118,7 @@ public class SmsFragment extends Fragment implements View.OnClickListener {
         mDatabaseHelper = new DatabaseHelper(getActivity());
         mMainActivity = (MainActivity) getActivity();
 
-        imageViewempty = view.findViewById(R.id.imageView6);
+       // imageViewempty = view.findViewById(R.id.imageView6);
         textViewempty = view.findViewById(R.id.textView5);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_fragment);
